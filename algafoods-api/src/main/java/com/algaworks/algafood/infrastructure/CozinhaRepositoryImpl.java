@@ -9,14 +9,14 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.algaworks.algafood.domain.model.Cozinha;
-import com.algaworks.algafood.domain.repository.RestauranteRepository;
+import com.algaworks.algafood.domain.repository.CozinhaRepository;
 
 @Repository
-public class CozinhaRepositoryImpl implements RestauranteRepository {
+public class CozinhaRepositoryImpl implements CozinhaRepository {
 
 	@Override
 	public List<Cozinha> listar() {
-		return null;
+		return manager.createQuery("from Cozinha", Cozinha.class).getResultList();
 	}
 
 	@PersistenceContext // injetar um EntityManager

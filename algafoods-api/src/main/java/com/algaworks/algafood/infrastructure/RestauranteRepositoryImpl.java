@@ -16,7 +16,7 @@ public class RestauranteRepositoryImpl implements CozinhaRepository {
 
 	@Override
 	public List<Cozinha> listar() {
-		return null;
+		return manager.createQuery("from Restaurante", Cozinha.class).getResultList();
 	}
 
 	@PersistenceContext // injetar um EntityManager
