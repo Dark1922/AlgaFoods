@@ -2,7 +2,6 @@ package com.algaworks.algafood.jpa;
 
 import java.util.List;
 
-import org.springframework.beans.factory.BeanFactory;
 import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -18,7 +17,7 @@ public class BuscaCozinhaMain {
 				.web(WebApplicationType.NONE)
 				.run(args);
 		 
-		CozinhaRepository cadastroCozinhal = ((BeanFactory) applicationContext).getBean(CozinhaRepository.class);
+		CozinhaRepository cadastroCozinhal =  applicationContext.getBean(CozinhaRepository.class);
 		
 		List<Cozinha> cozinhas = cadastroCozinhal.listar();
 		

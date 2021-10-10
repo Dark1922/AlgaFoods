@@ -8,15 +8,15 @@ import javax.persistence.PersistenceContext;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.algaworks.algafood.domain.model.Cozinha;
-import com.algaworks.algafood.domain.repository.CozinhaRepository;
+import com.algaworks.algafood.domain.model.Restaurante;
+import com.algaworks.algafood.domain.repository.RestauranteRepository;
 
 @Repository
-public class RestauranteRepositoryImpl implements CozinhaRepository {
+public class RestauranteRepositoryImpl implements RestauranteRepository {
 
 	@Override
-	public List<Cozinha> listar() {
-		return manager.createQuery("from Restaurante", Cozinha.class).getResultList();
+	public List<Restaurante> listar() {
+		return manager.createQuery("from Restaurante", Restaurante.class).getResultList();
 	}
 
 	@PersistenceContext // injetar um EntityManager
@@ -26,20 +26,20 @@ public class RestauranteRepositoryImpl implements CozinhaRepository {
 	
 	@Transactional
 	@Override
-	public Cozinha adiciona(Cozinha cozinha) {
-		return manager.merge(cozinha);
+	public Restaurante adiciona(Restaurante restaurante) {
+		return manager.merge(restaurante);
 	}
 	@Override
-	public Cozinha buscarId(Long id) {
-		return manager.find(Cozinha.class, id);
+	public Restaurante buscarId(Long id) {
+		return manager.find(Restaurante.class, id);
 		//select from cozinha where id = ?
 	}
 
 	@Transactional
 	@Override
-	public void remover(Cozinha cozinha) {
-		cozinha = buscarId(cozinha.getId());
-		manager.remove(cozinha);
+	public void remover(Restaurante restaurante) {
+		restaurante = buscarId(restaurante.getId());
+		manager.remove(restaurante);
 		
 	}
 
