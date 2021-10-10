@@ -30,4 +30,11 @@ public class cadastroCozinha {
 		return manager.find(Cozinha.class, id);
 		//select from cozinha where id = ?
 	}
+
+	@Transactional
+	public void remover(Cozinha cozinha) {
+		cozinha = buscarId(cozinha.getId());
+		manager.remove(cozinha);
+		
+	}
 }
