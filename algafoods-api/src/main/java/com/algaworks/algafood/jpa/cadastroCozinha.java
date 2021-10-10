@@ -25,4 +25,9 @@ public class cadastroCozinha {
 	public Cozinha adiciona(Cozinha cozinha) {
 		return manager.merge(cozinha);
 	}
+	
+	public Cozinha buscarId(Long id) {
+		return manager.find(Cozinha.class, id);
+		//select from cozinha where id = ?
+	}
 }
