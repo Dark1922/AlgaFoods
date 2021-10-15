@@ -9,40 +9,40 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.algaworks.algafood.domain.model.Estado;
-import com.algaworks.algafood.domain.repository.EstadoRepository;
+import com.algaworks.algafood.domain.model.Cidade;
+import com.algaworks.algafood.domain.repository.CidadeRepository;
 
 @Repository
-public class EstadoRepositoryImpl implements EstadoRepository {
+public class CidadeRepositoryImpl implements CidadeRepository {
 
 	@PersistenceContext // injetar um EntityManager
 	private EntityManager manager;
 	
 	@Override
-	public List<Estado> listar() {
-		return manager.createQuery("from Estado", Estado.class).getResultList();
+	public List<Cidade> listar() {
+		return manager.createQuery("from Cidade", Cidade.class).getResultList();
 	}
 	
 	@Transactional
 	@Override
-	public Estado adiciona(Estado estado) {
-		return manager.merge(estado);
+	public Cidade adiciona(Cidade cidade) {
+		return manager.merge(cidade);
 	}
 	@Override
-	public Estado buscarId(Long id) {
-		return manager.find(Estado.class, id);
+	public Cidade buscarId(Long id) {
+		return manager.find(Cidade.class, id);
 		//select from cozinha where id = ?
 	}
 
 	@Transactional
 	@Override
 	public void remover(Long id) {
-		Estado estado = buscarId(id);
+		Cidade cidade = buscarId(id);
 		
-		if(estado == null) {
+		if(cidade == null) {
 			throw new EmptyResultDataAccessException(1); //esperava que tivesse ao menos 1 cozinha
 		}
-		manager.remove(estado);
+		manager.remove(cidade);
 		
 	}
 		
