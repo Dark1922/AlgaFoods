@@ -9,6 +9,6 @@ public interface CozinhaRepository {
 	List<Cozinha> listar();
 	Cozinha buscarId(Long id);
 	Cozinha adiciona(Cozinha cozinha);
-	void remover(Cozinha cozinha);
+	void remover(Long id);
 
 }
