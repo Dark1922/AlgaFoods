@@ -1,6 +1,7 @@
 package com.algaworks.algafood.api.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,16 +35,16 @@ public class CozinhaController {
 
 	@GetMapping()
 	public List<Cozinha> listar() {
-		return cozinhaRepository.listar();
+		return cozinhaRepository.findAll();
 	}
 
 
 	@GetMapping("/{id}")
 	public ResponseEntity<Cozinha> buscar(@PathVariable Long id) {
-		Cozinha cozinha = cozinhaRepository.buscarId(id);
+		Optional<Cozinha> cozinha = cozinhaRepository.findById(id);
 
-		if (cozinha != null) {
-			return ResponseEntity.ok(cozinha);
+		if (cozinha.isPresent()) {
+			return ResponseEntity.ok(cozinha.get());
 		}
 
 		return ResponseEntity.notFound().build();
@@ -56,17 +57,17 @@ public class CozinhaController {
 	}
 
 	@PutMapping("/{id}")
-	public ResponseEntity<Cozinha> atualizar(@PathVariable Long id, @RequestBody Cozinha cozinha) {
+	public ResponseEntity<Optional<Cozinha>> atualizar(@PathVariable Long id, @RequestBody Cozinha cozinha) {
 
-		Cozinha cozinhaATUAL = cozinhaRepository.buscarId(id);
+		Optional<Cozinha> cozinhaATUAL = cozinhaRepository.findById(id);
 
-		if (cozinhaATUAL != null) {
+		if (cozinhaATUAL.isPresent()) {//optional nunca vem nulo então temos que vê se ela está presente
 
 			// cozinhaATUAL.setNome(cozinha.getNome());
 			// copia os valores da cozinha vai pegar o get no set da cozinha
-			BeanUtils.copyProperties(cozinha, cozinhaATUAL, "id");
-
-			cadastroCozinhaService.adicionar(cozinhaATUAL);
+			BeanUtils.copyProperties(cozinha, cozinhaATUAL.get(), "id");
+                //.get pq está dentro do optional vai pega as propriedada da cozinha e passar pra atual tem que ter o get pra funcionar
+			cadastroCozinhaService.adicionar(cozinhaATUAL.get());
 			return ResponseEntity.ok(cozinhaATUAL);
 		}
 
