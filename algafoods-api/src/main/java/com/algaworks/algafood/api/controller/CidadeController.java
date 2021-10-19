@@ -1,6 +1,7 @@
 package com.algaworks.algafood.api.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,15 +34,15 @@ public class CidadeController {
 	
 	@GetMapping()
 	public List<Cidade> listar() {
-		return cidadeRepository.listar();
+		return cidadeRepository.findAll();
 	}
 	
 	@GetMapping("/{id}")
-	public ResponseEntity<Cidade> buscarPorId(@PathVariable Long id) {
+	public ResponseEntity<Optional<Cidade>> buscarPorId(@PathVariable Long id) {
 		
-		Cidade cidade = cidadeRepository.buscarId(id);
+		Optional<Cidade> cidade = cidadeRepository.findById(id);
 		
-		if(cidade != null) {
+		if(cidade.isPresent()) {
 			return ResponseEntity.ok(cidade);
 		}
 		
@@ -60,22 +61,27 @@ public class CidadeController {
 		}
 	}
 	
-	@PutMapping("/{id}")
-	public ResponseEntity<?> atualizar(@RequestBody Cidade cidade, @PathVariable Long id) {
+	@PutMapping("/{cidadeId}")
+	public ResponseEntity<?> atualizar(@PathVariable Long cidadeId,
+			@RequestBody Cidade cidade) {
 		try {
+			// Podemos usar o orElse(null) também, que retorna a instância de cidade
+			// dentro do Optional, ou null, caso ele esteja vazio,
+			// mas nesse caso, temos a responsabilidade de tomar cuidado com NullPointerException
+			Cidade cidadeAtual = cidadeRepository.findById(cidadeId).orElse(null);
 			
-			Cidade cidadeAtual  =  cidadeRepository.buscarId(id);
-		
 			if (cidadeAtual != null) {
 				BeanUtils.copyProperties(cidade, cidadeAtual, "id");
 				
 				cidadeAtual = cadastrocidadeService.salvar(cidadeAtual);
 				return ResponseEntity.ok(cidadeAtual);
 			}
+			
 			return ResponseEntity.notFound().build();
 		
-		}catch(EntidadeNaoEncontradaException e) {
-			return ResponseEntity.badRequest().body(e.getMessage());	
+		} catch (EntidadeNaoEncontradaException e) {
+			return ResponseEntity.badRequest()
+					.body(e.getMessage());
 		}
 	}
 	

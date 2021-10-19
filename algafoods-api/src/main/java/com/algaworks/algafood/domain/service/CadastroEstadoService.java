@@ -16,14 +16,14 @@ public class CadastroEstadoService {
 	@Autowired
 	private EstadoRepository estadoRepository;
 
-	public Estado salvar(Estado estado) {
-		return estadoRepository.adiciona(estado);
+	public Estado salvar(Estado estadoAtual) {
+		return estadoRepository.save(estadoAtual);
 	}
 	
 public void Excluir(Long id) {
 		
 		try {
-			estadoRepository.remover(id);
+			estadoRepository.deleteById(id);
 		}catch(EmptyResultDataAccessException e) {
 			throw new EntidadeNaoEncontradaException(String.format("Não existe um cadastro de estado com o código %d", id));
 			

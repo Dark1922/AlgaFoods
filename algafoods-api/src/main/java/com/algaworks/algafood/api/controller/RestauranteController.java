@@ -3,13 +3,13 @@ package com.algaworks.algafood.api.controller;
 import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.ReflectionUtils;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -37,15 +37,15 @@ public class RestauranteController {
 	
 	@GetMapping()
 	public List<Restaurante> listar() {
-		return restauranteRepository.listar();
+		return restauranteRepository.findAll();
 	}
 	
 	@GetMapping("/{id}")
-	public ResponseEntity<Restaurante> buscarPorId(@PathVariable Long id) {
+	public ResponseEntity<Optional<Restaurante>> buscarPorId(@PathVariable Long id) {
 		
-		Restaurante restaurante = restauranteRepository.buscarId(id);
+		Optional<Restaurante> restaurante = restauranteRepository.findById(id);
 		
-		if(restaurante != null) {
+		if(restaurante.isPresent()) {
 			return ResponseEntity.ok(restaurante);
 		}
 		
@@ -65,13 +65,13 @@ public class RestauranteController {
 	}
 	
 	@PutMapping("/{id}")
-	public ResponseEntity<?> atualizar(@RequestBody Restaurante restaurante, @PathVariable Long id) {
+	public ResponseEntity<?> atualizar(@RequestBody Optional<Restaurante> restauranteAtual2, @PathVariable Long id) {
 		try {
 			
-			Restaurante restauranteAtual  =  restauranteRepository.buscarId(id);
+			Restaurante restauranteAtual  =  restauranteRepository.findById(id).orElse(null);
 		
 			if (restauranteAtual != null) {
-				BeanUtils.copyProperties(restaurante, restauranteAtual, "id");
+				BeanUtils.copyProperties(restauranteAtual2, restauranteAtual, "id");
 				
 				restauranteAtual = cadastroRestauranteService.salvar(restauranteAtual);
 				return ResponseEntity.ok(restauranteAtual);
@@ -87,13 +87,13 @@ public class RestauranteController {
 	public ResponseEntity<?> atualizarParcial(@PathVariable Long id, @RequestBody 
 			Map<String, Object> campos) {
 
-		Restaurante restauranteAtual  =  restauranteRepository.buscarId(id);
+		Optional<Restaurante> restauranteAtual  =  restauranteRepository.findById(id);
 		
-		if(restauranteAtual == null) {
+		if(restauranteAtual.isEmpty()) {
 			return ResponseEntity.notFound().build();
 		}
 
-		merge(campos, restauranteAtual);
+		merge(campos, restauranteAtual.get());
 		
 		return atualizar(restauranteAtual , id);
 	}

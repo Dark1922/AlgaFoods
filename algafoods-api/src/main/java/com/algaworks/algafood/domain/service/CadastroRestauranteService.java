@@ -1,7 +1,5 @@
 package com.algaworks.algafood.domain.service;
 
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,6 +28,6 @@ public class CadastroRestauranteService {
          
 	    restaurante.setCozinha(cozinha);	//seta a cozinha se achar o id
 		
-		return restauranteRepository.adiciona(restaurante);
+		return restauranteRepository.save(restaurante);
 	}
 }
