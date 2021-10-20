@@ -96,7 +96,7 @@ public class RestauranteController {
 
 		merge(campos, restauranteAtual);
 		
-		return atualizar(restauranteAtual , id);
+		return atualizar(restauranteAtual , id); 
 	}
 
 	
