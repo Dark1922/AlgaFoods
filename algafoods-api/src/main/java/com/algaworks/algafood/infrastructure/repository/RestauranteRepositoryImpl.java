@@ -1,7 +1,5 @@
 package com.algaworks.algafood.infrastructure.repository;
 
-import static com.algaworks.algafood.infrastructure.repository.spec.RestauranteSpecs.comNomeSemelhante;
-
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +16,6 @@ import org.springframework.util.StringUtils;
 import com.algaworks.algafood.domain.model.Restaurante;
 import com.algaworks.algafood.domain.repository.RestauranteRepository;
 import com.algaworks.algafood.domain.repository.RestauranteRepositoryQuery;
-import com.algaworks.algafood.infrastructure.repository.spec.RestauranteSpecs;
 
 @Repository
 public class RestauranteRepositoryImpl implements RestauranteRepositoryQuery {
