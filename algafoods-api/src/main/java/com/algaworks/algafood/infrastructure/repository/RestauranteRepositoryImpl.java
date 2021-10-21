@@ -1,5 +1,7 @@
 package com.algaworks.algafood.infrastructure.repository;
 
+import static com.algaworks.algafood.infrastructure.repository.spec.RestauranteSpecs.comNomeSemelhante;
+
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -8,17 +10,24 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.Predicate;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 
 import com.algaworks.algafood.domain.model.Restaurante;
+import com.algaworks.algafood.domain.repository.RestauranteRepository;
 import com.algaworks.algafood.domain.repository.RestauranteRepositoryQuery;
+import com.algaworks.algafood.infrastructure.repository.spec.RestauranteSpecs;
 
 @Repository
 public class RestauranteRepositoryImpl implements RestauranteRepositoryQuery {
 
 	@PersistenceContext
 	private EntityManager manager;
+	
+	@Autowired @Lazy //só instancia ela no momento que for preciso preguiçoso
+	private RestauranteRepository restauranteRepository;
 	
 	public List<Restaurante> find(String nome, BigDecimal taxaFreteInicial , 
 			BigDecimal taxaFreteFinal ) {
@@ -48,8 +57,10 @@ public class RestauranteRepositoryImpl implements RestauranteRepositoryQuery {
 		var query = manager.createQuery(criteria);
 		return query.getResultList();
 		
-		
-		
-	
+	}
+
+	@Override
+	public List<Restaurante> findComFreteGratos(String nome) {
+		return restauranteRepository.findComFreteGratos(nome);
 	}
 }
