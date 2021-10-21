@@ -1,4 +1,4 @@
-package com.algaworks.algafood.domain.infrastructure.repository;
+package com.algaworks.algafood.infrastructure.repository;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
