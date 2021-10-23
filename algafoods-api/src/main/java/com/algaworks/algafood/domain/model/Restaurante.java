@@ -47,5 +47,6 @@ public class Restaurante {
 	private List<FormaPagamento> formasPagamento = new ArrayList<>();
 	
 	@Embedded //ela é uma parte da entidade restaurantes
+	@JsonIgnore
 	private Endereco endereco;
 }
