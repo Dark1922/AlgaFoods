@@ -8,6 +8,7 @@ import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -41,12 +42,12 @@ public class Restaurante {
 	@Column(name = "taxa_frete" , nullable = false)
 	private BigDecimal taxaFrete;
 	
-	@ManyToOne //mts restaurante possui uma cozinha
-	@JoinColumn(nullable = false)
+	@JsonIgnore
+	@ManyToOne(fetch = FetchType.LAZY) //mts restaurante possui uma cozinha
+	@JoinColumn(nullable = false, name = "cozinha_id")
 	private Cozinha cozinha;
 	
 	@ManyToMany
-	@JsonIgnore
 	@JoinTable(name = "restaurante_forma_pagamento", joinColumns = @JoinColumn(name = "restaurante_id")
 	,inverseJoinColumns = @JoinColumn(name = "forma_pagamento_id"))
 	private List<FormaPagamento> formasPagamento = new ArrayList<>();
