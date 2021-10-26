@@ -25,10 +25,10 @@ public interface RestauranteRepository
 	Optional<Restaurante> findFirstRestauranteByNomeContaining(String nome);
 
 	List<Restaurante> findTop2ByNomeContaining(String nome);
-
+ 
 	int countByCozinhaId(Long cozinha);
 	
-	@Query("from Restaurante r join r.cozinha join fetch r.formasPagamento")
+	@Query("from Restaurante r join fetch r.cozinha join fetch r.formasPagamento")
 	List<Restaurante> findAll();
 
 }
