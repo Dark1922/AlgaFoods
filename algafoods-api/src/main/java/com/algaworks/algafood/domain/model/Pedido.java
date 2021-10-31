@@ -59,7 +59,7 @@ public class Pedido {
 	@JoinColumn(nullable = false)
 	private Restaurante restaurante;
 	
-	@ManyToOne
+	@ManyToOne 
 	@JoinColumn(name = "usuario_cliente_id", nullable = false)
 	private Usuario cliente;
 	
