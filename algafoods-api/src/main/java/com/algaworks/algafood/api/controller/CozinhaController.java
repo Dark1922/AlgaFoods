@@ -21,6 +21,8 @@ import com.algaworks.algafood.domain.model.Cozinha;
 import com.algaworks.algafood.domain.repository.CozinhaRepository;
 import com.algaworks.algafood.domain.service.CadastroCozinhaService;
 
+import ch.qos.logback.core.joran.util.beans.BeanUtil;
+
 @RequestMapping("/cozinhas")
 @RestController // tem o responseBody dentro dela
 public class CozinhaController {
@@ -49,21 +51,12 @@ public class CozinhaController {
 	}
 
 	@PutMapping("/{id}")
-	public ResponseEntity<Optional<Cozinha>> atualizar(@PathVariable Long id, @RequestBody Cozinha cozinha) {
+	public Cozinha atualizar(@PathVariable Long id, @RequestBody Cozinha cozinha) {
+		Cozinha cozinhaAtual = cadastroCozinhaService.buscarOuFalhar(id);
+		BeanUtils.copyProperties(cozinha, cozinhaAtual, "id");
+		return cadastroCozinhaService.adicionar(cozinhaAtual);
 
-		Optional<Cozinha> cozinhaATUAL = cozinhaRepository.findById(id);
 
-		if (cozinhaATUAL.isPresent()) {//optional nunca vem nulo então temos que vê se ela está presente
-
-			// cozinhaATUAL.setNome(cozinha.getNome());
-			// copia os valores da cozinha vai pegar o get no set da cozinha
-			BeanUtils.copyProperties(cozinha, cozinhaATUAL.get(), "id");
-                //.get pq está dentro do optional vai pega as propriedada da cozinha e passar pra atual tem que ter o get pra funcionar
-			cadastroCozinhaService.adicionar(cozinhaATUAL.get());
-			return ResponseEntity.ok(cozinhaATUAL);
-		}
-
-		return ResponseEntity.notFound().build();
 	}
 /*
 	@DeleteMapping("/{id}")
