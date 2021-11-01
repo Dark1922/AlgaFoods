@@ -12,6 +12,8 @@ import com.algaworks.algafood.domain.repository.RestauranteRepository;
 @Service
 public class CadastroRestauranteService {
 
+	private static final String MSG_NAO_EXISTE_CODIGO_DE_COZINHA = "Não existe cadastro de cozinha com codigo %d";
+
 	@Autowired
 	private RestauranteRepository restauranteRepository;
 
@@ -24,7 +26,7 @@ public class CadastroRestauranteService {
 		//retorna a cozinha que está dentro do optional  se não retorna nada lança a exceção da entidade não encontrada
 		Cozinha cozinha = cozinhaRepository.findById(cozinhaId)
 				.orElseThrow(() -> new EntidadeNaoEncontradaException(
-          String.format("Não existe cadastro de cozinha com codigo %d", cozinhaId)));
+          String.format(MSG_NAO_EXISTE_CODIGO_DE_COZINHA, cozinhaId)));
          
 	    restaurante.setCozinha(cozinha);	//seta a cozinha se achar o id
 		

@@ -15,7 +15,9 @@ import com.algaworks.algafood.domain.repository.EstadoRepository;
 @Service
     public class CadastroCidadeService {
 
-        @Autowired
+        private static final String MSG_NAO_EXISTE_CIDADE = "Não existe cadastro de estado com código %d";
+
+		@Autowired
         private CidadeRepository cidadeRepository;
         
         @Autowired
@@ -26,7 +28,7 @@ import com.algaworks.algafood.domain.repository.EstadoRepository;
 
     		Estado estado = estadoRepository.findById(estadoId)
     			.orElseThrow(() -> new EntidadeNaoEncontradaException(
-    					String.format("Não existe cadastro de estado com código %d", estadoId)));
+    					String.format(MSG_NAO_EXISTE_CIDADE, estadoId)));
     		
     		cidade.setEstado(estado);
     		
