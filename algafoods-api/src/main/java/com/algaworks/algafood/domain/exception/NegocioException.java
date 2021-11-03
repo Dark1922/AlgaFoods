@@ -11,5 +11,9 @@ public class NegocioException extends RuntimeException {
 	public NegocioException(String msg) {
 		super(msg); //resultado padrão not found
 	}
+	
+	public NegocioException(String mensagem, Throwable causa) {//Throwable pai de todas exceções que é a causa
+		super(mensagem, causa);
+	}
 
 }

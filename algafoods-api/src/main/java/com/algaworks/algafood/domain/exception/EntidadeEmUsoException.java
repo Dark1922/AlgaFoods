@@ -4,7 +4,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(HttpStatus.CONFLICT) //está em uso e conflict
-public class EntidadeEmUsoException extends RuntimeException {//vai herdar o rumtimeexception
+public class EntidadeEmUsoException extends NegocioException {//vai herdar o rumtimeexception
 	private static final long serialVersionUID = 1L;
 	
 public EntidadeEmUsoException(String msg) {

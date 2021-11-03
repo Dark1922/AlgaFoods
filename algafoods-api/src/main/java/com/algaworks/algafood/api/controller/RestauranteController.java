@@ -49,11 +49,11 @@ public class RestauranteController {
 	@ResponseStatus(HttpStatus.CREATED)
 	public Restaurante adicionar(@RequestBody Restaurante restaurante) {
 		try {
-			
-		return cadastroRestauranteService.salvar(restaurante);
-		
-		}catch(EntidadeNaoEncontradaException e) {
-			
+
+			return cadastroRestauranteService.salvar(restaurante);
+
+		} catch (EntidadeNaoEncontradaException e) {
+
 			throw new NegocioException(e.getMessage());
 		}
 	}
@@ -64,8 +64,8 @@ public class RestauranteController {
 
 		BeanUtils.copyProperties(restaurante, restauranteAtual, "id", "formasPagamento", "endereco", "dataCadastro",
 				"produtos");
-
 		try {
+
 			return cadastroRestauranteService.salvar(restauranteAtual);
 		} catch (EntidadeNaoEncontradaException e) {
 			throw new NegocioException(e.getMessage());
