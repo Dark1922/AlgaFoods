@@ -54,7 +54,7 @@ public class RestauranteController {
 
 		} catch (CozinhaNaoEncontradaException e) {
 
-			throw new NegocioException(e.getMessage());
+			throw new NegocioException(e.getMessage(), e);
 		}
 	}
 
@@ -68,7 +68,7 @@ public class RestauranteController {
 					"produtos");
 			return cadastroRestauranteService.salvar(restauranteAtual);
 		} catch (CozinhaNaoEncontradaException e) {
-			throw new NegocioException(e.getMessage());
+			throw new NegocioException(e.getMessage(), e);
 		}
 	}
 
