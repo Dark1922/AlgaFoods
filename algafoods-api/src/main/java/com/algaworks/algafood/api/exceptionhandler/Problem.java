@@ -18,6 +18,8 @@ public class Problem {
     private String type;
     private String title;
     private String detail;
+    
+    private String userMessage;
 	
 	@JsonFormat(timezone = "GMT-3",pattern = "yyyy-MM-dd hh:mm:ss")
 	private LocalDateTime timestamp; // do acontecimento do erro
