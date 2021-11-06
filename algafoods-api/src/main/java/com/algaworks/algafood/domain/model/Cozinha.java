@@ -24,7 +24,7 @@ import lombok.EqualsAndHashCode;
 @JsonRootName("Cozinha")
 public class Cozinha {
 
-	@NotNull(groups = Groups.cadastroRestaurante.class)
+	@NotNull(groups = Groups.CozinhaId.class)
 	@Id
 	@EqualsAndHashCode.Include
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

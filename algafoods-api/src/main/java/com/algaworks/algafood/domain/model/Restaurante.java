@@ -20,6 +20,8 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PositiveOrZero;
+import javax.validation.groups.ConvertGroup;
+import javax.validation.groups.Default;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -40,17 +42,18 @@ public class Restaurante {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	 
-	@NotBlank(groups = Groups.cadastroRestaurante.class) //n aceita nulo vazio ou espaço em branco
+	@NotBlank //n aceita nulo vazio ou espaço em branco
 	@Column(nullable = false)
 	private String nome;
 	  
 	//@DecimalMin("0")//n aceita um valor negativo 
-	@PositiveOrZero(groups = Groups.cadastroRestaurante.class) //tem q ser maior ou igual a 0
+	@PositiveOrZero //tem q ser maior ou igual a 0
 	@Column(name = "taxa_frete" , nullable = false)
 	private BigDecimal taxaFrete;
 	
 	@Valid //valid também a propriedade de cozinha / cascata
-	@NotNull(groups = Groups.cadastroRestaurante.class)
+	@ConvertGroup(from = Default.class, to = Groups.CozinhaId.class )
+	@NotNull
 	@ManyToOne //(fetch = FetchType.LAZY) //mts restaurante possui uma cozinha
 	@JoinColumn(nullable = false, name = "cozinha_id")
 	private Cozinha cozinha;
