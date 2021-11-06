@@ -24,6 +24,7 @@ import javax.validation.constraints.PositiveOrZero;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import com.algaworks.algafood.api.exceptionhandler.Groups;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Data;
@@ -39,17 +40,17 @@ public class Restaurante {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	 
-	@NotBlank //n aceita nulo vazio ou espaço em branco
+	@NotBlank(groups = Groups.cadastroRestaurante.class) //n aceita nulo vazio ou espaço em branco
 	@Column(nullable = false)
 	private String nome;
-	 
+	  
 	//@DecimalMin("0")//n aceita um valor negativo 
-	@PositiveOrZero //tem q ser maior ou igual a 0
+	@PositiveOrZero(groups = Groups.cadastroRestaurante.class) //tem q ser maior ou igual a 0
 	@Column(name = "taxa_frete" , nullable = false)
 	private BigDecimal taxaFrete;
 	
 	@Valid //valid também a propriedade de cozinha / cascata
-	@NotNull
+	@NotNull(groups = Groups.cadastroRestaurante.class)
 	@ManyToOne //(fetch = FetchType.LAZY) //mts restaurante possui uma cozinha
 	@JoinColumn(nullable = false, name = "cozinha_id")
 	private Cozinha cozinha;

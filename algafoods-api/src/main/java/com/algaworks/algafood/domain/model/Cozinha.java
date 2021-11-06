@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
 
+import com.algaworks.algafood.api.exceptionhandler.Groups;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonRootName;
 
@@ -23,7 +24,7 @@ import lombok.EqualsAndHashCode;
 @JsonRootName("Cozinha")
 public class Cozinha {
 
-	@NotNull
+	@NotNull(groups = Groups.cadastroRestaurante.class)
 	@Id
 	@EqualsAndHashCode.Include
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
