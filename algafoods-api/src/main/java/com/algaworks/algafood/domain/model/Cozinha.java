@@ -32,11 +32,11 @@ public class Cozinha {
 	private Long id;
 	
 	//@JsonIgnore
-	//@JsonProperty("titulo")
+	//@JsonProperty("titulo") 
 	@NotBlank(message = "Nome é Obrigatório")
 	@Column(nullable = false)
 	private String nome;
-	
+	 
 	//faz um one to many aonde foi mapeado por cozinha no restaurante o manytoOne se chama cozinha e passa esse nome por mappedBy
 	@JsonIgnore //evitar loop
 	@OneToMany(mappedBy = "cozinha")  //Many é uma coção pq tem muitos ent tem o List
