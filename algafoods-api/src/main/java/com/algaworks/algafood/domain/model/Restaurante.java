@@ -26,7 +26,7 @@ import javax.validation.groups.Default;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import com.algaworks.algafood.api.exceptionhandler.Groups;
+import com.algaworks.algafood.core.validation.Groups;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Data;
@@ -47,7 +47,7 @@ public class Restaurante {
 	private String nome;
 	  
 	//@DecimalMin("0")//n aceita um valor negativo 
-	@PositiveOrZero //tem q ser maior ou igual a 0
+	@PositiveOrZero(message = "{taxaFrete.invalida}") //tem q ser maior ou igual a 0
 	@Column(name = "taxa_frete" , nullable = false)
 	private BigDecimal taxaFrete;
 	
