@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -276,13 +277,20 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 	    
 	    BindingResult bildBindingResult =  ex.getBindingResult(); //acesso a quais fields ou propriedades foram violadas as msg etc
 	        
-	    List<Problem.Field> problemFields = bildBindingResult.getFieldErrors().stream()
-	    		.map(fieldError -> 
+	    List<Problem.Object> problemObjects = bildBindingResult.getAllErrors().stream()
+	    		.map(objectError -> 
 	    		 {                                                          //pega o locale dele atual do sistema operacional
-	    			 String message = messageSource.getMessage(fieldError, LocaleContextHolder.getLocale());
+	    			 String message = messageSource.getMessage(objectError, LocaleContextHolder.getLocale());
 	    			 
-	    			return Problem.Field.builder()
-	    				.name(fieldError.getField())
+	    			 String name = objectError.getObjectName(); //pega o nome do objeto
+	    			 
+	    			 if(objectError instanceof  FieldError) { 
+	    				 //se o object error for uma instancia do filderro agente pega sua instancia
+	    				 name = ((FieldError) objectError).getField();
+	    			 }
+	    			 
+	    			return Problem.Object.builder()
+	    				.name(name) 
 	    				.userMessage(message)
 	    				.build();
 	    			})
@@ -291,7 +299,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 	    
 	    Problem problem = createProblemBuilder(status, problemType, detail)
 	        .userMessage(detail)
-	        .fields(problemFields)
+	        .objects(problemObjects)
 	        .timestamp(LocalDateTime.now())
 	        .build();
 	    
