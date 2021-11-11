@@ -103,7 +103,7 @@ public class RestauranteController {
 		if(bindingResult.hasErrors()) { //se tem error ai dentro do restaurante que estamos atualizando algo
 			throw new  ValidacaoException(bindingResult);
 		}
-	}
+	} 
 
 	private void merge(Map<String, Object> dadosOrigem, Restaurante restauranteDestino, HttpServletRequest request) {
         
