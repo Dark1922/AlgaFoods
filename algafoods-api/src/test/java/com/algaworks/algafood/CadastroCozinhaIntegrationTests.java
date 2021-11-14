@@ -47,7 +47,7 @@ class CadastroCozinhaIntegrationTests {
 			   
 			   assertThat(erroEsperado).isNotNull();
 	}
-	
+	 
 	@Test
 	public void deveFalhar_QuandoExcluirCozinhaEmUso() {
 		
@@ -58,9 +58,9 @@ class CadastroCozinhaIntegrationTests {
 			   
 			   assertThat(erroEsperado);
 		
-	}
+	} 
 
-	@Test
+	@Test 
 	public void deveFalhar_QuandoExcluirCozinhaInexistente() {
 		
 		CozinhaNaoEncontradaException erroEsperado =
