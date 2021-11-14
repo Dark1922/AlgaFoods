@@ -82,6 +82,9 @@
 					</excludes>
 				</configuration>
 			</plugin>
+			<plugin>
+			<artifactId>maven-failsafe-plugin</artifactId>
+			</plugin>
 		</plugins>
 	</build>
 
