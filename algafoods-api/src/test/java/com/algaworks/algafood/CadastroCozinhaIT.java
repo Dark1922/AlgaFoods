@@ -29,9 +29,9 @@ class CadastroCozinhaIT {
 	
 	@BeforeEach
 	public void setUp() {
-		RestAssured.enableLoggingOfRequestAndResponseIfValidationFails();
-		RestAssured.port = port;
-		RestAssured.basePath = "/cozinhas";
+		RestAssured.enableLoggingOfRequestAndResponseIfValidationFails(); //se falhar mostra o log
+		RestAssured.port = port; //pega as porta aleatoria
+		RestAssured.basePath = "/cozinhas"; //nossa caminho de teste
 	}
 	
 	@Test
@@ -93,31 +93,33 @@ class CadastroCozinhaIT {
 	@Test
 	public void deveRetornarStatus200_quandoConsultarCozinhas() {
 		
-		RestAssured.enableLoggingOfRequestAndResponseIfValidationFails(); //se falhar mostra o log
-		
 		RestAssured.given() //dado que agente tem um path /cozinhas
-		.basePath("/cozinhas")
-		.port(port) //porta da api
 		.accept(ContentType.JSON) //quer do tipo json
-		.when() //onde
+		   .when() //onde
 		.get() //no get oque está fornecendo pro when/ requisição
-		.then() //oque
+		    .then() //oque
 		.statusCode(HttpStatus.OK.value()); //o status code tem que ser 200 ok
 	}
 	
 	@Test
 	public void deveConter4Cozinhas_QunadoConsultarCozinha() {
 		
-		RestAssured.enableLoggingOfRequestAndResponseIfValidationFails(); //se falhar mostra o log
-		
 		RestAssured.given() //dado que agente tem um path /cozinhas
-		.basePath("/cozinhas")
-		.port(port) //porta da api
 		.accept(ContentType.JSON) //quer do tipo json
 		.when() //onde
-		.get() //no get oque está fornecendo pro when/ requisição
+		   .get() //no get oque está fornecendo pro when/ requisição
 		.then() //oque
-		.body("", Matchers.hasSize(4)) //tem q ter 4 objetos dentro do array de cozinhas cadastradas
-		.body("nome", Matchers.hasItems("Indiana", "Tailandesa"));
+		    .body("", Matchers.hasSize(4)); //tem q ter 4 objetos dentro do array de cozinhas cadastradas
+	}
+	
+	@Test
+	public void deveRetornarStatus201_QuandoCadastrarCozinha() {
+		RestAssured.given()
+		.body("{\"nome\": \"Chinesa\"}")
+		.contentType(ContentType.JSON)
+		.when()
+		.post()
+		.then()
+		.statusCode(HttpStatus.CREATED.value());
 	}
 }
