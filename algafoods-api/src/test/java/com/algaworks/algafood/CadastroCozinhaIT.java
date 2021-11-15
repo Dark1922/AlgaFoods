@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import javax.validation.ConstraintViolationException;
 
+import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -84,6 +85,8 @@ class CadastroCozinhaIT {
 	@Test
 	public void deveRetornarStatus200_quandoConsultarCozinhas() {
 		
+		RestAssured.enableLoggingOfRequestAndResponseIfValidationFails(); //se falhar mostra o log
+		
 		RestAssured.given() //dado que agente tem um path /cozinhas
 		.basePath("/cozinhas")
 		.port(port) //porta da api
@@ -92,5 +95,21 @@ class CadastroCozinhaIT {
 		.get() //no get oque está fornecendo pro when/ requisição
 		.then() //oque
 		.statusCode(HttpStatus.OK.value()); //o status code tem que ser 200 ok
+	}
+	
+	@Test
+	public void deveConter4Cozinhas_QunadoConsultarCozinha() {
+		
+		RestAssured.enableLoggingOfRequestAndResponseIfValidationFails(); //se falhar mostra o log
+		
+		RestAssured.given() //dado que agente tem um path /cozinhas
+		.basePath("/cozinhas")
+		.port(port) //porta da api
+		.accept(ContentType.JSON) //quer do tipo json
+		.when() //onde
+		.get() //no get oque está fornecendo pro when/ requisição
+		.then() //oque
+		.body("", Matchers.hasSize(4)) //tem q ter 4 objetos dentro do array de cozinhas cadastradas
+		.body("nome", Matchers.hasItems("Indiana", "Tailandesa"));
 	}
 }
