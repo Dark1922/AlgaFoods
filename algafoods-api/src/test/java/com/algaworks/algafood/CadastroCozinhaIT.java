@@ -8,13 +8,18 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.http.HttpStatus;
 
 import com.algaworks.algafood.domain.exception.CozinhaNaoEncontradaException;
 import com.algaworks.algafood.domain.exception.EntidadeEmUsoException;
 import com.algaworks.algafood.domain.model.Cozinha;
 import com.algaworks.algafood.domain.service.CadastroCozinhaService;
 
-@SpringBootTest
+import io.restassured.RestAssured;
+import io.restassured.http.ContentType;
+
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)//libera porta pra testes de api sem te que subir
 class CadastroCozinhaIT {
 
 	@Autowired
@@ -69,5 +74,23 @@ class CadastroCozinhaIT {
 			      });
 			   
 			   assertThat(erroEsperado);
+	}
+	
+	/* Testes de API*/
+	
+	@LocalServerPort
+	private int port; //vai receber a porta que vai ser gerada pra subir o servidor
+	
+	@Test
+	public void deveRetornarStatus200_quandoConsultarCozinhas() {
+		
+		RestAssured.given() //dado que agente tem um path /cozinhas
+		.basePath("/cozinhas")
+		.port(port) //porta da api
+		.accept(ContentType.JSON) //quer do tipo json
+		.when() //onde
+		.get() //no get oque está fornecendo pro when/ requisição
+		.then() //oque
+		.statusCode(HttpStatus.OK.value()); //o status code tem que ser 200 ok
 	}
 }
