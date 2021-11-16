@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import javax.validation.ConstraintViolationException;
 
+import org.flywaydb.core.Flyway;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -12,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
+import org.springframework.test.context.TestPropertySource;
 
 import com.algaworks.algafood.domain.exception.CozinhaNaoEncontradaException;
 import com.algaworks.algafood.domain.exception.EntidadeEmUsoException;
@@ -22,16 +24,23 @@ import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)//libera porta pra testes de api sem te que subir
+@TestPropertySource("/application-test.properties") //usa o properties-teste
 class CadastroCozinhaIT {
 
 	@Autowired
 	private CadastroCozinhaService cadastroCozinha;
 	
+	@Autowired
+	private Flyway flyway;
+	
 	@BeforeEach
-	public void setUp() {
+	public void setUp() { //vao ser reiniciado várias vezes em cada teste com as configuração daqui
+		
 		RestAssured.enableLoggingOfRequestAndResponseIfValidationFails(); //se falhar mostra o log
 		RestAssured.port = port; //pega as porta aleatoria
 		RestAssured.basePath = "/cozinhas"; //nossa caminho de teste
+		
+		flyway.migrate(); //vai reiniciar o banco em cada teste
 	}
 	
 	@Test
@@ -113,7 +122,7 @@ class CadastroCozinhaIT {
 	}
 	
 	@Test
-	public void deveRetornarStatus201_QuandoCadastrarCozinha() {
+	public void testRetornarStatus201_QuandoCadastrarCozinha() {
 		RestAssured.given()
 		.body("{\"nome\": \"Chinesa\"}")
 		.contentType(ContentType.JSON)
