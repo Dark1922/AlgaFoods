@@ -13,7 +13,6 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 import com.algaworks.algafood.core.validation.Groups;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonRootName;
 
 import lombok.Data;
@@ -38,7 +37,6 @@ public class Cozinha {
 	private String nome;
 	 
 	//faz um one to many aonde foi mapeado por cozinha no restaurante o manytoOne se chama cozinha e passa esse nome por mappedBy
-	@JsonIgnore //evitar loop
 	@OneToMany(mappedBy = "cozinha")  //Many é uma coção pq tem muitos ent tem o List
 	private List<Restaurante> restaurantes = new ArrayList<>();//instacia null por causa do nullpointerexception
 }
