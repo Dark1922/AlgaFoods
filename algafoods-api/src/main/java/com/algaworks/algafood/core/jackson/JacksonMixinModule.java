@@ -10,7 +10,7 @@ import com.algaworks.algafood.domain.model.Cozinha;
 import com.algaworks.algafood.domain.model.Restaurante;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 
-@Component
+@Component 
 public class JacksonMixinModule extends SimpleModule {
 
 	private static final long serialVersionUID = 1L;
