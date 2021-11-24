@@ -22,3 +22,4 @@ public class JacksonMixinModule extends SimpleModule {
 	}
 
 }
+ 
