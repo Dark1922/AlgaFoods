@@ -24,11 +24,11 @@ public abstract class RestauranteMixin {
 	private Endereco endereco;
 	
 	@JsonFormat(timezone = "GMT-3",pattern = "yyyy-MM-dd hh:mm:ss")
-	//@JsonIgnore
+	@JsonIgnore
 	private OffsetDateTime dataCadastro;
 	
 	@JsonFormat(timezone = "GMT-3",pattern = "yyyy-MM-dd hh:mm:ss") //gmt -3 horas do offset
-	//@JsonIgnore
+	@JsonIgnore
 	private OffsetDateTime dataAtualizacao;
 	
 	@JsonIgnore
