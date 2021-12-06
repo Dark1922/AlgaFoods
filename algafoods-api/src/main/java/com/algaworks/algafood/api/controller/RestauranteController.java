@@ -1,24 +1,15 @@
 package com.algaworks.algafood.api.controller;
 
-import java.lang.reflect.Field;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
-import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.converter.HttpMessageNotReadableException;
-import org.springframework.http.server.ServletServerHttpRequest;
-import org.springframework.util.ReflectionUtils;
-import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.SmartValidator;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -29,14 +20,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.algaworks.algafood.api.model.CozinhaDTO;
 import com.algaworks.algafood.api.model.RestauranteDTO;
-import com.algaworks.algafood.core.validation.ValidacaoException;
+import com.algaworks.algafood.api.model.input.RestauranteInput;
 import com.algaworks.algafood.domain.exception.CozinhaNaoEncontradaException;
 import com.algaworks.algafood.domain.exception.NegocioException;
+import com.algaworks.algafood.domain.model.Cozinha;
 import com.algaworks.algafood.domain.model.Restaurante;
 import com.algaworks.algafood.domain.repository.RestauranteRepository;
 import com.algaworks.algafood.domain.service.CadastroRestauranteService;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 @RestController
 @RequestMapping("/restaurantes")
@@ -81,15 +71,17 @@ public class RestauranteController {
 		restauranteDTO.setNome(restaurante.getNome());
 	    restauranteDTO.setTaxaFrete(restaurante.getTaxaFrete());
 	    restauranteDTO.setCozinha(cozinhaDTO);
-		return restauranteDTO;
+		return restauranteDTO; 
 	}
 
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public RestauranteDTO adicionar(@RequestBody @Valid Restaurante restaurante) {
+	public RestauranteDTO adicionar(@RequestBody @Valid RestauranteInput restauranteInput) {
 		try {
 
-			return toModel(cadastroRestauranteService.salvar(restaurante));
+			Restaurante restaurante = toDomainObject(restauranteInput); //convertendo o restaurante pros dados de entrada input
+			
+			return toModel(cadastroRestauranteService.salvar(restaurante)); //converter pro modelo de representação da dessa model
 
 		} catch (CozinhaNaoEncontradaException e) {
 
@@ -98,9 +90,11 @@ public class RestauranteController {
 	}
 
 	@PutMapping("/{restauranteId}")
-	public RestauranteDTO atualizar(@PathVariable Long restauranteId, @RequestBody @Valid Restaurante restaurante) {
+	public RestauranteDTO atualizar(@PathVariable Long restauranteId, @RequestBody @Valid RestauranteInput restauranteInput) {
 		
 		try {
+			Restaurante restaurante = toDomainObject(restauranteInput); 
+			
 			Restaurante restauranteAtual = cadastroRestauranteService.buscarOuFalhar(restauranteId);
 
 			BeanUtils.copyProperties(restaurante, restauranteAtual, "id", "formasPagamento", "endereco", "dataCadastro",
@@ -110,13 +104,33 @@ public class RestauranteController {
 			throw new NegocioException(e.getMessage(), e);
 		}
 	}
-
+	
+	/*passando os dados de entrada pros RestauranteInput os dados que vamos entrar pra fazer requisição na api*/
+	private Restaurante toDomainObject(RestauranteInput restauranteInput) {
+		
+		Restaurante restaurante = new Restaurante();
+		restaurante.setNome(restauranteInput.getNome());
+		restaurante.setTaxaFrete(restauranteInput.getTaxaFrete());
+		
+		Cozinha cozinha = new Cozinha();
+		cozinha.setId(restauranteInput.getCozinha().getId());
+		
+		restaurante.setCozinha(cozinha); //asociou com a cozinha que acabou de instaciar e converter acima
+		
+		return restaurante;
+	}
+/*
 	@PatchMapping("/{restauranteId}")
 	public RestauranteDTO atualizarParcial( @PathVariable Long restauranteId, @RequestBody @Valid Map<String, Object> campos,
 			HttpServletRequest request) {
+		
+		
+		
+		
 		Restaurante restauranteAtual = cadastroRestauranteService.buscarOuFalhar(restauranteId);
 
 		merge(campos, restauranteAtual, request);
+		
 		validate(restauranteAtual, "restaurante");
 
 		return atualizar(restauranteId, restauranteAtual);
@@ -133,7 +147,7 @@ public class RestauranteController {
 
 	private void merge(Map<String, Object> dadosOrigem, Restaurante restauranteDestino, HttpServletRequest request) {
         
-		/*passamos o request que recebemos no método a requisição por parametro*/
+		/*passamos o request que recebemos no método a requisição por parametro*//*
 		ServletServerHttpRequest serverHttpRequest = new ServletServerHttpRequest(request);
 		
 		try {
@@ -157,4 +171,5 @@ public class RestauranteController {
 			throw new HttpMessageNotReadableException(e.getMessage(), rootCause, serverHttpRequest);
 		}
 	}
+*/
 }
