@@ -3,28 +3,23 @@ package com.algaworks.algafood.api.assembler;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.algaworks.algafood.api.model.CozinhaDTO;
 import com.algaworks.algafood.api.model.RestauranteDTO;
 import com.algaworks.algafood.domain.model.Restaurante;
 
 @Component
 public class RestauranteModelAssembler {
 
+	@Autowired
+	private ModelMapper modelMapper;
+	
 	//representa os dados de representação dto
 	public RestauranteDTO toModel(Restaurante restaurante) {
-		CozinhaDTO cozinhaDTO = new CozinhaDTO();
-		cozinhaDTO.setId(restaurante.getCozinha().getId());
-		cozinhaDTO.setNome(restaurante.getCozinha().getNome());
-		
-		RestauranteDTO restauranteDTO = new RestauranteDTO();
-
-		restauranteDTO.setId(restaurante.getId());//atribui a propriedade model o id do restaurante
-		restauranteDTO.setNome(restaurante.getNome());
-	    restauranteDTO.setTaxaFrete(restaurante.getTaxaFrete());
-	    restauranteDTO.setCozinha(cozinhaDTO);
-		return restauranteDTO; 
+		//oq eu estou recebendo de origem entrada restaurante e qual o destino dele que vai ser representado e passado seus dados
+		return modelMapper.map(restaurante, RestauranteDTO.class); 
 	}
 	
 	//para o get busca todos dados daquela classe com os atributos do model ou dto representation model

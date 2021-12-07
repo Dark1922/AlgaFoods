@@ -108,8 +108,8 @@ public class RestauranteController {
 	
 
 	
-	@PutMapping("/{patch}")
-	public RestauranteDTO patch(@PathVariable Long restauranteId, @RequestBody @Valid Restaurante restaurante) {
+	@PutMapping("/blabla")
+	public RestauranteDTO atttPatch(@PathVariable Long restauranteId, @RequestBody @Valid Restaurante restaurante) {
 		
 		try {
 			
@@ -136,7 +136,7 @@ public class RestauranteController {
 		
 		validate(restauranteAtual, "restaurante");
 
-		return patch(restauranteId, restauranteAtual);
+		return atttPatch(restauranteId, restauranteAtual);
 	}
 
 	private void validate(Restaurante restaurante, String objectName) {
