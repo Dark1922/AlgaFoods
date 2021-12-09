@@ -15,7 +15,7 @@ public class RestauranteInputDisassembler {
 
 	/*
 	 * passando os dados de entrada pros RestauranteInput os dados que vamos entrar
-	 * pra fazer requisição na api
+	 * pra fazer requisição na api 
 	 */
       	public Restaurante toDomainObject(RestauranteInput restauranteInput) {
 
