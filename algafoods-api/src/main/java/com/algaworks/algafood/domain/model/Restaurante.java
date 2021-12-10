@@ -55,7 +55,7 @@ public class Restaurante {
 	@Valid //valid também a propriedade de cozinha / cascata
 	@ConvertGroup(from = Default.class, to = Groups.CozinhaId.class )
 	@NotNull
-	@ManyToOne //(fetch = FetchType.LAZY) //mts restaurante possui uma cozinha
+	@ManyToOne//(fetch = FetchType.LAZY) //mts restaurante possui uma cozinha
 	@JoinColumn(nullable = false, name = "cozinha_id")
 	private Cozinha cozinha;
 	

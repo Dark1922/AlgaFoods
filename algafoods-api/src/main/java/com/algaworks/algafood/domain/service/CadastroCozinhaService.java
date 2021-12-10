@@ -29,6 +29,7 @@ public class CadastroCozinhaService {
 		
 		try {
 		cozinhaRepository.deleteById(cozinhaId);
+		cozinhaRepository.flush();//descarrega as mudança pendente pro banco de dados
 		}catch(EmptyResultDataAccessException e) {
 			
 		throw new CozinhaNaoEncontradaException(cozinhaId);
