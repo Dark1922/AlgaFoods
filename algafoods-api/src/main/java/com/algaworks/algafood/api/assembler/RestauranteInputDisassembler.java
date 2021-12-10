@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.algaworks.algafood.api.model.input.RestauranteInput;
+import com.algaworks.algafood.domain.model.Cozinha;
 import com.algaworks.algafood.domain.model.Restaurante;
 
 @Component
@@ -21,5 +22,11 @@ public class RestauranteInputDisassembler {
  
             return modelMapper.map(restauranteInput, Restaurante.class);	
 		}
+      	
+      	//vai passar o input e o restaurante onde agente quer atribuir
+      	public void copyToDomainObject(RestauranteInput restauranteInput, Restaurante restaurante) {
+      		restaurante.setCozinha(new Cozinha()); //pra evitar erro de mudança do id da cozinha
+      		modelMapper.map(restauranteInput, restaurante);
+      	}
 
 }
