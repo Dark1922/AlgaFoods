@@ -13,7 +13,7 @@ import com.algaworks.algafood.domain.repository.RestauranteRepository;
 public class CadastroRestauranteService {
 
 
-	@Autowired
+	@Autowired 
 	private RestauranteRepository restauranteRepository;
 
 	@Autowired
