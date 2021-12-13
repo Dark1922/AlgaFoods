@@ -77,4 +77,13 @@ public class Restaurante {
 	
 	@OneToMany(mappedBy = "restaurante")
 	private List<Produto> produtos = new ArrayList<>(); 
+	
+	private Boolean ativo = Boolean.TRUE; //padrão ativo dessa propriedade
+	
+	public void ativar() {
+		setAtivo(true);
+	}
+	public void inativar() {
+		setAtivo(false);
+	}
 }

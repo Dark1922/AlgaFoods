@@ -35,4 +35,17 @@ public class CadastroRestauranteService {
 	    return restauranteRepository.findById(restauranteId)
 	        .orElseThrow(() -> new RestauranteNaoEncontradaException( restauranteId));
 	}
+	
+	@Transactional  //edponint de ativar um restaurante se tiver desativado
+	public void ativar(Long restauranteId) {
+		Restaurante restauranteAtual = buscarOuFalhar(restauranteId);
+		restauranteAtual.ativar();
+		
+	}
+	@Transactional  //edponint de inativar um restaurante se tiver desativado
+	public void inativar(Long restauranteId) {
+		Restaurante restauranteAtual = buscarOuFalhar(restauranteId);
+		restauranteAtual.inativar();;
+		
+	}
 }
