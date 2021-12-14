@@ -88,7 +88,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 	}
 	
 	
-	
+	 
 	/*retorna as mensagens tratadas globalmente com as propriedades passadas abaixo no padrão dos outros tratamentos de error*/
 	@Override
 	protected ResponseEntity<Object> handleExceptionInternal(Exception ex, Object body, HttpHeaders headers,
