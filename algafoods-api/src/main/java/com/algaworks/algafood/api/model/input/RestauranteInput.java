@@ -25,4 +25,8 @@ public class RestauranteInput {
 	@Valid
 	@NotNull
 	private CozinhaIdInput cozinha;
+	
+	@Valid //vai validar seus dados
+	@NotNull //ele n pode ser nulo na hora de cadastrar o restaurante
+	private EnderecoInput endereco;
 }
