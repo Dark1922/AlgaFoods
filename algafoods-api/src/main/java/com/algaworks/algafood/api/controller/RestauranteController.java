@@ -121,7 +121,7 @@ public class RestauranteController {
 					"produtos");
 			return restauranteModelAssembler.toModel(cadastroRestauranteService.salvar(restauranteAtual));
 		} catch (CozinhaNaoEncontradaException | CidadeNaoEncontradaException e) {
-			throw new NegocioException(e.getMessage(), e);
+			throw new NegocioException(e.getMessage(), e); 
 		}
 	}
 
