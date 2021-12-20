@@ -26,7 +26,7 @@ public class Grupo {
 	private Long id;
 	
 	@Column(nullable = false)
-	private Long nome;
+	private String nome;
 	
 	@ManyToMany
 	@JoinTable(name = "grupo_permissao", joinColumns = @JoinColumn(name = "grupo_id")
