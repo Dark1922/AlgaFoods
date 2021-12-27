@@ -35,6 +35,7 @@ import com.algaworks.algafood.core.validation.ValidacaoException;
 import com.algaworks.algafood.domain.exception.CidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.exception.CozinhaNaoEncontradaException;
 import com.algaworks.algafood.domain.exception.NegocioException;
+import com.algaworks.algafood.domain.exception.RestauranteNaoEncontradaException;
 import com.algaworks.algafood.domain.model.Restaurante;
 import com.algaworks.algafood.domain.repository.RestauranteRepository;
 import com.algaworks.algafood.domain.service.CadastroRestauranteService;
@@ -201,4 +202,23 @@ public class RestauranteController {
 	public void fechar(@PathVariable Long restauranteId) {
 	    cadastroRestauranteService.fechar(restauranteId);
 	} 
+	
+	@PutMapping("/ativacoes")
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void ativarMultiplosRestaurantes(@RequestBody List<Long> restauranteIds) {
+		try {
+		cadastroRestauranteService.ativar(restauranteIds);
+		}catch(RestauranteNaoEncontradaException e) {//vai retornar codigo de 400 como padrão
+			throw new NegocioException(e.getMessage(), e); //msg e a causa relança como negocioexception o restanaoent
+		}
+	}
+	@DeleteMapping("/inativacoes")
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void inativarMultiplosRestaurantes(@RequestBody List<Long> restauranteIds) {
+		try {
+		cadastroRestauranteService.inativar(restauranteIds);
+		}catch(RestauranteNaoEncontradaException e) {
+			throw new NegocioException(e.getMessage(), e);
+		}
+	}
 }
