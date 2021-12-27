@@ -107,4 +107,18 @@ public class Restaurante {
 	public void fechar() {
 	    setAberto(false);
 	}
+	
+	@ManyToMany
+	@JoinTable(name = "restaurante_usuario_responsavel",
+	        joinColumns = @JoinColumn(name = "restaurante_id"),
+	        inverseJoinColumns = @JoinColumn(name = "usuario_id"))
+	private Set<Usuario> responsaveis = new HashSet<>();
+	
+	public boolean removerResponsavel(Usuario usuario) {
+	    return getResponsaveis().remove(usuario);
+	}
+
+	public boolean adicionarResponsavel(Usuario usuario) {
+	    return getResponsaveis().add(usuario);
+	}
 }
