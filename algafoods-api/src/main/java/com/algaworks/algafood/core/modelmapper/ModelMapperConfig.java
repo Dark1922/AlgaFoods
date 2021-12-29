@@ -5,7 +5,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import com.algaworks.algafood.api.model.EnderecoDTO;
+import com.algaworks.algafood.api.model.input.ItemPedidoInput;
 import com.algaworks.algafood.domain.model.Endereco;
+import com.algaworks.algafood.domain.model.ItemPedido;
 
 @Configuration
 public class ModelMapperConfig {
@@ -24,7 +26,14 @@ public class ModelMapperConfig {
 		//origem e destino aonde quer atribuir o tipo dele é string, destino e valor = src , src pega a origem do nome do estado
 		enderecoToEnderecoModelTypeMap.<String>addMapping(enderecoSrc -> enderecoSrc.getCidade().getEstado().getNome(),
 				(enderecoDtoDest, value) -> enderecoDtoDest.getCidade().setEstado(value));
-		return modelMapper;
+		
+		//vai skipar o id do itemPedido
+		modelMapper.createTypeMap(ItemPedidoInput.class, ItemPedido.class)
+	    .addMappings(mapper -> mapper.skip(ItemPedido::setId));
+	
+			return modelMapper;
+		
+	
 	}
 
 }
