@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -18,6 +19,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.PrePersist;
 
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -118,5 +120,10 @@ public class Pedido {
 			}
 		this.status = novoStatus; //se der certo atribui o status para o novo
 		}
+	         //método de calback do jpa
+	      @PrePersist //antes de persistir uma entidade pedido antes de inserir algo novo no banco de dados insere esse metodo
+	      private void gerarCodigo() {
+	    	  setCodigo(UUID.randomUUID().toString());//to string vai pegar os 36 caracteres com especiais uuid do java
+	      }
 	}		
 
