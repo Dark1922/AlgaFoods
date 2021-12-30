@@ -1,7 +1,6 @@
 package com.algaworks.algafood.domain.model;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +29,7 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Pedido {
 
-	@Id
+	@Id 
 	@GeneratedValue(strategy = GenerationType.IDENTITY )
 	private Long id;
 	
@@ -50,9 +49,9 @@ public class Pedido {
 	@Embedded
 	private Endereco enderecoEntrega;
 	
-	private LocalDateTime dataConfirmacao;
-	private LocalDateTime dataCancelamento;
-	private LocalDateTime dataEntrega;
+	private OffsetDateTime dataConfirmacao;
+	private OffsetDateTime dataCancelamento;
+	private OffsetDateTime dataEntrega;
 	
 	
 	@ManyToOne(fetch = FetchType.LAZY) //nem sempre que agente busca o pedido agente busca o pedido vai precisar do forma pgment
