@@ -112,8 +112,8 @@ public class Pedido {
 	
 	private void setStatus(StatusPedido novoStatus) {
 		if (getStatus().naoPodeAlterarPara(novoStatus)) {
-				throw new NegocioException(String.format("Status do pedido %d não pode ser alterado de %s para %s", 
-	                  getId(), getStatus().getDescricao(),
+				throw new NegocioException(String.format("Status do pedido %s não pode ser alterado de %s para %s", 
+	                  getCodigo(), getStatus().getDescricao(),
 	                  novoStatus.getDescricao()));//pega o id e o status e o que quer mudar
 			}
 		this.status = novoStatus; //se der certo atribui o status para o novo
