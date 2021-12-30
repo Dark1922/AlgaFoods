@@ -35,6 +35,8 @@ public class Pedido {
 	@GeneratedValue(strategy = GenerationType.IDENTITY )
 	private Long id;
 	
+	private String codigo;
+	
 	@Column(nullable = false)
 	private BigDecimal subtotal;
 	

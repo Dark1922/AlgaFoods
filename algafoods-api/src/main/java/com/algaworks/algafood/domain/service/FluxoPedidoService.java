@@ -14,21 +14,21 @@ public class FluxoPedidoService {
 	
 	
 	@Transactional //transição de status
-	public void confirmar(Long pedidoId) {
-		Pedido pedido = emissaoPedidoService.buscarOuFalhar(pedidoId); //pega o id desse pedido
+	public void confirmar(String codigoPedido) {
+		Pedido pedido = emissaoPedidoService.buscarOuFalhar(codigoPedido); //pega o id desse pedido
 		pedido.confirmar();
 	
 	}
 	
 	@Transactional
-	public void entregar(Long pedidoId) {
-	    Pedido pedido = emissaoPedidoService.buscarOuFalhar(pedidoId);
+	public void entregar(String codigoPedido) {
+	    Pedido pedido = emissaoPedidoService.buscarOuFalhar(codigoPedido);
 	    pedido.entregar();
 	}
 	
 	@Transactional
-	public void cancelar(Long pedidoId) {
-	    Pedido pedido = emissaoPedidoService.buscarOuFalhar(pedidoId);
+	public void cancelar(String codigoPedido) {
+	    Pedido pedido = emissaoPedidoService.buscarOuFalhar(codigoPedido);
 	    pedido.cancelar();;
 	}
 }

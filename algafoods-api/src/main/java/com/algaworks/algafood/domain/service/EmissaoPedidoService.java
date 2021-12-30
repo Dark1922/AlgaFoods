@@ -75,8 +75,8 @@ public class EmissaoPedidoService {
 	    });
 	}
     
-    public Pedido buscarOuFalhar(Long pedidoId) {
-        return pedidoRepository.findById(pedidoId)
-            .orElseThrow(() -> new PedidoNaoEncontradoException(pedidoId));
+    public Pedido buscarOuFalhar(String codigo) {
+        return pedidoRepository.findByCodigo(codigo)
+            .orElseThrow(() -> new PedidoNaoEncontradoException(codigo));
     }  
 }
