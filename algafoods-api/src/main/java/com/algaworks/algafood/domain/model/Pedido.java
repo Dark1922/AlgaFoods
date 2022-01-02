@@ -120,7 +120,7 @@ public class Pedido {
 			}
 		this.status = novoStatus; //se der certo atribui o status para o novo
 		}
-	         //método de calback do jpa
+	         //método de calback do jpa 
 	      @PrePersist //antes de persistir uma entidade pedido antes de inserir algo novo no banco de dados insere esse metodo
 	      private void gerarCodigo() {
 	    	  setCodigo(UUID.randomUUID().toString());//to string vai pegar os 36 caracteres com especiais uuid do java
