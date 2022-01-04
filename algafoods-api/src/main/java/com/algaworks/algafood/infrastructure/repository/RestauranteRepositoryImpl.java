@@ -57,7 +57,7 @@ public class RestauranteRepositoryImpl implements RestauranteRepositoryQuery {
 	}
 
 	@Override
-	public List<Restaurante> findComFreteGratos(String nome) {
-		return restauranteRepository.findComFreteGratos(nome);
+	public List<Restaurante> findComFreteGratis(String nome) {
+		return restauranteRepository.findComFreteGratis(nome);
 	}
 }
