@@ -96,7 +96,7 @@ public class PedidoController {
 				"taxaFrete", "taxaFrete",
 				"valorTotal", "valorTotal",
 				"dataCriacao", "dataCriacao",
-				"restaurante.nome", "restaurante.nome",
+				"restaurante.nome", "restaurante.nome",//persist
 				"restaurante.id", "restaurante.id",	
 				"cliente.id", "cliente.id",
 				"cliente.nome", "cliente.nome"
