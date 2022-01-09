@@ -20,4 +20,6 @@ public interface PedidoRepository extends JpaRepository<Pedido, Long>, JpaSpecif
 
 	//@Query("from Pedido where codigo = :codigo") o spring jpa vai fazer isso automaticamente pela sintaxe findByCodigo
 	Optional<Pedido> findByCodigo(String codigo);
+	
+
 }
