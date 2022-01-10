@@ -23,14 +23,18 @@ public class VendaQueryServiceImpl implements VendaQueryService {
 	private EntityManager entityManager;
 	
 	@Override
-	public List<VendaDiaria> consultarVendasDiaria(VendaDiariaFilter filtro) {
+	public List<VendaDiaria> consultarVendasDiaria(VendaDiariaFilter filtro,String timeOfset) {
 
 		var  builder = entityManager.getCriteriaBuilder(); //tipo de cria crateria builder predicates etc
 		var query = builder.createQuery(VendaDiaria.class); //craterai builder do vendadiaria os dados
 		var	 root = query.from(Pedido.class); //from onde na nossa entidade pedido
+		
+		var functionConvertTzDataCriacao = builder.function(
+				"convert_tz",Date.class, root.get("dataCriacao"),
+			     builder.literal("+00:00"), builder.literal(timeOfset));
 	
 	   var functionDateDataCriacao = builder.function("date", Date.class,
-			   root.get("dataCriacao")); //tipo date , dado esperado ,quais argumento
+			   functionConvertTzDataCriacao); //tipo date , dado esperado ,quais argumento
 		
 		
 		//construa venda diaria atráves da seleçao passada
