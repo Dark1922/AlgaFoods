@@ -36,7 +36,7 @@ public class VendaQueryServiceImpl implements VendaQueryService {
 	   var functionDateDataCriacao = builder.function("date", Date.class,
 			   functionConvertTzDataCriacao); //tipo date , dado esperado ,quais argumento
 		
-		
+			
 		//construa venda diaria atráves da seleçao passada
 		var selection = builder.construct(VendaDiaria.class,  
 				functionDateDataCriacao,
