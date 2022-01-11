@@ -16,7 +16,7 @@ import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 
 @Service
 public class PdfVendaReportService implements VendaReportService {//infraestrutura n tem a ver com dominio negocio ou api
-
+ 
 	@Autowired
 	private VendaQueryService vendaQueryService;
 	
