@@ -24,7 +24,6 @@ import javax.persistence.PrePersist;
 import org.hibernate.annotations.CreationTimestamp;
 
 import com.algaworks.algafood.domain.exception.NegocioException;
-import com.fasterxml.jackson.annotation.JsonFormat;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;

@@ -43,6 +43,7 @@ public class ItemPedido {
 	@JoinColumn(nullable = false)
 	private Produto produto;
 
+	@SuppressWarnings("unused") //tirar warning amarelo
 	public void calcularPrecoTotal() {
 	    BigDecimal precoUnitario = this.getPrecoUnitario();
 	    Integer quantidade = this.getQuantidade();
