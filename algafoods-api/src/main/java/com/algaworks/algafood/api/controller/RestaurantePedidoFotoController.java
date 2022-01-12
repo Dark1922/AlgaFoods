@@ -1,5 +1,7 @@
 package com.algaworks.algafood.api.controller;
 
+import java.util.UUID;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,7 +45,7 @@ public class RestaurantePedidoFotoController {
 		foto.setDescricao(fotoPordutoInput.getDescricao());
 		foto.setContentType(arquivo.getContentType());
 		foto.setTamanho(arquivo.getSize());
-		foto.setNomeArquivo(arquivo.getOriginalFilename());
+		foto.setNomeArquivo(UUID.randomUUID() + "_" + arquivo.getOriginalFilename());
 		
 		FotoProduto fotoSalva = catalogoFotoProduto.salvar(foto);
 		return fotoProdutoModelAssembler.toModel(fotoSalva);

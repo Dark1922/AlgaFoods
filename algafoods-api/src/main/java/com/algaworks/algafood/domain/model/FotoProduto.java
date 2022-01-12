@@ -29,6 +29,12 @@ public class FotoProduto {
 	//fizemos isso pq a propriedade já está declaram o nome do produto_id no column
 	private Produto produto;
 	
+	public Long getRestauranteId() {
+		if(getProduto() != null) {
+			return getProduto().getRestaurante().getId();
+		}
+		return null;
+	}
 	
 	
 }
