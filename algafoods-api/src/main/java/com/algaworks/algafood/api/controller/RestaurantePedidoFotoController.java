@@ -47,7 +47,7 @@ public class RestaurantePedidoFotoController {
 		foto.setTamanho(arquivo.getSize());
 		foto.setNomeArquivo(UUID.randomUUID() + "_" + arquivo.getOriginalFilename());
 		
-		FotoProduto fotoSalva = catalogoFotoProduto.salvar(foto);
+		FotoProduto fotoSalva = catalogoFotoProduto.salvar(foto, arquivo.getInputStream());
 		return fotoProdutoModelAssembler.toModel(fotoSalva);
 		
 	}
