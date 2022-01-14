@@ -42,7 +42,7 @@ public class RestaurantePedidoFotoController {
 		
 		FotoProduto foto = new FotoProduto();
 		foto.setProduto(produto);
-		foto.setDescricao(fotoPordutoInput.getDescricao());
+		foto.setDescricao(fotoPordutoInput.getDescricao()); 
 		foto.setContentType(arquivo.getContentType());
 		foto.setTamanho(arquivo.getSize());
 		foto.setNomeArquivo(UUID.randomUUID() + "_" + arquivo.getOriginalFilename());
