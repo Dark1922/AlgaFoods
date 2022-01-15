@@ -25,7 +25,9 @@ public class CatalogoFotoProdutoService {
 		Long restauranteId = foto.getRestauranteId();
 		Long ProdutoId = foto.getProduto().getId();
 		Optional<FotoProduto> fotoExistente = produtoRepository.findFotoById(restauranteId, ProdutoId);
+		String nomeArquivoExistente = null;
 		 if(fotoExistente.isPresent()) {//tem uma foto dentro desse optional se tiver tem que excluir
+			 nomeArquivoExistente = fotoExistente.get().getNomeArquivo(); //.get extrair o objeto dentro do optional pq é um optional
 			 produtoRepository.delete(fotoExistente.get());
 		 }
 		 foto = produtoRepository.save(foto); //caso o banco de rolback a foto na vai armazenar tem que ficar antes do armazenamento de foto
@@ -35,8 +37,9 @@ public class CatalogoFotoProdutoService {
 				 .inputStream(dadosArquivo)
 				 .build(); //cria o objeto novaFoto o builder
 		 
-		 fotoStorageService.armazenar(novaFoto); 
-		
+		//remove o arquivo pelo nome existente antes de troca a foto por uma nova, ou so cria a foto nova se n tiver.
+		 fotoStorageService.substituir(nomeArquivoExistente, novaFoto); 
+		 
 		 return foto;
 	}
 } 
