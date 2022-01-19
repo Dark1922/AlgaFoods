@@ -35,6 +35,7 @@ public class CatalogoFotoProdutoService {
 		produtoRepository.flush();//descarrega tudo que está na fila insert etc que deia alguma problema antes de armazena a foto
 		 NovaFoto novaFoto = NovaFoto.builder()
 				 .nomeArquivo(foto.getNomeArquivo())
+				 .contentType(foto.getContentType())
 				 .inputStream(dadosArquivo)
 				 .build(); //cria o objeto novaFoto o builder
 		 

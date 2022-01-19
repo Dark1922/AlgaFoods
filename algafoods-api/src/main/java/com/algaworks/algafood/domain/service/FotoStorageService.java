@@ -25,6 +25,7 @@ public interface FotoStorageService {
   class NovaFoto {
 	  private String nomeArquivo;
 	  private InputStream inputStream;  //getinputstream leitura do arquivo que acabou de fazer upload
+	  private String contentType;
 	  
 	
   }
