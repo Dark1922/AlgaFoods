@@ -13,10 +13,10 @@ import lombok.Setter;
 @Getter
 @Setter
 @Component
-@ConfigurationProperties("algafood.storage.s3")
+@ConfigurationProperties("algafood.storage")
 public class StorageProperties {
    private Local local = new Local();
-   private  S3 se = new S3();
+   private  S3 s3 = new S3();
    
    @Getter
    @Setter

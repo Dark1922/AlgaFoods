@@ -31,7 +31,7 @@ public class S3FotoStorageService implements FotoStorageService {
 	
 		//submeter para api da amazon que agente ta fazendo uma requisição para colocar um objeto
 		var putObjectRequest = new PutObjectRequest(
-				storageProperties.getSe().getBucket(),
+				storageProperties.getS3().getBucket(),
 				caminhoArquivo,
 				novaFoto.getInputStream(),
 				objectMetadata)
@@ -44,7 +44,7 @@ public class S3FotoStorageService implements FotoStorageService {
 	}
 
 	private String getCaminhoArquivo(String nomeArquivo) {
-		return String.format("%s/%s", storageProperties.getSe().getDiretorioFotos(), nomeArquivo);
+		return String.format("%s/%s", storageProperties.getS3().getDiretorioFotos(), nomeArquivo);
 		//vai formar uma string com / outra string %s/%s , pega o diretorio onde quer por a foto que é o catalogo , e o nome da foto
 	}
 
@@ -54,7 +54,7 @@ public class S3FotoStorageService implements FotoStorageService {
 	        String caminhoArquivo = getCaminhoArquivo(nomeArquivo);
 
 	        var deleteObjectRequest = new DeleteObjectRequest(
-	                storageProperties.getSe().getBucket(), caminhoArquivo);
+	                storageProperties.getS3().getBucket(), caminhoArquivo);
 
 	        amazonS3.deleteObject(deleteObjectRequest);
 	    } catch (Exception e) {
