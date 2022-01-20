@@ -15,8 +15,14 @@ import lombok.Setter;
 @Component
 @ConfigurationProperties("algafood.storage")
 public class StorageProperties {
+	
    private Local local = new Local();
    private  S3 s3 = new S3();
+   private TipoStorage tipo = TipoStorage.LOCAL; //se n informar nada ele sera o local
+   
+   public enum TipoStorage {
+	   LOCAL,S3
+   }
    
    @Getter
    @Setter
@@ -32,6 +38,6 @@ public class StorageProperties {
 	   private Regions regiao; //ajuda a buscar os estados no regions properties
 	   private String diretorioFotos;
 	 
-	   
    }
+   
 }
