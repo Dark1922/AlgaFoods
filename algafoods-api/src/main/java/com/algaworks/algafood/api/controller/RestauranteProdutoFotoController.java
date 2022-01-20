@@ -1,6 +1,5 @@
 package com.algaworks.algafood.api.controller;
 
-import java.io.InputStream;
 import java.util.List;
 import java.util.UUID;
 
@@ -31,6 +30,8 @@ import com.algaworks.algafood.domain.model.Produto;
 import com.algaworks.algafood.domain.service.CadastroProdutoService;
 import com.algaworks.algafood.domain.service.CatalogoFotoProdutoService;
 import com.algaworks.algafood.domain.service.FotoStorageService;
+import com.algaworks.algafood.domain.service.FotoStorageService.FotoRecuperada;
+import com.google.common.net.HttpHeaders;
 
 @RestController // tratar o mapeamento do recurso foto
 @RequestMapping("/restaurantes/{restauranteId}/produtos/{produtoId}/foto")
@@ -74,7 +75,7 @@ public class RestauranteProdutoFotoController {
 	    return fotoProdutoModelAssembler.toModel(fotoProduto);
 	}
 	@GetMapping //InputStreamResource representa um recurso
-	public ResponseEntity<InputStreamResource> servirFoto(@PathVariable Long restauranteId, 
+	public ResponseEntity<?> servirFoto(@PathVariable Long restauranteId, 
 	        @PathVariable Long produtoId, @RequestHeader(name = "accept") String acceptHeader) throws HttpMediaTypeNotAcceptableException {
 		
 		try {
@@ -85,11 +86,18 @@ public class RestauranteProdutoFotoController {
 		//verifica se a foto do banco é compativel com o tipo que estamos passando no header se der match vai trazer ela
 		verificarCompatibilidadeMediaType(mediaTypeFoto,mediaTypesAceitas);
 	
-		InputStream inputStream = fotoStorageService.recuperar(fotoProduto.getNomeArquivo());
+		FotoRecuperada fotoRecuperada = fotoStorageService.recuperar(fotoProduto.getNomeArquivo());
 		
-		return ResponseEntity.ok()
+		if(fotoRecuperada.temUrl()) {
+			return ResponseEntity.status(HttpStatus.FOUND)
+					.header(HttpHeaders.LOCATION, fotoRecuperada.getUrl())
+					.build();
+		}else {
+			return ResponseEntity.ok()
 				.contentType(mediaTypeFoto) //adicionar no cabeçalho midiatype sem ser string sem o value
-				.body(new InputStreamResource(inputStream));
+				.body(new InputStreamResource(fotoRecuperada.getInputStream()));
+		}
+		
 		}catch(EntidadeNaoEncontradaException e) {
 			return ResponseEntity.notFound().build(); 
 		}	

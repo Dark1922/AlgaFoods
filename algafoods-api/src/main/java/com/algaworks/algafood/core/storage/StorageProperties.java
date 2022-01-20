@@ -31,6 +31,7 @@ public class StorageProperties {
 	   private String bucket;
 	   private Regions regiao; //ajuda a buscar os estados no regions properties
 	   private String diretorioFotos;
+	 
 	   
    }
 }
