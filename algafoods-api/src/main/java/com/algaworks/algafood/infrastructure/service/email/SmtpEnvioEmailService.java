@@ -1,7 +1,6 @@
 package com.algaworks.algafood.infrastructure.service.email;
 
 import javax.mail.internet.MimeMessage;
-import javax.sound.midi.MidiMessage;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;

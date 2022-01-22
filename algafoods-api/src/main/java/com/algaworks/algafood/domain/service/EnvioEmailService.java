@@ -4,6 +4,8 @@ import java.util.Set;
 
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NonNull;
+import lombok.Singular;
 
 public interface EnvioEmailService {
 
@@ -12,8 +14,11 @@ public interface EnvioEmailService {
 	@Getter
 	@Builder
 	class Mensagem {
+		@Singular //ele singulariza o destinatarios para destinatario
 		private Set<String> destinatarios;
+		@NonNull //se n lançar eles ao usar o serviço de envio de e-mail vai lançar exception
 		private String assunto;
+		@NonNull
 		private String corpo;
 		
 	}
