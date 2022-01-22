@@ -26,24 +26,27 @@ public class SmtpEnvioEmailService implements EnvioEmailService {
 	
 	@Override
 	public void enviar(Mensagem mensagem) {
-		try {
-			String corpo = processarTemplate(mensagem);
-			
-		MimeMessage mimeMessage = mailSender.createMimeMessage();  //simboliza a mensagem que queremos enviar por email
+	    try {
+	        MimeMessage mimeMessage = criarMimeMessage(mensagem);
+	        
+	        mailSender.send(mimeMessage);
+	    } catch (Exception e) {
+	        throw new EmailException("Não foi possível enviar e-mail", e);
+	    }
+	}
+	
+	protected MimeMessage criarMimeMessage(Mensagem mensagem) throws Exception {
+	    String corpo = processarTemplate(mensagem);
+	    
+	    MimeMessage mimeMessage = mailSender.createMimeMessage();  //simboliza a mensagem que queremos enviar por email
 		MimeMessageHelper helper  = new MimeMessageHelper(mimeMessage, "UTF-8");//classe auxiliar que ajuda a atribuir os dados do mimeMessage
 		helper.setFrom(emailProperties.getRemetente()); //quem vai ser o remetente
 		helper.setTo(mensagem.getDestinatarios().toArray(new String[0]));//array dos destinatários de email
 		helper.setSubject(mensagem.getAssunto()); //assunto do e-mail
 		helper.setText(corpo, true); //true que esse texto é em html e n texto puro
-		
-		
-		
-		mailSender.send(mimeMessage);
-		}catch (Exception e) {
-			throw new EmailException("Não foi posivel enviar e-mail", e);
-		}
+	    
+	    return mimeMessage;
 	}
-	
 	protected String processarTemplate(Mensagem mensagem) throws Exception { //usar o template html no corpo
 		try {
 		Template template = freemarkerConfig.getTemplate(mensagem.getCorpo());
