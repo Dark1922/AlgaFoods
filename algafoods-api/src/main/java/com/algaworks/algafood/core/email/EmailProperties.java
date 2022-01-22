@@ -15,7 +15,13 @@ import lombok.Setter;
 @Component
 @ConfigurationProperties("algafood.email") //prefixo do application.properties
 public class EmailProperties {
+	
+	private Implementacao impl = Implementacao.FAKE;
 
 	@NotNull //vai ser validado e n pode ser null
 	private String remetente; //remetente que vai enviar o e-mail
+	
+	public enum Implementacao {
+	    SMTP, FAKE
+	}
 }

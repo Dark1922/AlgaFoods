@@ -1,9 +1,10 @@
 <html>
+<meta charset="UTF-8">
 <body style="font: 14px Arial, Helvetica, sans-serif">
 	<h1 style="color: red; font-size: 26px">Pedido confirmado!</h1>
 	
-	<p>${pedido.cliente.nome}, seu pedido foi confirmado pelo restaurante e j·
-		est· sendo preparado.</p>
+	<p>${pedido.cliente.nome}, seu pedido foi confirmado pelo restaurante e j√°
+		est√° sendo preparado.</p>
 	
 	<h2 style="font-size: 20px">${pedido.restaurante.nome}</h2>
 	
@@ -12,17 +13,17 @@
 		<#list pedido.itens as item> <!-- loop pra repetir a lista enqt ouver itens -->
 		<tr>
 			<td style="padding: 10px 0">${item.quantidade}x ${item.produto.nome}</td>
-			<td style="width: 30px">${item.precoTotal}</td>
+			<td style="width: 30px">${item.precoTotal?string.currency}</td><!-- valor decimal em valor de moeda -->
 		</tr>
 		</#list>
 
 		<tr>
 			<td style="padding: 10px 0">Frete</td>
-			<td>${pedido.taxaFrete}</td>
+			<td>${pedido.taxaFrete?string.currency}</td>
 		</tr>
 		<tr style="font-weight: bold">
 			<td style="padding: 10px 0">Total</td>
-			<td>${pedido.valorTotal}</td>
+			<td>${pedido.valorTotal?string.currency}</td>
 		</tr>
 	</table>
 	
