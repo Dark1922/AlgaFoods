@@ -20,14 +20,14 @@ public class FluxoPedidoService {
 	public void confirmar(String codigoPedido) {
 		Pedido pedido = emissaoPedidoService.buscarOuFalhar(codigoPedido); //pega o id desse pedido
 		pedido.confirmar();
+		 pedidoRepository.save(pedido); //usar o save do repository spring data  pra gerar o evento
 	}
 	
 	@Transactional
 	public void entregar(String codigoPedido) {
 	    Pedido pedido = emissaoPedidoService.buscarOuFalhar(codigoPedido);
 	    pedido.entregar(); //salvaria sem o save
-	    
-	    pedidoRepository.save(pedido); //usar o save do repository spring data  pra gerar o evento
+	   
 	}
 	
 	@Transactional

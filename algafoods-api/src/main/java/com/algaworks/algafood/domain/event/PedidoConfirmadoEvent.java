@@ -6,7 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
-@AllArgsConstructor  //criando construtores usando as propriedades da classe 
+@AllArgsConstructor // criando construtores usando as propriedades da classe
 public class PedidoConfirmadoEvent {
-private Pedido pedido;
+	private Pedido pedido;
 }
