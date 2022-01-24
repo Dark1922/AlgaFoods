@@ -22,7 +22,9 @@ import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
 
 import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.data.domain.AbstractAggregateRoot;
 
+import com.algaworks.algafood.domain.event.PedidoConfirmadoEvent;
 import com.algaworks.algafood.domain.exception.NegocioException;
 
 import lombok.Data;
@@ -30,8 +32,8 @@ import lombok.EqualsAndHashCode;
 
 @Entity
 @Data
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class Pedido {
+@EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = false)//callSuper = false pra n chamar a classe pai AbstractAggregateRoot
+public class Pedido extends AbstractAggregateRoot<Pedido>{
 
 	@Id 
 	@GeneratedValue(strategy = GenerationType.IDENTITY )
@@ -100,6 +102,8 @@ public class Pedido {
 	public void confirmar() {
 		setStatus(StatusPedido.CONFIRMADO);
 		setDataConfirmacao(OffsetDateTime.now());
+		//registrando um evento que deve ser disparado assim que for salvo no repositorio
+		registerEvent(new PedidoConfirmadoEvent(this));//this intancia atual que este método está rodando sendo confirmado
 	}
 	
 	public void entregar() {

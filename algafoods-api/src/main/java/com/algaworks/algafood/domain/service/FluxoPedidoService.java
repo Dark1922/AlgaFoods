@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.algaworks.algafood.domain.model.Pedido;
-import com.algaworks.algafood.domain.service.EnvioEmailService.Mensagem;
+import com.algaworks.algafood.domain.repository.PedidoRepository;
 
 @Service
 public class FluxoPedidoService {
@@ -14,30 +14,20 @@ public class FluxoPedidoService {
 	private EmissaoPedidoService emissaoPedidoService;
 	
 	@Autowired
-	private EnvioEmailService envioEmailService;
-	
+	private PedidoRepository pedidoRepository;
 	
 	@Transactional //transição de status
 	public void confirmar(String codigoPedido) {
 		Pedido pedido = emissaoPedidoService.buscarOuFalhar(codigoPedido); //pega o id desse pedido
 		pedido.confirmar();
-		
-		var mensagem = Mensagem.builder()
-				.assunto(pedido.getRestaurante().getNome() + " - PedidoConfirmado")
-				.corpo("pedido-confirmado.html")
-				.variavel("pedido", pedido) //pedido que é o objeto pedido completo
-				.destinatario(pedido.getCliente().getEmail())
-				//.destinatario("teste@destinatario.com") poderia enviar para outro destinatario tb
-				.build();
-		
-		envioEmailService.enviar(mensagem);
-	
 	}
 	
 	@Transactional
 	public void entregar(String codigoPedido) {
 	    Pedido pedido = emissaoPedidoService.buscarOuFalhar(codigoPedido);
-	    pedido.entregar();
+	    pedido.entregar(); //salvaria sem o save
+	    
+	    pedidoRepository.save(pedido); //usar o save do repository spring data  pra gerar o evento
 	}
 	
 	@Transactional
