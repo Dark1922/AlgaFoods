@@ -11,12 +11,12 @@ import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.http.server.ServletServerHttpRequest;
 import org.springframework.util.ReflectionUtils;
 import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.SmartValidator;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -41,12 +41,11 @@ import com.algaworks.algafood.domain.exception.RestauranteNaoEncontradaException
 import com.algaworks.algafood.domain.model.Restaurante;
 import com.algaworks.algafood.domain.repository.RestauranteRepository;
 import com.algaworks.algafood.domain.service.CadastroRestauranteService;
-import com.amazonaws.services.cognitoidp.model.HttpHeader;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.net.HttpHeaders;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/restaurantes")
 public class RestauranteController {
@@ -66,25 +65,18 @@ public class RestauranteController {
 	@Autowired
 	private RestauranteInputDisassembler restauranteInputDisassembler;
 	
-
-	
     
 	@JsonView(RestauranteView.Resumo.class)
     @GetMapping
-   	public ResponseEntity<List<RestauranteDTO>> listar() {
-   	List<RestauranteDTO> restauranteDTO = restauranteModelAssembler.toCollectionModel(restauranteRepository.findAll());
-   	return ResponseEntity.ok()
-   			.header(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, "*")
-   			.body(restauranteDTO);
+   	public List<RestauranteDTO> listar() {
+   		return restauranteModelAssembler.toCollectionModel(restauranteRepository.findAll());
    	}
     
-//	@JsonView(RestauranteView.ApenasNome.class)
-//	@GetMapping(params = "projecao=apenas-nome")
-//	public List<RestauranteDTO> listarResumido() {
-//		return listar();
-//	}
-
-	
+	@JsonView(RestauranteView.ApenasNome.class)
+	@GetMapping(params = "projecao=apenas-nome")
+	public List<RestauranteDTO> listarResumido() {
+		return listar();
+	}
 
 	@GetMapping("/{restauranteId}")
 	public RestauranteDTO buscar(@PathVariable Long restauranteId) {
@@ -147,8 +139,6 @@ public class RestauranteController {
 	@PatchMapping("/{restauranteId}")
 	public RestauranteDTO atualizarParcial( @PathVariable Long restauranteId, @RequestBody @Valid Map<String, Object> campos,
 			HttpServletRequest request) {
-		
-		
 		
 		
 		Restaurante restauranteAtual = cadastroRestauranteService.buscarOuFalhar(restauranteId);
