@@ -45,7 +45,6 @@ import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-@CrossOrigin
 @RestController
 @RequestMapping("/restaurantes")
 public class RestauranteController {
