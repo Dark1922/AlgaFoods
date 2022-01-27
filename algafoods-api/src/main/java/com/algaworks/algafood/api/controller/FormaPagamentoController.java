@@ -1,5 +1,6 @@
 package com.algaworks.algafood.api.controller;
 
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -18,6 +19,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.context.request.ServletWebRequest;
+import org.springframework.web.filter.ShallowEtagHeaderFilter;
 
 import com.algaworks.algafood.api.assembler.FormaPagamentoInputDisassembler;
 import com.algaworks.algafood.api.assembler.FormaPagamentoModelAssembler;
@@ -44,16 +47,28 @@ import com.algaworks.algafood.domain.service.CadastroFormaPagamentoService;
 	    private FormaPagamentoInputDisassembler formaPagamentoInputDisassembler;
 	    
 	    @GetMapping
-	    public ResponseEntity<List<FormaPagamentoDTO>> listar() {
+	    public ResponseEntity<List<FormaPagamentoDTO>> listar(ServletWebRequest request) {
+	    	
+	    	ShallowEtagHeaderFilter.disableContentCaching(request.getRequest());//desabilita o Etag pra usar o Deep Etags
+	    	
+	    	String eTag = "0"; //se n ouver alguma atualição continua 0 se tiver passa a atualização na condição if
+	    	
+	    	OffsetDateTime dataUltimaDataAtualizacao = formaPagamentoRepository.getDataUltimaAtualizacao();
+	    	if(dataUltimaDataAtualizacao != null) {
+	    		eTag = String.valueOf(dataUltimaDataAtualizacao.toEpochSecond());//transforma  a data em segunos e transfere pro eTag
+	    	}
+	    	 //vai comparar o if-none-match com essa eTag e vai retorna true ou false
+	    	if (request.checkNotModified(eTag)) {
+				return null; //se não mudou nada retorna null
+			}
+	    	
 	        List<FormaPagamento> todasFormasPagamentos = formaPagamentoRepository.findAll();
 	        
 	        List<FormaPagamentoDTO> formasPagamentoDTO = formaPagamentoModelAssembler.toCollectionModel(todasFormasPagamentos);
+	        
 	        return ResponseEntity.ok()//qnd tempo quer q o cache fique armazenando os dados
-	        		//.cacheControl(CacheControl.maxAge(10, TimeUnit.SECONDS)) 
-	        		//.cacheControl(CacheControl.maxAge(10, TimeUnit.SECONDS).cachePrivate()) //útil caso seja pra um único usuaro ,amz local tb
 	        		.cacheControl(CacheControl.maxAge(10, TimeUnit.SECONDS).cachePublic()) 
-	        		//.cacheControl(CacheControl.noCache()) //ao fazer cache sempre vai precisar de validação 
-	        		//.cacheControl(CacheControl.noStore())  //nenhum cache pode armazenar resposta
+	        		.eTag(eTag) //adiciona no cabeçalho 
 	        		.body(formasPagamentoDTO);
 	    }
 	    
