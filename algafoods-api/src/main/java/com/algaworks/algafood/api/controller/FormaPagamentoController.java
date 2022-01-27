@@ -54,10 +54,13 @@ import com.algaworks.algafood.domain.service.CadastroFormaPagamentoService;
 	    }
 	    
 	    @GetMapping("/{formaPagamentoId}")
-	    public FormaPagamentoDTO buscar(@PathVariable Long formaPagamentoId) {
+	    public ResponseEntity<FormaPagamentoDTO> buscar(@PathVariable Long formaPagamentoId) {
 	        FormaPagamento formaPagamento = cadastroFormaPagamento.buscarOuFalhar(formaPagamentoId);
 	        
-	        return formaPagamentoModelAssembler.toModel(formaPagamento);
+	        FormaPagamentoDTO formaPagamentoDTO = formaPagamentoModelAssembler.toModel(formaPagamento);
+	        return ResponseEntity.ok()
+	        		.cacheControl(CacheControl.maxAge(10, TimeUnit.SECONDS))
+	        		.body(formaPagamentoDTO);
 	    }
 	    
 	    @PostMapping
