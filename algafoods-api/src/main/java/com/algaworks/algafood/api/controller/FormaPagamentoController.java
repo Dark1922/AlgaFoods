@@ -48,8 +48,12 @@ import com.algaworks.algafood.domain.service.CadastroFormaPagamentoService;
 	        List<FormaPagamento> todasFormasPagamentos = formaPagamentoRepository.findAll();
 	        
 	        List<FormaPagamentoDTO> formasPagamentoDTO = formaPagamentoModelAssembler.toCollectionModel(todasFormasPagamentos);
-	        return ResponseEntity.ok()
-	        		.cacheControl(CacheControl.maxAge(10, TimeUnit.SECONDS)) //qnd tempo quer q o cache fique armazenando os dados
+	        return ResponseEntity.ok()//qnd tempo quer q o cache fique armazenando os dados
+	        		//.cacheControl(CacheControl.maxAge(10, TimeUnit.SECONDS)) 
+	        		//.cacheControl(CacheControl.maxAge(10, TimeUnit.SECONDS).cachePrivate()) //útil caso seja pra um único usuaro ,amz local tb
+	        		.cacheControl(CacheControl.maxAge(10, TimeUnit.SECONDS).cachePublic()) 
+	        		//.cacheControl(CacheControl.noCache()) //ao fazer cache sempre vai precisar de validação 
+	        		//.cacheControl(CacheControl.noStore())  //nenhum cache pode armazenar resposta
 	        		.body(formasPagamentoDTO);
 	    }
 	    
