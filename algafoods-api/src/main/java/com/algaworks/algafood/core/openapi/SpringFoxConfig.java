@@ -19,8 +19,9 @@ public class SpringFoxConfig  implements WebMvcConfigurer  {
 	public Docket apiDocket() {//docket = sumario pra pegar o conjunto de serviços que vai ser documentado, e ir configurando
 		return  new Docket(DocumentationType.OAS_30)
 				.select()
-				.apis(RequestHandlerSelectors.any()) //tudo que tiver no projeto pode colocar , os endpoint que quer documentar
-				.paths(PathSelectors.any())
+				.apis(RequestHandlerSelectors.basePackage("com.algaworks.algafood.api")) //tudo que tiver no projeto pode colocar , os endpoint que quer documentar
+				.paths(PathSelectors.any()) //já fica por padrão
+				//.paths(PathSelectors.ant("/restaurantes/*"))
 				.build();
 	}
 	@Override
