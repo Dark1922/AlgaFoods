@@ -140,6 +140,11 @@
 		  <artifactId>guava</artifactId>
 		  <version>${guava.version}</version>
 	  </dependency>
+	  <dependency>
+		<groupId>io.springfox</groupId>
+		<artifactId>springfox-bean-validators</artifactId>
+		<version>${springfox.version}</version>
+	</dependency>
 	  
 	</dependencies>
 	<build>
