@@ -23,7 +23,6 @@ import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RepresentationBuilder;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.builders.ResponseBuilder;
-import springfox.documentation.schema.ModelRef;
 import springfox.documentation.service.ApiInfo;
 import springfox.documentation.service.Contact;
 import springfox.documentation.service.Response;
@@ -56,7 +55,8 @@ public class SpringFoxConfig  implements WebMvcConfigurer  {
 				.globalResponses(HttpMethod.DELETE, globalDeleteResponseMessages()) 
 				.apiInfo(apiInfo())
 				.additionalModels(typeResolver.resolve(Problem.class))
-				.tags(new Tag("Cidades","Gerencia as cidades"));
+				.tags(new Tag("Cidades","Gerencia as cidades"),
+						new Tag("Grupos", "Gerencia os grupos de usuários"));
 	}
 	
 	private List<Response> globalGetResponseMessages() {
