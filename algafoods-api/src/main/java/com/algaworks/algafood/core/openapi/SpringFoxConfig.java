@@ -41,7 +41,10 @@ public class SpringFoxConfig  implements WebMvcConfigurer  {
 				//.paths(PathSelectors.ant("/restaurantes/*"))
 				.build()
 				.useDefaultResponseMessages(false)//deixa como false as mensagem de erro que o swagger preve pra nós
-				.globalResponses(HttpMethod.GET, globalGetResponseMessages())
+				.globalResponses(HttpMethod.GET, globalGetResponseMessages()) //descrever os métodos globais de erro do get
+				.globalResponses(HttpMethod.POST, globalPostResponseMessages()) 
+				.globalResponses(HttpMethod.PUT, globalPutResponseMessages()) 
+				.globalResponses(HttpMethod.DELETE, globalDeleteResponseMessages()) 
 				.apiInfo(apiInfo())
 				.tags(new Tag("Cidades","Gerencia as cidades"));
 	}
@@ -58,6 +61,60 @@ public class SpringFoxConfig  implements WebMvcConfigurer  {
 						.build()
 		);
 	}
+	
+	private List<Response> globalPostResponseMessages() {
+		return Arrays.asList(
+				new ResponseBuilder()
+				.code(comoString(HttpStatus.BAD_REQUEST))
+				.description("Requisição inválida (erro do cliente)")
+				.build(),
+				new ResponseBuilder()
+				.code(comoString(HttpStatus.INTERNAL_SERVER_ERROR))
+				.description("Erro interno do Servidor")
+				.build(),
+				new ResponseBuilder()
+				.code(comoString(HttpStatus.NOT_ACCEPTABLE))
+				.description("Recurso não possui representação que pode ser aceita pelo consumidor")
+				.build(),
+				new ResponseBuilder()
+				.code(comoString(HttpStatus.UNSUPPORTED_MEDIA_TYPE))
+				.description("Requisição recusada porque o corpo está em um formato não suportado")
+				.build()
+				);
+	}
+	private List<Response> globalPutResponseMessages() {
+		return Arrays.asList(
+				new ResponseBuilder()
+				.code(comoString(HttpStatus.BAD_REQUEST))
+				.description("Requisição inválida (erro do cliente)")
+				.build(),
+				new ResponseBuilder()
+				.code(comoString(HttpStatus.INTERNAL_SERVER_ERROR))
+				.description("Erro interno do Servidor")
+				.build(),
+				new ResponseBuilder()
+				.code(comoString(HttpStatus.NOT_ACCEPTABLE))
+				.description("Recurso não possui representação que pode ser aceita pelo consumidor")
+				.build(),
+				new ResponseBuilder()
+				.code(comoString(HttpStatus.UNSUPPORTED_MEDIA_TYPE))
+				.description("Requisição recusada porque o corpo está em um formato não suportado")
+				.build()
+				);
+	}
+	private List<Response> globalDeleteResponseMessages() {
+		return Arrays.asList(
+				new ResponseBuilder()
+				.code(comoString(HttpStatus.BAD_REQUEST))
+				.description("Requisição inválida (erro do cliente)")
+				.build(),
+				new ResponseBuilder()
+				.code(comoString(HttpStatus.INTERNAL_SERVER_ERROR))
+				.description("Erro interno do Servidor")
+				.build()
+				);
+	}
+	
 	
 	private String comoString(HttpStatus httpStatus) {
 		return String.valueOf(httpStatus.value());
