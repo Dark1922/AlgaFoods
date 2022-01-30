@@ -4,8 +4,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
-import com.algaworks.algafood.domain.model.Estado;
-
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,11 +12,12 @@ import lombok.Setter;
 @Setter
 public class CidadeInput {
 
-	 @NotBlank
+	@ApiModelProperty(example = "Ubelândia")
+	@NotBlank
 	private String nome;
 	 
 	 
-	 @Valid //verificar se os métodos do estados são validos
-	    @NotNull
-	private Estado estado;
+	@Valid //verificar se os métodos do estados são validos
+	@NotNull
+	private EstadoIdInput estado;
 }
