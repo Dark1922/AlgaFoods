@@ -27,7 +27,7 @@ public class Problem {
 	@ApiModelProperty(example = "Violação de regra de negócio",position = 20)
     private String title;
 	
-	@ApiModelProperty(example = "Não existe um cadastro de estado com codigo 1",position = 30)
+	@ApiModelProperty(example = "Um ou mais campos estõa inválidos. Faça o preenchimento correto.",position = 30)
     private String detail;
 	
 	@ApiModelProperty(example = "Não existe um cadastro de estado com codigo 1",position = 35)
@@ -35,6 +35,10 @@ public class Problem {
 	
 	@ApiModelProperty(value="Objetos ou campos que geraram o erro",position = 50)
 	private List<Object> objects;
+	
+	@ApiModelProperty(example = "2021-11-14T00:12:13",position = 40)
+	@JsonFormat(timezone = "GMT-3",pattern = "yyyy-MM-dd hh:mm:ss")
+	private OffsetDateTime timestamp; // do acontecimento do erro
     
 	@ApiModel("ObjetoProblema")
     @Getter
@@ -48,8 +52,6 @@ public class Problem {
     	private String userMessage;
     }
 	
-	@ApiModelProperty(example = "2021-11-14T00:12:13",position = 40)
-	@JsonFormat(timezone = "GMT-3",pattern = "yyyy-MM-dd hh:mm:ss")
-	private OffsetDateTime timestamp; // do acontecimento do erro
+	
 	
 }

@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
 
+import org.springframework.beans.factory.parsing.Problem;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
@@ -12,6 +13,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+import com.fasterxml.classmate.TypeResolver;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import springfox.bean.validators.configuration.BeanValidatorPluginsConfiguration;
 import springfox.documentation.builders.ApiInfoBuilder;
@@ -24,6 +28,7 @@ import springfox.documentation.service.Contact;
 import springfox.documentation.service.Response;
 import springfox.documentation.service.Tag;
 import springfox.documentation.spi.DocumentationType;
+import springfox.documentation.spring.web.json.JacksonModuleRegistrar;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
@@ -34,6 +39,9 @@ public class SpringFoxConfig  implements WebMvcConfigurer  {
 
 	@Bean //um método que vai produzir uma instancia de docket e vai registrar como um component spring
 	public Docket apiDocket() {//docket = sumario pra pegar o conjunto de serviços que vai ser documentado, e ir configurando
+		
+		var typeResolver = new TypeResolver();
+		
 		return  new Docket(DocumentationType.OAS_30)
 				.select()
 				.apis(RequestHandlerSelectors.basePackage("com.algaworks.algafood.api")) //tudo que tiver no projeto pode colocar , os endpoint que quer documentar
@@ -45,6 +53,7 @@ public class SpringFoxConfig  implements WebMvcConfigurer  {
 				.globalResponses(HttpMethod.POST, globalPostResponseMessages()) 
 				.globalResponses(HttpMethod.PUT, globalPutResponseMessages()) 
 				.globalResponses(HttpMethod.DELETE, globalDeleteResponseMessages()) 
+				.additionalModels(typeResolver.resolve(Problem.class))
 				.apiInfo(apiInfo())
 				.tags(new Tag("Cidades","Gerencia as cidades"));
 	}
@@ -54,10 +63,14 @@ public class SpringFoxConfig  implements WebMvcConfigurer  {
 				new ResponseBuilder()
 						.code(comoString(HttpStatus.INTERNAL_SERVER_ERROR))
 						.description("Erro interno do Servidor")
+						.representation( MediaType.APPLICATION_JSON )
+						.apply(problemBuilder())
 						.build(),
 				new ResponseBuilder()
 						.code(comoString(HttpStatus.NOT_ACCEPTABLE))
 						.description("Recurso não possui representação que pode ser aceita pelo consumidor")
+						.representation( MediaType.APPLICATION_JSON )
+						.apply(problemBuilder())
 						.build()
 		);
 	}
@@ -67,18 +80,26 @@ public class SpringFoxConfig  implements WebMvcConfigurer  {
 				new ResponseBuilder()
 				.code(comoString(HttpStatus.BAD_REQUEST))
 				.description("Requisição inválida (erro do cliente)")
+				.representation( MediaType.APPLICATION_JSON )
+				.apply(problemBuilder())
 				.build(),
 				new ResponseBuilder()
 				.code(comoString(HttpStatus.INTERNAL_SERVER_ERROR))
 				.description("Erro interno do Servidor")
+				.representation( MediaType.APPLICATION_JSON )
+				.apply(problemBuilder())
 				.build(),
 				new ResponseBuilder()
 				.code(comoString(HttpStatus.NOT_ACCEPTABLE))
 				.description("Recurso não possui representação que pode ser aceita pelo consumidor")
+				.representation( MediaType.APPLICATION_JSON )
+				.apply(problemBuilder())
 				.build(),
 				new ResponseBuilder()
 				.code(comoString(HttpStatus.UNSUPPORTED_MEDIA_TYPE))
 				.description("Requisição recusada porque o corpo está em um formato não suportado")
+				.representation( MediaType.APPLICATION_JSON )
+				.apply(problemBuilder())
 				.build()
 				);
 	}
@@ -87,18 +108,26 @@ public class SpringFoxConfig  implements WebMvcConfigurer  {
 				new ResponseBuilder()
 				.code(comoString(HttpStatus.BAD_REQUEST))
 				.description("Requisição inválida (erro do cliente)")
+				.representation( MediaType.APPLICATION_JSON )
+				.apply(problemBuilder())
 				.build(),
 				new ResponseBuilder()
 				.code(comoString(HttpStatus.INTERNAL_SERVER_ERROR))
 				.description("Erro interno do Servidor")
+				.representation( MediaType.APPLICATION_JSON )
+				.apply(problemBuilder())
 				.build(),
 				new ResponseBuilder()
 				.code(comoString(HttpStatus.NOT_ACCEPTABLE))
 				.description("Recurso não possui representação que pode ser aceita pelo consumidor")
+				.representation( MediaType.APPLICATION_JSON )
+				.apply(problemBuilder())
 				.build(),
 				new ResponseBuilder()
 				.code(comoString(HttpStatus.UNSUPPORTED_MEDIA_TYPE))
 				.description("Requisição recusada porque o corpo está em um formato não suportado")
+				.representation( MediaType.APPLICATION_JSON )
+				.apply(problemBuilder())
 				.build()
 				);
 	}
@@ -107,10 +136,14 @@ public class SpringFoxConfig  implements WebMvcConfigurer  {
 				new ResponseBuilder()
 				.code(comoString(HttpStatus.BAD_REQUEST))
 				.description("Requisição inválida (erro do cliente)")
+				.representation( MediaType.APPLICATION_JSON )
+				.apply(problemBuilder())
 				.build(),
 				new ResponseBuilder()
 				.code(comoString(HttpStatus.INTERNAL_SERVER_ERROR))
 				.description("Erro interno do Servidor")
+				.representation( MediaType.APPLICATION_JSON )
+				.apply(problemBuilder())
 				.build()
 				);
 	}
@@ -119,7 +152,6 @@ public class SpringFoxConfig  implements WebMvcConfigurer  {
 	private String comoString(HttpStatus httpStatus) {
 		return String.valueOf(httpStatus.value());
 	}
-	@SuppressWarnings("unused")
 	private Consumer<RepresentationBuilder> problemBuilder() {
 		return r -> r.model(m -> m.name("Problema")
 				.referenceModel(
@@ -147,5 +179,9 @@ public class SpringFoxConfig  implements WebMvcConfigurer  {
 				.contact(new Contact("Algaworks", "https://www.algaworks.com", "contato@algaworks.com"))
 				.build();
 	}
-
+	/*para fazer com que o SpringFox carregue o módulo de conversão de datas:*/
+	@Bean 
+	public JacksonModuleRegistrar springFoxJacksonConfig() {
+		return objectMapper -> objectMapper.registerModule(new JavaTimeModule());
+	}
 }
