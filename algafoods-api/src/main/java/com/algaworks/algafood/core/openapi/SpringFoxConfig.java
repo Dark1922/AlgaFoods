@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
 
+import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties.Pageable;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
@@ -13,6 +14,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import com.algaworks.algafood.core.openapi.model.PageableModelOpenApi;
 import com.fasterxml.classmate.TypeResolver;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
@@ -54,6 +56,7 @@ public class SpringFoxConfig  implements WebMvcConfigurer  {
 				.globalResponses(HttpMethod.DELETE, globalDeleteResponseMessages()) 
 				.apiInfo(apiInfo())
 				.additionalModels(typeResolver.resolve(com.algaworks.algafood.api.exceptionhandler.Problem.class))
+				.directModelSubstitute(Pageable.class, PageableModelOpenApi.class)
 				.tags(new Tag("Cidades","Gerencia as cidades"),
 						new Tag("Grupos", "Gerencia os grupos de usuários"));
 	}

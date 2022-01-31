@@ -78,7 +78,7 @@ public class GrupoController implements GrupoControllerOpenApi{
         return grupoModelAssembler.toModel(grupoAtual);
     }
     
-    @DeleteMapping("/{grupoId}")
+    @DeleteMapping(value = "/{grupoId}", produces =  MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void remover(@PathVariable Long grupoId) {
         cadastroGrupo.excluir(grupoId);	
