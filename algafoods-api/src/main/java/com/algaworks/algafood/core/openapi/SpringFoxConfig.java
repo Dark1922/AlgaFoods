@@ -8,13 +8,16 @@ import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties.P
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import com.algaworks.algafood.core.openapi.model.PageableModelOpenApi;
+import com.algaworks.algafood.api.model.CozinhaDTO;
+import com.algaworks.algafood.api.openapi.model.PageModelOpenApi;
+import com.algaworks.algafood.api.openapi.model.PageableModelOpenApi;
 import com.fasterxml.classmate.TypeResolver;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
@@ -24,6 +27,7 @@ import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RepresentationBuilder;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.builders.ResponseBuilder;
+import springfox.documentation.schema.AlternateTypeRules;
 import springfox.documentation.service.ApiInfo;
 import springfox.documentation.service.Contact;
 import springfox.documentation.service.Response;
@@ -56,7 +60,9 @@ public class SpringFoxConfig  implements WebMvcConfigurer  {
 				.globalResponses(HttpMethod.DELETE, globalDeleteResponseMessages()) 
 				.apiInfo(apiInfo())
 				.additionalModels(typeResolver.resolve(com.algaworks.algafood.api.exceptionhandler.Problem.class))
-				.directModelSubstitute(Pageable.class, PageableModelOpenApi.class)
+				.directModelSubstitute(Pageable.class, PageableModelOpenApi.class)//tratar os dados que queremos da paginação no endpoint sw
+				.alternateTypeRules(AlternateTypeRules.newRule(typeResolver.resolve(Page.class, CozinhaDTO.class),
+						typeResolver.resolve(PageModelOpenApi.class, CozinhaDTO.class))) //formata paginação da cozinhan a resposta
 				.tags(new Tag("Cidades","Gerencia as cidades"),
 						new Tag("Grupos", "Gerencia os grupos de usuários"));
 	}
