@@ -12,6 +12,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -59,12 +60,14 @@ public class SpringFoxConfig  implements WebMvcConfigurer  {
 				.globalResponses(HttpMethod.PUT, globalPutResponseMessages()) 
 				.globalResponses(HttpMethod.DELETE, globalDeleteResponseMessages()) 
 				.apiInfo(apiInfo())
+				.ignoredParameterTypes(ServletWebRequest.class) //ignora esse pacote pra forma-pagamentos ficar limpo
 				.additionalModels(typeResolver.resolve(com.algaworks.algafood.api.exceptionhandler.Problem.class))
 				.directModelSubstitute(Pageable.class, PageableModelOpenApi.class)//tratar os dados que queremos da paginação no endpoint sw
 				.alternateTypeRules(AlternateTypeRules.newRule(typeResolver.resolve(Page.class, CozinhaDTO.class),
 						typeResolver.resolve(PageModelOpenApi.class, CozinhaDTO.class))) //formata paginação da cozinhan a resposta
 				.tags(new Tag("Cidades","Gerencia as cidades"),
-						new Tag("Grupos", "Gerencia os grupos de usuários"));
+						new Tag("Grupos", "Gerencia os grupos de usuários"),
+						  new Tag("Cozinhas", "Gerencia as cozinhas"));
 	}
 	
 	private List<Response> globalGetResponseMessages() {
