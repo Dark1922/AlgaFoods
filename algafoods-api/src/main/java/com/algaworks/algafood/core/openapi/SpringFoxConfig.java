@@ -4,7 +4,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
 
-import org.springframework.beans.factory.parsing.Problem;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
@@ -42,7 +41,7 @@ public class SpringFoxConfig  implements WebMvcConfigurer  {
 		
 		var typeResolver = new TypeResolver();
 		
-		return  new Docket(DocumentationType.OAS_30)
+		return  new Docket(DocumentationType.SWAGGER_2)
 				.select()
 				.apis(RequestHandlerSelectors.basePackage("com.algaworks.algafood.api")) //tudo que tiver no projeto pode colocar , os endpoint que quer documentar
 				.paths(PathSelectors.any()) //já fica por padrão
@@ -54,7 +53,7 @@ public class SpringFoxConfig  implements WebMvcConfigurer  {
 				.globalResponses(HttpMethod.PUT, globalPutResponseMessages()) 
 				.globalResponses(HttpMethod.DELETE, globalDeleteResponseMessages()) 
 				.apiInfo(apiInfo())
-				.additionalModels(typeResolver.resolve(Problem.class))
+				.additionalModels(typeResolver.resolve(com.algaworks.algafood.api.exceptionhandler.Problem.class))
 				.tags(new Tag("Cidades","Gerencia as cidades"),
 						new Tag("Grupos", "Gerencia os grupos de usuários"));
 	}
@@ -79,14 +78,14 @@ public class SpringFoxConfig  implements WebMvcConfigurer  {
 				new ResponseBuilder()
 				.code(comoString(HttpStatus.BAD_REQUEST))
 				.description("Requisição inválida (erro do cliente)")
-//			    .representation( MediaType.APPLICATION_JSON )
-//				.apply(problemBuilder())
+			    .representation( MediaType.APPLICATION_JSON )
+				.apply(problemBuilder())
 				.build(),
 				new ResponseBuilder()
 				.code(comoString(HttpStatus.INTERNAL_SERVER_ERROR))
 				.description("Erro interno do Servidor")
-//				.representation( MediaType.APPLICATION_JSON )
-//				.apply(problemBuilder())
+				.representation( MediaType.APPLICATION_JSON )
+				.apply(problemBuilder())
 				.build(),
 				new ResponseBuilder()
 				.code(comoString(HttpStatus.NOT_ACCEPTABLE))
@@ -95,8 +94,8 @@ public class SpringFoxConfig  implements WebMvcConfigurer  {
 				new ResponseBuilder()
 				.code(comoString(HttpStatus.UNSUPPORTED_MEDIA_TYPE))
 				.description("Requisição recusada porque o corpo está em um formato não suportado")
-//				.representation( MediaType.APPLICATION_JSON )
-//				.apply(problemBuilder())
+				.representation( MediaType.APPLICATION_JSON )
+				.apply(problemBuilder())
 				.build()
 				);
 	}
@@ -105,14 +104,14 @@ public class SpringFoxConfig  implements WebMvcConfigurer  {
 				new ResponseBuilder()
 				.code(comoString(HttpStatus.BAD_REQUEST))
 				.description("Requisição inválida (erro do cliente)")
-//				.representation( MediaType.APPLICATION_JSON )
-//				.apply(problemBuilder())
+				.representation( MediaType.APPLICATION_JSON )
+				.apply(problemBuilder())
 				.build(),
 				new ResponseBuilder()
 				.code(comoString(HttpStatus.INTERNAL_SERVER_ERROR))
 				.description("Erro interno do Servidor")
-//				.representation( MediaType.APPLICATION_JSON )
-//				.apply(problemBuilder())
+				.representation( MediaType.APPLICATION_JSON )
+				.apply(problemBuilder())
 				.build(),
 				new ResponseBuilder()
 				.code(comoString(HttpStatus.NOT_ACCEPTABLE))
@@ -121,8 +120,8 @@ public class SpringFoxConfig  implements WebMvcConfigurer  {
 				new ResponseBuilder()
 				.code(comoString(HttpStatus.UNSUPPORTED_MEDIA_TYPE))
 				.description("Requisição recusada porque o corpo está em um formato não suportado")
-//				.representation( MediaType.APPLICATION_JSON )
-//				.apply(problemBuilder())
+				.representation( MediaType.APPLICATION_JSON )
+				.apply(problemBuilder())
 				.build()
 				);
 	}
@@ -137,8 +136,8 @@ public class SpringFoxConfig  implements WebMvcConfigurer  {
 				new ResponseBuilder()
 				.code(comoString(HttpStatus.INTERNAL_SERVER_ERROR))
 				.description("Erro interno do Servidor")
-//				.representation( MediaType.APPLICATION_JSON )
-//				.apply(problemBuilder())
+				.representation( MediaType.APPLICATION_JSON )
+				.apply(problemBuilder())
 				.build()
 				);
 	}
