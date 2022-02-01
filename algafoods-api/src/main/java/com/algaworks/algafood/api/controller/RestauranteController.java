@@ -29,6 +29,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.algaworks.algafood.api.assembler.RestauranteInputDisassembler;
 import com.algaworks.algafood.api.assembler.RestauranteModelAssembler;
+import com.algaworks.algafood.api.model.RestauranteBasicModelOpenApi;
 import com.algaworks.algafood.api.model.RestauranteDTO;
 import com.algaworks.algafood.api.model.input.RestauranteInput;
 import com.algaworks.algafood.api.model.view.RestauranteView;
@@ -43,6 +44,10 @@ import com.algaworks.algafood.domain.service.CadastroRestauranteService;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 
 @RestController
 @RequestMapping("/restaurantes")
@@ -64,12 +69,16 @@ public class RestauranteController {
 	private RestauranteInputDisassembler restauranteInputDisassembler;
 	
     
+	@ApiOperation(value = "Lista restaurantes", response = RestauranteBasicModelOpenApi.class)
+	@ApiImplicitParams({@ApiImplicitParam(value = "nome da projeção de pedidos", name = "projecao" ,
+	paramType = "query", type = "string", allowableValues = "apenas-nome")})
 	@JsonView(RestauranteView.Resumo.class)
     @GetMapping
    	public List<RestauranteDTO> listar() {
    		return restauranteModelAssembler.toCollectionModel(restauranteRepository.findAll());
    	}
     
+	@ApiOperation(value = "Lista restaurantes", hidden = true)
 	@JsonView(RestauranteView.ApenasNome.class)
 	@GetMapping(params = "projecao=apenas-nome")
 	public List<RestauranteDTO> listarResumido() {
@@ -79,8 +88,6 @@ public class RestauranteController {
 	@GetMapping("/{restauranteId}")
 	public RestauranteDTO buscar(@PathVariable Long restauranteId) {
 		Restaurante restaurante = cadastroRestauranteService.buscarOuFalhar(restauranteId);
-		
-		
 		return restauranteModelAssembler.toModel(restaurante);
 	}
 
