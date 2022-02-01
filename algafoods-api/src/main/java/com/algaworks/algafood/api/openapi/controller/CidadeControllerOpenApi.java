@@ -18,7 +18,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 public interface CidadeControllerOpenApi {
 
 	@ApiOperation("Lista as cidades")
-	public List<CidadeDTO> listar();
+	 List<CidadeDTO> listar();
 	
 	@ApiOperation("Busca uma cidade por ID")
 	@ApiResponses({
@@ -27,7 +27,7 @@ public interface CidadeControllerOpenApi {
 		@ApiResponse(responseCode = "400", description = "ID da cidade é inválido", 
 		content = @Content(mediaType = "application/json",  schema = @Schema(implementation = Problem.class)))
 	})
-	public CidadeDTO buscar(
+	 CidadeDTO buscar(
 			@ApiParam(value = "ID de uma cidade", example = "1", required =  true)
 			Long cidadeId);
 	
@@ -35,7 +35,7 @@ public interface CidadeControllerOpenApi {
 	@ApiResponses({
 		@ApiResponse(responseCode = "201", description = "Cidade cadastrada")
 	})
-	public CidadeDTO adicionar(
+	 CidadeDTO adicionar(
 			@ApiParam(name = "corpo", value = "Representação de uma nova cidade" , required =  true)
 			CidadeInput cidadeInput);
 	
@@ -46,7 +46,7 @@ public interface CidadeControllerOpenApi {
 		@ApiResponse(responseCode = "404", description = "Cidade não encontrada", 
 		content = @Content(mediaType = "application/json",  schema = @Schema(implementation = Problem.class)))
 	})
-	public CidadeDTO atualizar(
+	 CidadeDTO atualizar(
 			@ApiParam(value = "ID de uma cidade", example = "1", required =  true) 
 			Long cidadeId,
 			
@@ -60,7 +60,7 @@ public interface CidadeControllerOpenApi {
 		@ApiResponse(responseCode = "404", description = "Cidade não encontrada", 
 		content = @Content(mediaType = "application/json",  schema = @Schema(implementation = Problem.class)))
 	})
-	public void remover(
+	 void remover(
 			@ApiParam(value = "ID de uma cidade", example = "1",  required =  true)
 			Long cidadeId);
 	

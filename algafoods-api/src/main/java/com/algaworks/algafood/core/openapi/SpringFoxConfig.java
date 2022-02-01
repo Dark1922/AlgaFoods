@@ -60,6 +60,7 @@ public class SpringFoxConfig  implements WebMvcConfigurer  {
 				.globalResponses(HttpMethod.POST, globalPostResponseMessages()) 
 				.globalResponses(HttpMethod.PUT, globalPutResponseMessages()) 
 				.globalResponses(HttpMethod.DELETE, globalDeleteResponseMessages()) 
+				.globalResponses(HttpMethod.PATCH, globalPostResponseMessages()) 
 				.apiInfo(apiInfo())
 				.ignoredParameterTypes(ServletWebRequest.class) //ignora esse pacote pra forma-pagamentos ficar limpo
 				.additionalModels(typeResolver.resolve(com.algaworks.algafood.api.exceptionhandler.Problem.class))
@@ -73,7 +74,8 @@ public class SpringFoxConfig  implements WebMvcConfigurer  {
 						  new Tag("Cozinhas", "Gerencia as cozinhas"),
 						  new Tag("Formas de pagamento", "Gerencia as formas de pagamento"),
 						  new Tag("Pedidos", "Gerencia os Produto"),
-						  new Tag("Restaurantes", "Gerencia os Restaurantes"));
+						  new Tag("Restaurantes", "Gerencia os Restaurantes"),
+						  new Tag("Estados", "Gerencia os estados"));
 	   
 	}
 	
