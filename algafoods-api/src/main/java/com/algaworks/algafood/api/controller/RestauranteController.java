@@ -11,6 +11,7 @@ import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.http.server.ServletServerHttpRequest;
 import org.springframework.util.ReflectionUtils;
@@ -29,10 +30,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.algaworks.algafood.api.assembler.RestauranteInputDisassembler;
 import com.algaworks.algafood.api.assembler.RestauranteModelAssembler;
-import com.algaworks.algafood.api.model.RestauranteBasicModelOpenApi;
 import com.algaworks.algafood.api.model.RestauranteDTO;
 import com.algaworks.algafood.api.model.input.RestauranteInput;
 import com.algaworks.algafood.api.model.view.RestauranteView;
+import com.algaworks.algafood.api.openapi.controller.RestauranteControllerOpenApi;
 import com.algaworks.algafood.core.validation.ValidacaoException;
 import com.algaworks.algafood.domain.exception.CidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.exception.CozinhaNaoEncontradaException;
@@ -45,13 +46,11 @@ import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 
 @RestController
-@RequestMapping("/restaurantes")
-public class RestauranteController {
+@RequestMapping(path = "/restaurantes", produces = MediaType.APPLICATION_JSON_VALUE)
+public class RestauranteController implements RestauranteControllerOpenApi{
 
 	@Autowired
 	private RestauranteRepository restauranteRepository;
@@ -69,19 +68,16 @@ public class RestauranteController {
 	private RestauranteInputDisassembler restauranteInputDisassembler;
 	
     
-	@ApiOperation(value = "Lista restaurantes", response = RestauranteBasicModelOpenApi.class)
-	@ApiImplicitParams({@ApiImplicitParam(value = "nome da projeção de pedidos", name = "projecao" ,
-	paramType = "query", type = "string", allowableValues = "apenas-nome")})
+	
 	@JsonView(RestauranteView.Resumo.class)
     @GetMapping
    	public List<RestauranteDTO> listar() {
    		return restauranteModelAssembler.toCollectionModel(restauranteRepository.findAll());
    	}
     
-	@ApiOperation(value = "Lista restaurantes", hidden = true)
 	@JsonView(RestauranteView.ApenasNome.class)
 	@GetMapping(params = "projecao=apenas-nome")
-	public List<RestauranteDTO> listarResumido() {
+	public List<RestauranteDTO> listarApenasNomes() {
 		return listar();
 	}
 
@@ -125,8 +121,8 @@ public class RestauranteController {
 	}
 	
 
-	
-	@PutMapping("/blabla")
+	@ApiOperation(value = "Configuração do Path", hidden = true)
+	@PutMapping("/restaurantePath")
 	public RestauranteDTO atttPatch(@PathVariable Long restauranteId, @RequestBody @Valid Restaurante restaurante) {
 		
 		try {
@@ -141,6 +137,7 @@ public class RestauranteController {
 		}
 	}
 
+	
 	@PatchMapping("/{restauranteId}")
 	public RestauranteDTO atualizarParcial( @PathVariable Long restauranteId, @RequestBody @Valid Map<String, Object> campos,
 			HttpServletRequest request) {
