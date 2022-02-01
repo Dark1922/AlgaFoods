@@ -1,5 +1,6 @@
 package com.algaworks.algafood.api.model;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -7,8 +8,13 @@ import lombok.Setter;
 @Setter
 public class UsuarioDTO {
 
+	@ApiModelProperty(example = "1")
 	private Long id;
+
+	@ApiModelProperty(example = "João da Silva")
 	private String nome;
-	private String email; 
+
+	@ApiModelProperty(example = "joao.ger@algafood.com.br")
+	private String email;
 	
 }

@@ -17,6 +17,7 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import com.algaworks.algafood.api.model.CozinhaDTO;
+import com.algaworks.algafood.api.model.PedidoResumoModel;
 import com.algaworks.algafood.api.openapi.model.PageModelOpenApi;
 import com.algaworks.algafood.api.openapi.model.PageableModelOpenApi;
 import com.fasterxml.classmate.TypeResolver;
@@ -65,10 +66,13 @@ public class SpringFoxConfig  implements WebMvcConfigurer  {
 				.directModelSubstitute(Pageable.class, PageableModelOpenApi.class)//tratar os dados que queremos da paginação no endpoint sw
 				.alternateTypeRules(AlternateTypeRules.newRule(typeResolver.resolve(Page.class, CozinhaDTO.class),
 						typeResolver.resolve(PageModelOpenApi.class, CozinhaDTO.class))) //formata paginação da cozinhan a resposta
+				.alternateTypeRules(AlternateTypeRules.newRule(typeResolver.resolve(Page.class, PedidoResumoModel.class),
+						typeResolver.resolve(PageModelOpenApi.class, PedidoResumoModel.class)))
 				.tags(new Tag("Cidades","Gerencia as cidades"),
 						new Tag("Grupos", "Gerencia os grupos de usuários"),
 						  new Tag("Cozinhas", "Gerencia as cozinhas"),
-						  new Tag("Formas de pagamento", "Gerencia as formas de pagamento"));
+						  new Tag("Formas de pagamento", "Gerencia as formas de pagamento"),
+						  new Tag("Pedidos", "Gerencia os Produto"));
 	   
 	}
 	
