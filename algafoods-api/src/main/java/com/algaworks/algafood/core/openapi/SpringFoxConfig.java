@@ -4,11 +4,11 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
 
-import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties.Pageable;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -67,7 +67,8 @@ public class SpringFoxConfig  implements WebMvcConfigurer  {
 						typeResolver.resolve(PageModelOpenApi.class, CozinhaDTO.class))) //formata paginação da cozinhan a resposta
 				.tags(new Tag("Cidades","Gerencia as cidades"),
 						new Tag("Grupos", "Gerencia os grupos de usuários"),
-						  new Tag("Cozinhas", "Gerencia as cozinhas"));
+						  new Tag("Cozinhas", "Gerencia as cozinhas"),
+						  new Tag("Formas de pagamento", "Gerencia as formas de pagamento"));
 	}
 	
 	private List<Response> globalGetResponseMessages() {
