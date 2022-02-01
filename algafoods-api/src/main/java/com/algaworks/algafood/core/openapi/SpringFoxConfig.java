@@ -1,7 +1,6 @@
 package com.algaworks.algafood.core.openapi;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -28,13 +27,10 @@ import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RepresentationBuilder;
 import springfox.documentation.builders.RequestHandlerSelectors;
-import springfox.documentation.builders.RequestParameterBuilder;
 import springfox.documentation.builders.ResponseBuilder;
 import springfox.documentation.schema.AlternateTypeRules;
-import springfox.documentation.schema.ScalarType;
 import springfox.documentation.service.ApiInfo;
 import springfox.documentation.service.Contact;
-import springfox.documentation.service.ParameterType;
 import springfox.documentation.service.Response;
 import springfox.documentation.service.Tag;
 import springfox.documentation.spi.DocumentationType;
@@ -72,16 +68,7 @@ public class SpringFoxConfig  implements WebMvcConfigurer  {
 				.tags(new Tag("Cidades","Gerencia as cidades"),
 						new Tag("Grupos", "Gerencia os grupos de usuários"),
 						  new Tag("Cozinhas", "Gerencia as cozinhas"),
-						  new Tag("Formas de pagamento", "Gerencia as formas de pagamento"))
-				
-					    .globalRequestParameters(Collections.singletonList(
-			            new RequestParameterBuilder()
-	                    .name("campos")
-	                    .description("Nomes das propriedades para filtrar na resposta, separados por vírgula")
-	                    .in(ParameterType.QUERY) //do tipo query params onde é passado os dados da consulta que queremos
-	                    .required(true)
-	                    .query(q -> q.model(m -> m.scalarModel(ScalarType.STRING)))//tipo do model string
-	                    .build()));
+						  new Tag("Formas de pagamento", "Gerencia as formas de pagamento"));
 	   
 	}
 	
