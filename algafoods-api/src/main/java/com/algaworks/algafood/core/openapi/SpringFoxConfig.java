@@ -1,5 +1,10 @@
 package com.algaworks.algafood.core.openapi;
 
+import java.io.File;
+import java.io.InputStream;
+import java.net.URI;
+import java.net.URL;
+import java.net.URLStreamHandler;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
@@ -7,6 +12,7 @@ import java.util.function.Consumer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpMethod;
@@ -62,9 +68,10 @@ public class SpringFoxConfig  implements WebMvcConfigurer  {
 				.globalResponses(HttpMethod.DELETE, globalDeleteResponseMessages()) 
 				.globalResponses(HttpMethod.PATCH, globalPostResponseMessages()) 
 				.apiInfo(apiInfo())
-				.ignoredParameterTypes(ServletWebRequest.class) //ignora esse pacote pra forma-pagamentos ficar limpo
+				.ignoredParameterTypes(ServletWebRequest.class,URL.class, URI.class,
+				 URLStreamHandler.class, Resource.class, File.class, InputStream.class) //ignora esse pacote pra forma-pagamentos ficar limpo
 				.additionalModels(typeResolver.resolve(com.algaworks.algafood.api.exceptionhandler.Problem.class))
-				.directModelSubstitute(Pageable.class, PageableModelOpenApi.class)//tratar os dados que queremos da paginação no endpoint sw
+				.directModelSubstitute(Pageable.class, PageableModelOpenApi.class)
 				.alternateTypeRules(AlternateTypeRules.newRule(typeResolver.resolve(Page.class, CozinhaDTO.class),
 						typeResolver.resolve(PageModelOpenApi.class, CozinhaDTO.class))) //formata paginação da cozinhan a resposta
 				.alternateTypeRules(AlternateTypeRules.newRule(typeResolver.resolve(Page.class, PedidoResumoModel.class),
