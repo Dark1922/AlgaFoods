@@ -69,13 +69,14 @@ public class SpringFoxConfig  implements WebMvcConfigurer  {
 						typeResolver.resolve(PageModelOpenApi.class, CozinhaDTO.class))) //formata paginação da cozinhan a resposta
 				.alternateTypeRules(AlternateTypeRules.newRule(typeResolver.resolve(Page.class, PedidoResumoModel.class),
 						typeResolver.resolve(PageModelOpenApi.class, PedidoResumoModel.class)))
-				.tags(new Tag("Cidades","Gerencia as cidades"),
-						new Tag("Grupos", "Gerencia os grupos de usuários"),
-						  new Tag("Cozinhas", "Gerencia as cozinhas"),
+				.tags(new Tag("Cidades","Gerencia as Cidades"),
+						new Tag("Grupos", "Gerencia os grupos de Usuários"),
+						  new Tag("Cozinhas", "Gerencia as Cozinhas"),
 						  new Tag("Formas de pagamento", "Gerencia as formas de pagamento"),
 						  new Tag("Pedidos", "Gerencia os Produto"),
 						  new Tag("Restaurantes", "Gerencia os Restaurantes"),
-						  new Tag("Estados", "Gerencia os estados"));
+						  new Tag("Estados", "Gerencia os Estados"),
+						  new Tag("Produtos", "Gerencia os Produtos de Restaurante"));
 	   
 	}
 	

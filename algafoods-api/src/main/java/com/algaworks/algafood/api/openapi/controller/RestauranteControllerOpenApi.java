@@ -13,8 +13,6 @@ import com.algaworks.algafood.api.exceptionhandler.Problem;
 import com.algaworks.algafood.api.model.RestauranteBasicModelOpenApi;
 import com.algaworks.algafood.api.model.RestauranteDTO;
 import com.algaworks.algafood.api.model.input.RestauranteInput;
-import com.algaworks.algafood.api.model.view.RestauranteView;
-import com.fasterxml.jackson.annotation.JsonView;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -33,7 +31,6 @@ public interface RestauranteControllerOpenApi {
 	        @ApiImplicitParam(value = "Nome da projeção de pedidos", allowableValues = "apenas-nome",
 	                name = "projecao", paramType = "query", type = "string")
 	    })
-	    @JsonView(RestauranteView.Resumo.class)
 	     List<RestauranteDTO> listar();
 	    
 	    @ApiOperation(value = "Lista restaurantes", hidden = true)
