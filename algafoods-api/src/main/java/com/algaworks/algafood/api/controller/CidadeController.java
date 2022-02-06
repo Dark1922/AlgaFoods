@@ -4,8 +4,9 @@ import java.util.List;
 
 import javax.validation.Valid;
 
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.hateoas.Link;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -57,13 +58,14 @@ public class CidadeController implements CidadeControllerOpenApi{
 		Cidade cidade = cadastrocidadeService.buscarOuFalhar(cidadeId);
 		CidadeDTO cidadeDTO = cidadeModelAssembler.toModel(cidade);
 		
-		cidadeDTO.add(Link.of("http://localhost:8080/cidades/5"));
-//		cidadeModel.add(Link.of("http://localhost:8080/cidades/1", IanaLinkRelations.SELF)); //por padrão vem assim
+		//WebMvcLinkBuilder cria a porta,cria um link /cidades que é o link do controlador / o id da cidade que foi passado
+		cidadeDTO.add(linkTo(CidadeController.class)
+				.slash(cidadeDTO.getId()).withSelfRel());
 		
-		cidadeDTO.add(Link.of("http://localhost:8080/cidades", "cidades"));
-//		cidadeModel.add(Link.of("http://localhost:8080/cidades", IanaLinkRelations.COLLECTION));
+		cidadeDTO.add(linkTo(CidadeController.class).withRel("cidades"));
 		
-		cidadeDTO.getEstado().add(Link.of("http://localhost:8080/estados/1"));
+		cidadeDTO.add(linkTo(EstadoController.class).slash(cidadeDTO.getEstado().getId()).withSelfRel());
+		
 		return cidadeDTO;
 	}
 

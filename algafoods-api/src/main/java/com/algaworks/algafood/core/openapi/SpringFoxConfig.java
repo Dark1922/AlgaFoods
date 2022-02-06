@@ -115,8 +115,8 @@ public class SpringFoxConfig  implements WebMvcConfigurer  {
 				new ResponseBuilder()
 				.code(comoString(HttpStatus.INTERNAL_SERVER_ERROR))
 				.description("Erro interno do Servidor")
-				.representation( MediaType.APPLICATION_JSON )
-				.apply(problemBuilder())
+				//.representation( MediaType.APPLICATION_JSON )
+			//	.apply(problemBuilder())
 				.build(),
 				new ResponseBuilder()
 				.code(comoString(HttpStatus.NOT_ACCEPTABLE))
