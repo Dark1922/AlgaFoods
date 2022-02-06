@@ -31,10 +31,4 @@ build/
 
 ### VS Code ###
 .vscode/
-/.temp-algafoods-api - AlgafoodsApiApplication-classpath-arg-1643653927507.txt
-/.temp-algafoods-api - AlgafoodsApiApplication-classpath-arg-1643746736225.txt
-/.temp-algafoods-api - AlgafoodsApiApplication-classpath-arg-1643814840024.txt
-/.temp-algafoods-api - AlgafoodsApiApplication-classpath-arg-1643841321558.txt
-/.temp-algafoods-api - AlgafoodsApiApplication-classpath-arg-1643856363801.txt
-/.temp-algafoods-api - AlgafoodsApiApplication-classpath-arg-1643915391010.txt
-/.temp-algafoods-api - AlgafoodsApiApplication-classpath-arg-1644169057555.txt
+/.temp-algafoods-api/
