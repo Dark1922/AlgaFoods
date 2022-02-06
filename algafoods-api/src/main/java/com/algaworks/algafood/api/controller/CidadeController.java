@@ -1,10 +1,11 @@
 package com.algaworks.algafood.api.controller;
 
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
+
 import java.util.List;
 
 import javax.validation.Valid;
-
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -59,13 +60,15 @@ public class CidadeController implements CidadeControllerOpenApi{
 		CidadeDTO cidadeDTO = cidadeModelAssembler.toModel(cidade);
 		
 		//WebMvcLinkBuilder cria a porta,cria um link /cidades que é o link do controlador / o id da cidade que foi passado
-		cidadeDTO.add(linkTo(CidadeController.class)
-				.slash(cidadeDTO.getId()).withSelfRel());
+		cidadeDTO.add(linkTo(methodOn(CidadeController.class)
+				.buscar(cidadeDTO.getId())).withSelfRel());
 		
-		cidadeDTO.add(linkTo(CidadeController.class).withRel("cidades"));
+		cidadeDTO.add(linkTo(methodOn(CidadeController.class)
+				.listar()).withRel("cidades"));
 		
-		cidadeDTO.add(linkTo(EstadoController.class).slash(cidadeDTO.getEstado().getId()).withSelfRel());
-		
+		cidadeDTO.getEstado().add(linkTo(methodOn(EstadoController.class)
+				.buscar(cidadeDTO.getEstado().getId())).withSelfRel());
+				
 		return cidadeDTO;
 	}
 
