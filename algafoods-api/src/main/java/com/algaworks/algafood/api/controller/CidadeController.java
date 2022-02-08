@@ -52,40 +52,13 @@ public class CidadeController implements CidadeControllerOpenApi{
 
 	@GetMapping()
 	public CollectionModel<CidadeDTO> listar() {//CollectionModel que tb é um representationaModel
-		List<CidadeDTO> cidadesDTO = cidadeModelAssembler.toCollectionModel(cidadeRepository.findAll());
-		
-		cidadesDTO.forEach(cidadeDTO -> {
-			cidadeDTO.add(linkTo(methodOn(CidadeController.class)
-					.buscar(cidadeDTO.getId())).withSelfRel());
-			
-			cidadeDTO.add(linkTo(methodOn(CidadeController.class)
-					.listar()).withRel("cidades"));
-			
-			cidadeDTO.getEstado().add(linkTo(methodOn(EstadoController.class)
-					.buscar(cidadeDTO.getEstado().getId())).withSelfRel());
-		});
-		
-		CollectionModel<CidadeDTO> cidadesCollectionDTO = CollectionModel.of(cidadesDTO);
-	    cidadesCollectionDTO.add(linkTo(CidadeController.class).withSelfRel());
-		 return  cidadesCollectionDTO;
+		return cidadeModelAssembler.toCollectionModel(cidadeRepository.findAll());
 	}
 
 	@GetMapping("/{cidadeId}")
 	public CidadeDTO buscar(@PathVariable Long cidadeId) {
 		Cidade cidade = cadastrocidadeService.buscarOuFalhar(cidadeId);
-		CidadeDTO cidadeDTO = cidadeModelAssembler.toModel(cidade);
-		
-		//WebMvcLinkBuilder cria a porta,cria um link /cidades que é o link do controlador / o id da cidade que foi passado
-		cidadeDTO.add(linkTo(methodOn(CidadeController.class)
-				.buscar(cidadeDTO.getId())).withSelfRel());
-		
-		cidadeDTO.add(linkTo(methodOn(CidadeController.class)
-				.listar()).withRel("cidades"));
-		
-		cidadeDTO.getEstado().add(linkTo(methodOn(EstadoController.class)
-				.buscar(cidadeDTO.getEstado().getId())).withSelfRel());
-				
-		return cidadeDTO;
+	       return cidadeModelAssembler.toModel(cidade);
 	}
 
 	
