@@ -46,7 +46,7 @@ public class CidadeModelAssembler extends RepresentationModelAssemblerSupport<Ci
 	    			.add(linkTo(CidadeController.class).withSelfRel());
 	    }
 		
-		 public CidadeModelAssembler(Class<?> controllerClass, Class<CidadeDTO> resourceType) {
+		 public CidadeModelAssembler() {
 				super(CidadeController.class, CidadeDTO.class);
 			}
 }
