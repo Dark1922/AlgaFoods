@@ -1,14 +1,13 @@
 package com.algaworks.algafood.api.controller;
 
-import java.util.List;
-
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -45,20 +44,19 @@ public class CozinhaController implements CozinhaControllerOpenApi {
 
 	@Autowired
 	private CozinhaInputDisassembler cozinhaInputDisassembler;   
+	
+	@Autowired
+	private PagedResourcesAssembler<Cozinha> pagedResourcesAssembler;
 
 	@GetMapping
-	public Page<CozinhaDTO> listar(@PageableDefault(size = 10, sort = "nome") Pageable pageable) {
-
-		
+	public PagedModel<CozinhaDTO> listar(@PageableDefault(size = 10, sort = "nome") Pageable pageable) {
 		Page<Cozinha> cozinhasPage = cozinhaRepository.findAll(pageable);
-	    
-		//get contente extrai os elementos as cozinha daquele pagina e fazendo o tocoolectionmodel aqui que é uma lista
-	    List<CozinhaDTO> cozinhasModel = cozinhaModelAssembler.toCollectionModel(cozinhasPage.getContent());
-	    
-	    Page<CozinhaDTO> cozinhasModelPage = new PageImpl<>(cozinhasModel, pageable, cozinhasPage.getTotalElements());
-	    
-	    return cozinhasModelPage;
-	}
+
+		//pagedResourcesAssembler vai usar o cozinhaModelAssembler para converter o cozinhasPage para cozinhaModelAssembler
+		//como de cozinha para cozinhamodel
+	    PagedModel<CozinhaDTO> cozinhasPagedModel = pagedResourcesAssembler.toModel(cozinhasPage, cozinhaModelAssembler);
+	    return cozinhasPagedModel;
+	}	
 
 	@GetMapping("/{cozinhaId}")
 	public CozinhaDTO buscar(@PathVariable Long cozinhaId) {
