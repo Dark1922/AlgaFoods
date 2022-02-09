@@ -26,6 +26,7 @@ public class UsuarioModelAssembler  extends RepresentationModelAssemblerSupport<
     
     @Override
     public UsuarioDTO toModel(Usuario usuario) {
+    	
         UsuarioDTO usuarioModel = createModelWithId(usuario.getId(), usuario);
         modelMapper.map(usuario, usuarioModel);
         
