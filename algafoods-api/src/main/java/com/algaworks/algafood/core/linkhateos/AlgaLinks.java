@@ -18,6 +18,7 @@ import com.algaworks.algafood.api.controller.FluxoPedidoController;
 import com.algaworks.algafood.api.controller.FormaPagamentoController;
 import com.algaworks.algafood.api.controller.PedidoController;
 import com.algaworks.algafood.api.controller.RestauranteController;
+import com.algaworks.algafood.api.controller.RestauranteFormaPagamentoController;
 import com.algaworks.algafood.api.controller.RestauranteProdutoController;
 import com.algaworks.algafood.api.controller.RestauranteUsuarioResponsavelController;
 import com.algaworks.algafood.api.controller.UsuarioController;
@@ -60,6 +61,13 @@ public class AlgaLinks {
 		    return linkTo(methodOn(RestauranteController.class)
 		            .buscar(restauranteId)).withRel(rel);
 		}
+	  public Link linkToRestaurantes(String rel) {
+		    return linkTo(RestauranteController.class).withRel(rel);
+		}
+
+		public Link linkToRestaurantes() {
+		    return linkToRestaurantes(IanaLinkRelations.SELF.value());
+		}
 
 		public Link linkToRestaurante(Long restauranteId) {
 		    return linkToRestaurante(restauranteId, IanaLinkRelations.SELF.value());
@@ -99,6 +107,7 @@ public class AlgaLinks {
 		public Link linkToResponsaveisRestaurante(Long restauranteId) {
 		    return linkToResponsaveisRestaurante(restauranteId, IanaLinkRelations.SELF.value());
 		}
+	
 		 /*Forma Pagamento*/
 		public Link linkToFormaPagamento(Long formaPagamentoId, String rel) {
 		    return linkTo(methodOn(FormaPagamentoController.class)
@@ -107,6 +116,11 @@ public class AlgaLinks {
 
 		public Link linkToFormaPagamento(Long formaPagamentoId) {
 		    return linkToFormaPagamento(formaPagamentoId, IanaLinkRelations.SELF.value());
+		}
+		
+		public Link linkToRestauranteFormasPagamento(Long restauranteId, String rel) {
+		    return linkTo(methodOn(RestauranteFormaPagamentoController.class)
+		            .listar(restauranteId)).withRel(rel);
 		}
 		 /*Cidades*/
 		public Link linkToCidade(Long cidadeId, String rel) {
@@ -160,6 +174,15 @@ public class AlgaLinks {
 		public Link linkToCozinhas() {
 		    return linkToCozinhas(IanaLinkRelations.SELF.value());
 		}
+		
+		public Link linkToCozinha(Long cozinhaId, String rel) {
+		    return linkTo(methodOn(CozinhaController.class)
+		            .buscar(cozinhaId)).withRel(rel);
+		}
+
+		public Link linkToCozinha(Long cozinhaId) {
+		    return linkToCozinha(cozinhaId, IanaLinkRelations.SELF.value());
+		} 	
 		
 		/*Adicionando links de transições de status de pedidos*/
 		public Link linkToConfirmacaoPedido(String codigoPedido, String rel) {

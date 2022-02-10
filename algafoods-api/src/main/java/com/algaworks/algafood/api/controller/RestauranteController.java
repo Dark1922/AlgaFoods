@@ -10,8 +10,10 @@ import javax.validation.Valid;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.http.server.ServletServerHttpRequest;
 import org.springframework.util.ReflectionUtils;
@@ -28,11 +30,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.algaworks.algafood.api.assembler.RestauranteApenasNomeModelAssembler;
+import com.algaworks.algafood.api.assembler.RestauranteBasicModelAssembler;
 import com.algaworks.algafood.api.assembler.RestauranteInputDisassembler;
 import com.algaworks.algafood.api.assembler.RestauranteModelAssembler;
+import com.algaworks.algafood.api.model.RestauranteApenasNomeModel;
+import com.algaworks.algafood.api.model.RestauranteBasicoModel;
 import com.algaworks.algafood.api.model.RestauranteDTO;
 import com.algaworks.algafood.api.model.input.RestauranteInput;
-import com.algaworks.algafood.api.model.view.RestauranteView;
 import com.algaworks.algafood.api.openapi.controller.RestauranteControllerOpenApi;
 import com.algaworks.algafood.core.validation.ValidacaoException;
 import com.algaworks.algafood.domain.exception.CidadeNaoEncontradaException;
@@ -42,7 +47,6 @@ import com.algaworks.algafood.domain.exception.RestauranteNaoEncontradaException
 import com.algaworks.algafood.domain.model.Restaurante;
 import com.algaworks.algafood.domain.repository.RestauranteRepository;
 import com.algaworks.algafood.domain.service.CadastroRestauranteService;
-import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -67,19 +71,27 @@ public class RestauranteController implements RestauranteControllerOpenApi{
 	@Autowired
 	private RestauranteInputDisassembler restauranteInputDisassembler;
 	
-    
+	@Autowired
+	private RestauranteBasicModelAssembler restauranteBasicModelAssembler;
+
+	@Autowired
+	private RestauranteApenasNomeModelAssembler restauranteApenasNomeModelAssembler; 
 	
-	@JsonView(RestauranteView.Resumo.class)
+	@Override
+//	@JsonView(RestauranteView.Resumo.class)
     @GetMapping
-   	public List<RestauranteDTO> listar() {
-   		return restauranteModelAssembler.toCollectionModel(restauranteRepository.findAll());
-   	}
+    public CollectionModel<RestauranteBasicoModel> listar() {
+        return restauranteBasicModelAssembler
+                .toCollectionModel(restauranteRepository.findAll());
+    }
     
-	@JsonView(RestauranteView.ApenasNome.class)
-	@GetMapping(params = "projecao=apenas-nome")
-	public List<RestauranteDTO> listarApenasNomes() {
-		return listar();
-	}
+	   @Override
+//		@JsonView(RestauranteView.ApenasNome.class)
+	    @GetMapping(params = "projecao=apenas-nome")
+	    public CollectionModel<RestauranteApenasNomeModel> listarApenasNomes() {
+	        return restauranteApenasNomeModelAssembler
+	                .toCollectionModel(restauranteRepository.findAll());
+	    }
 
 	@GetMapping("/{restauranteId}")
 	public RestauranteDTO buscar(@PathVariable Long restauranteId) {
@@ -188,45 +200,54 @@ public class RestauranteController implements RestauranteControllerOpenApi{
 		}
 	}
 	
+	@Override
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	@PutMapping("/{restauranteId}/ativar")
-     public void ativar(@PathVariable Long restauranteId) {
+     public ResponseEntity<Void> ativar(@PathVariable Long restauranteId) {
 		cadastroRestauranteService.ativar(restauranteId);
-    	 
-     }
-	@ResponseStatus(HttpStatus.NO_CONTENT)
-	@DeleteMapping("/{restauranteId}/inativar")
-     public void inativar(@PathVariable Long restauranteId) {
-		cadastroRestauranteService.inativar(restauranteId);
-    	 
+		return ResponseEntity.noContent().build();
      }
 	
+	@Override
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	@DeleteMapping("/{restauranteId}/inativar")
+     public ResponseEntity<Void> inativar(@PathVariable Long restauranteId) {
+		cadastroRestauranteService.inativar(restauranteId);
+		 return ResponseEntity.noContent().build();
+     }
+	
+	@Override
 	@PutMapping("/{restauranteId}/abertura")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void abrir(@PathVariable Long restauranteId) {
+	public ResponseEntity<Void> abrir(@PathVariable Long restauranteId) {
 	    cadastroRestauranteService.abrir(restauranteId);
+	    return ResponseEntity.noContent().build();
 	}
 
+	@Override
 	@PutMapping("/{restauranteId}/fechamento")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void fechar(@PathVariable Long restauranteId) {
+	public ResponseEntity<Void> fechar(@PathVariable Long restauranteId) {
 	    cadastroRestauranteService.fechar(restauranteId);
+	    return ResponseEntity.noContent().build();
 	} 
 	
 	@PutMapping("/ativacoes")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void ativarMultiplosRestaurantes(@RequestBody List<Long> restauranteIds) {
+	public ResponseEntity<Void> ativarMultiplosRestaurantes(@RequestBody List<Long> restauranteIds) {
 		try {
 		cadastroRestauranteService.ativar(restauranteIds);
+		return ResponseEntity.noContent().build();
 		}catch(RestauranteNaoEncontradaException e) {//vai retornar codigo de 400 como padrão
 			throw new NegocioException(e.getMessage(), e); //msg e a causa relança como negocioexception o restanaoent
 		}
 	}
 	@DeleteMapping("/inativacoes")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void inativarMultiplosRestaurantes(@RequestBody List<Long> restauranteIds) {
+	public ResponseEntity<Void> inativarMultiplosRestaurantes(@RequestBody List<Long> restauranteIds) {
 		try {
 		cadastroRestauranteService.inativar(restauranteIds);
+		return ResponseEntity.noContent().build();
 		}catch(RestauranteNaoEncontradaException e) {
 			throw new NegocioException(e.getMessage(), e);
 		}

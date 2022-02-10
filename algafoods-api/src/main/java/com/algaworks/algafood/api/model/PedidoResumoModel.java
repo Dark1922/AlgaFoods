@@ -35,4 +35,6 @@ public class PedidoResumoModel extends RepresentationModel<PedidoResumoModel> {
 	
     private RestauranteResumoModel restaurante; // ou private String restauranteNome
     private UsuarioDTO cliente;
+    
+    private RestauranteApenasNomeModel restauranteApenasNomeModel;
 } 

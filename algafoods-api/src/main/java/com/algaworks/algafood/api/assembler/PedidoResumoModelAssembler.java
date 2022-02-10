@@ -33,7 +33,7 @@ public class PedidoResumoModelAssembler
         
         //url com id do restaurante
         pedidoModel.getRestaurante().add(algaLinks.linkToRestaurante(pedido.getRestaurante().getId()));
-        
+         
         //url com id do usuario/cliente
         pedidoModel.getCliente().add(algaLinks.linkToUsuario(pedido.getCliente().getId()));
         
