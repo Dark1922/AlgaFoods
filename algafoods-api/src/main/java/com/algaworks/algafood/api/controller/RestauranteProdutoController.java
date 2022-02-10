@@ -5,6 +5,7 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,6 +23,7 @@ import com.algaworks.algafood.api.assembler.ProdutoModelAssembler;
 import com.algaworks.algafood.api.model.ProdutoDTO;
 import com.algaworks.algafood.api.model.input.ProdutoInput;
 import com.algaworks.algafood.api.openapi.controller.RestauranteProdutoControllerOpenApi;
+import com.algaworks.algafood.core.linkhateos.AlgaLinks;
 import com.algaworks.algafood.domain.model.Produto;
 import com.algaworks.algafood.domain.model.Restaurante;
 import com.algaworks.algafood.domain.repository.ProdutoRepository;
@@ -47,8 +49,13 @@ public class RestauranteProdutoController implements RestauranteProdutoControlle
     @Autowired
     private ProdutoInputDisassembler produtoInputDisassembler;
     
+    @Autowired
+    private AlgaLinks algaLinks;
+    
     @GetMapping
-    public List<ProdutoDTO> listar(@PathVariable Long restauranteId, @RequestParam(required = false) boolean incluirInativos) {
+    public CollectionModel<ProdutoDTO> listar(@PathVariable Long restauranteId,
+            @RequestParam(required = false, defaultValue = "false") Boolean incluirInativos) {
+    	
         Restaurante restaurante = cadastroRestaurante.buscarOuFalhar(restauranteId);
         
         List<Produto> todosProdutos = null;
@@ -59,8 +66,9 @@ public class RestauranteProdutoController implements RestauranteProdutoControlle
         	
         	 todosProdutos = produtoRepository.findAtivosByRestaurante(restaurante);
         }
-        
-        return produtoModelAssembler.toCollectionModel(todosProdutos);
+         
+        return produtoModelAssembler.toCollectionModel(todosProdutos)
+                .add(algaLinks.linkToProdutos(restauranteId));
     }
     
     @GetMapping("/{produtoId}")
@@ -94,5 +102,7 @@ public class RestauranteProdutoController implements RestauranteProdutoControlle
         produtoAtual = cadastroProduto.salvar(produtoAtual);
         
         return produtoModelAssembler.toModel(produtoAtual);
-    }   
+    }
+
+	   
 }
