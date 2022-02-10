@@ -19,6 +19,7 @@ import com.algaworks.algafood.api.controller.FormaPagamentoController;
 import com.algaworks.algafood.api.controller.GrupoController;
 import com.algaworks.algafood.api.controller.GrupoPermissaoController;
 import com.algaworks.algafood.api.controller.PedidoController;
+import com.algaworks.algafood.api.controller.PermissaoController;
 import com.algaworks.algafood.api.controller.RestauranteController;
 import com.algaworks.algafood.api.controller.RestauranteFormaPagamentoController;
 import com.algaworks.algafood.api.controller.RestauranteProdutoController;
@@ -280,6 +281,29 @@ public class AlgaLinks {
 		}
 		public Link linkToEntregaPedido(String codigoPedido, String rel) {
 			return linkTo(methodOn(FluxoPedidoController.class).entregar(codigoPedido)).withRel(rel);
+		}
+		
+		/*Grupos Permissões*/
+		public Link linkToPermissoes(String rel) {
+		    return linkTo(PermissaoController.class).withRel(rel);
+		}
+
+		public Link linkToPermissoes() {
+		    return linkToPermissoes(IanaLinkRelations.SELF.value());
+		}
+
+		public Link linkToGrupoPermissoes(Long grupoId) {
+		    return linkToGrupoPermissoes(grupoId, IanaLinkRelations.SELF.value());
+		}
+
+		public Link linkToGrupoPermissaoAssociacao(Long grupoId, String rel) {
+		    return linkTo(methodOn(GrupoPermissaoController.class)
+		            .associar(grupoId, null)).withRel(rel);
+		}
+
+		public Link linkToGrupoPermissaoDesassociacao(Long grupoId, Long permissaoId, String rel) {
+		    return linkTo(methodOn(GrupoPermissaoController.class)
+		            .desassociar(grupoId, permissaoId)).withRel(rel);
 		}
 }
           
