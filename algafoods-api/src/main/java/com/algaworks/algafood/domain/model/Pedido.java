@@ -131,5 +131,17 @@ public class Pedido extends AbstractAggregateRoot<Pedido>{
 	      private void gerarCodigo() {
 	    	  setCodigo(UUID.randomUUID().toString());//to string vai pegar os 36 caracteres com especiais uuid do java
 	      }
+	      
+	      public boolean podeSerConfirmado() {
+	    	  return getStatus().PodeAlterarPara(StatusPedido.CONFIRMADO);
+	      }
+	      
+	      public boolean podeSerEntregue() {
+	    	  return getStatus().PodeAlterarPara(StatusPedido.ENTREGUE);
+	      }
+	      
+	      public boolean podeSerCancelado() {
+	    	  return getStatus().PodeAlterarPara(StatusPedido.CANCELADO);
+	      }
 	}		
 
