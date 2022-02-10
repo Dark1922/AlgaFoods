@@ -44,8 +44,15 @@ public class PedidoModelAssembler
         		new TemplateVariable("sort",VariableType.REQUEST_PARAM)
         		);
         
-        String pedidosUrl = linkTo(PedidoController.class).toUri().toString();//cria a url dinâmica do nosso controoler uri pr toString
+        TemplateVariables filtroVariables = new TemplateVariables(
+        		new TemplateVariable("clienteId", VariableType.REQUEST_PARAM),
+        		new TemplateVariable("restauranteId", VariableType.REQUEST_PARAM),
+        		new TemplateVariable("dataCriacaoInicio", VariableType.REQUEST_PARAM),
+        		new TemplateVariable("dataCriacaoFim", VariableType.REQUEST_PARAM));
         
+        String pedidosUrl = linkTo(PedidoController.class).toUri().toString();//cria a url dinâmica do nosso controoler uri pr toString
+        	
+        pedidoModel.add(Link.of(UriTemplate.of(pedidosUrl,pageVariables.concat(filtroVariables)), "pedidos"));
         pedidoModel.add(Link.of(UriTemplate.of(pedidosUrl, pageVariables), "pedidos"));
         //pedidoModel.add(linkTo(PedidoController.class).withRel("pedidos"));
         
