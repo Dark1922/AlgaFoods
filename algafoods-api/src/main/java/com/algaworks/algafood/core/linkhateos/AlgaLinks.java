@@ -130,6 +130,17 @@ public class AlgaLinks {
 		public Link linkToResponsaveisRestaurante(Long restauranteId) {
 		    return linkToResponsaveisRestaurante(restauranteId, IanaLinkRelations.SELF.value());
 		}
+		public Link linkToRestauranteResponsavelDesassociacao(
+				Long restauranteId, Long usuarioId, String rel) {
+
+			    return linkTo(methodOn(RestauranteUsuarioResponsavelController.class)
+			            .desassociar(restauranteId, usuarioId)).withRel(rel);
+			}
+
+			public Link linkToRestauranteResponsavelAssociacao(Long restauranteId, String rel) {
+			    return linkTo(methodOn(RestauranteUsuarioResponsavelController.class)
+			            .associar(restauranteId, null)).withRel(rel);
+			}
 	
 		 /*Forma Pagamento*/
 		public Link linkToFormaPagamento(Long formaPagamentoId, String rel) {
@@ -160,10 +171,11 @@ public class AlgaLinks {
 		return linkTo(methodOn(RestauranteFormaPagamentoController.class).
 				desassociar(restauranteId, formaPagamentoId)).withRel(rel);
 		}
-	public Link linkToRestauranteFormaPagamentoAssociacao(Long restauranteId, String rel) {
+	     public Link linkToRestauranteFormaPagamentoAssociacao(Long restauranteId, String rel) {
 		return linkTo(methodOn(RestauranteFormaPagamentoController.class).
 				associar(restauranteId, null)).withRel(rel);//null pq ele espera o id de formapagamento
 		}
+	
 		 /*Cidades*/
 		public Link linkToCidade(Long cidadeId, String rel) {
 		    return linkTo(methodOn(CidadeController.class)
