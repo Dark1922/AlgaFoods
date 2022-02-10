@@ -7,6 +7,7 @@ import java.util.concurrent.TimeUnit;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.CacheControl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -49,7 +50,7 @@ import com.algaworks.algafood.domain.service.CadastroFormaPagamentoService;
 	    private FormaPagamentoInputDisassembler formaPagamentoInputDisassembler;
 	    
 	    @GetMapping
-	    public ResponseEntity<List<FormaPagamentoDTO>> listar(ServletWebRequest request) {
+	    public ResponseEntity<CollectionModel<FormaPagamentoDTO>> listar(ServletWebRequest request) {
 	    	
 	    	ShallowEtagHeaderFilter.disableContentCaching(request.getRequest());//desabilita o Etag pra usar o Deep Etags
 	    	
@@ -66,7 +67,7 @@ import com.algaworks.algafood.domain.service.CadastroFormaPagamentoService;
 	    	
 	        List<FormaPagamento> todasFormasPagamentos = formaPagamentoRepository.findAll();
 	        
-	        List<FormaPagamentoDTO> formasPagamentoDTO = formaPagamentoModelAssembler.toCollectionModel(todasFormasPagamentos);
+	        CollectionModel<FormaPagamentoDTO> formasPagamentoDTO = formaPagamentoModelAssembler.toCollectionModel(todasFormasPagamentos);
 	        
 	        return ResponseEntity.ok()//qnd tempo quer q o cache fique armazenando os dados
 	        		.cacheControl(CacheControl.maxAge(10, TimeUnit.SECONDS).cachePublic()) 
