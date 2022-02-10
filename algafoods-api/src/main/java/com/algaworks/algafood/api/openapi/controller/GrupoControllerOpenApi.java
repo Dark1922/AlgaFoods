@@ -1,6 +1,7 @@
 package com.algaworks.algafood.api.openapi.controller;
 
-import java.util.List;
+import org.springframework.hateoas.CollectionModel;
+import org.springframework.http.ResponseEntity;
 
 import com.algaworks.algafood.api.exceptionhandler.Problem;
 import com.algaworks.algafood.api.model.GrupoDTO;
@@ -18,7 +19,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 public interface GrupoControllerOpenApi {
 
     @ApiOperation("Lista os grupos")
-     List<GrupoDTO> listar();
+    ResponseEntity<CollectionModel<GrupoDTO>> listar();
     
     @ApiOperation("Busca um grupo por ID")
     @ApiResponses({
