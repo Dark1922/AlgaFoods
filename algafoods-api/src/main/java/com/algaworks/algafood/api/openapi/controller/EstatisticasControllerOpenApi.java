@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.http.ResponseEntity;
 
+import com.algaworks.algafood.api.controller.EstatisticasController.EstatisticasModel;
 import com.algaworks.algafood.domain.filter.VendaDiariaFilter;
 import com.algaworks.algafood.domain.model.dto.VendaDiaria;
 
@@ -25,7 +26,7 @@ public interface EstatisticasControllerOpenApi {
         @ApiImplicitParam(name = "dataCriacaoFim", value = "Data/hora final da criação do pedido",
             example = "2019-12-02T23:59:59Z", dataType = "date-time")
     })
-    List<VendaDiaria> consultarVendasDiarias(
+    ResponseEntity<List<VendaDiaria>> consultarVendasDiarias(
             VendaDiariaFilter filtro,
             
             @ApiParam(value = "Deslocamento de horário a ser considerado na consulta em relação ao UTC",
@@ -35,4 +36,7 @@ public interface EstatisticasControllerOpenApi {
     ResponseEntity<byte[]> consultarVendasDiariasPdf(
             VendaDiariaFilter filtro,
             String timeOffset);
+    
+    @ApiOperation(value = "Estatísticas", hidden = true)
+    EstatisticasModel estatisticas();
 }
