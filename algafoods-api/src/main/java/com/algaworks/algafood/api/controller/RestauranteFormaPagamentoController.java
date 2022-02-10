@@ -37,17 +37,18 @@ public class RestauranteFormaPagamentoController implements RestauranteFormaPaga
 	public CollectionModel<FormaPagamentoDTO> listar(@PathVariable Long restauranteId) {
 		Restaurante restaurante = cadastroRestauranteService.buscarOuFalhar(restauranteId); 
 		
-		CollectionModel<FormaPagamentoDTO> formasPagamentoDTO =  formaPagamentoModelAssembler.toCollectionModel
-				(restaurante.getFormasPagamento())
-				.removeLinks()
-				.add(algaLinks.linkToRestauranteFormasPagamento(restauranteId));
-		
+		CollectionModel<FormaPagamentoDTO> formasPagamentoDTO
+		= formaPagamentoModelAssembler.toCollectionModel(restaurante.getFormasPagamento())
+			.removeLinks()
+			.add(algaLinks.linkToRestauranteFormasPagamento(restauranteId))
+			.add(algaLinks.linkToRestauranteFormaPagamentoAssociacao(restauranteId, "associar"));
+	
 		formasPagamentoDTO.getContent().forEach(formaPagamentoDTO -> {
-			formaPagamentoDTO.add(algaLinks.linkToRestauranteFormaPagamentoDesassociacao(
-					restauranteId, formaPagamentoDTO.getId(), "desassociar"));
-		});
-		
-		return formasPagamentoDTO;
+		formaPagamentoDTO.add(algaLinks.linkToRestauranteFormaPagamentoDesassociacao(
+				restauranteId, formaPagamentoDTO.getId(), "desassociar"));
+	});
+	
+	return formasPagamentoDTO;
 	} 
 	
 	@Override
