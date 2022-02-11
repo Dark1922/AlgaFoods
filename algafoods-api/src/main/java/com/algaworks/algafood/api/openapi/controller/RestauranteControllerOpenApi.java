@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import com.algaworks.algafood.api.exceptionhandler.Problem;
 import com.algaworks.algafood.api.model.RestauranteApenasNomeModel;
-import com.algaworks.algafood.api.model.RestauranteBasicModelOpenApi;
 import com.algaworks.algafood.api.model.RestauranteBasicoModel;
 import com.algaworks.algafood.api.model.RestauranteDTO;
 import com.algaworks.algafood.api.model.input.RestauranteInput;
@@ -30,7 +29,7 @@ import io.swagger.annotations.ApiResponses;
 public interface RestauranteControllerOpenApi {
 
 
-	    @ApiOperation(value = "Lista restaurantes", response = RestauranteBasicModelOpenApi.class)
+	    @ApiOperation(value = "Lista restaurantes")
 	    @ApiImplicitParams({
 	        @ApiImplicitParam(value = "Nome da projeção de pedidos", allowableValues = "apenas-nome",
 	                name = "projecao", paramType = "query", type = "string")

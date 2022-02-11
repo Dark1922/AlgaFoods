@@ -32,6 +32,8 @@ import com.algaworks.algafood.api.model.GrupoDTO;
 import com.algaworks.algafood.api.model.PedidoResumoModel;
 import com.algaworks.algafood.api.model.PermissaoDTO;
 import com.algaworks.algafood.api.model.ProdutoDTO;
+import com.algaworks.algafood.api.model.RestauranteBasicoModel;
+import com.algaworks.algafood.api.model.UsuarioDTO;
 import com.algaworks.algafood.api.openapi.model.CidadesModelOpenApi;
 import com.algaworks.algafood.api.openapi.model.CozinhasModelOpenApi;
 import com.algaworks.algafood.api.openapi.model.EstadosModelOpenApi;
@@ -42,6 +44,8 @@ import com.algaworks.algafood.api.openapi.model.PageableModelOpenApi;
 import com.algaworks.algafood.api.openapi.model.PedidosResumoModelOpenApi;
 import com.algaworks.algafood.api.openapi.model.PermissoesModelOpenApi;
 import com.algaworks.algafood.api.openapi.model.ProdutosModelOpenApi;
+import com.algaworks.algafood.api.openapi.model.RestaurantesBasicoModelOpenApi;
+import com.algaworks.algafood.api.openapi.model.UsuariosModelOpenApi;
 import com.fasterxml.classmate.TypeResolver;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
@@ -111,6 +115,12 @@ public class SpringFoxConfig  implements WebMvcConfigurer  {
 					        typeResolver.resolve(CollectionModel.class, PermissaoDTO.class),PermissoesModelOpenApi.class))
 					.alternateTypeRules(AlternateTypeRules.newRule(
 					        typeResolver.resolve(CollectionModel.class, ProdutoDTO.class),ProdutosModelOpenApi.class))
+					.alternateTypeRules(AlternateTypeRules.newRule(
+					  typeResolver.resolve(CollectionModel.class, RestauranteBasicoModel.class), RestaurantesBasicoModelOpenApi.class))
+						.alternateTypeRules(AlternateTypeRules.newRule(
+						        typeResolver.resolve(CollectionModel.class, UsuarioDTO.class),  UsuariosModelOpenApi.class))
+						        		
+						      
 					        
 					    
 				.tags(new Tag("Cidades","Gerencia as Cidades"),
