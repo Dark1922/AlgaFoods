@@ -13,7 +13,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.core.io.Resource;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.Links;
@@ -38,8 +37,8 @@ import com.algaworks.algafood.api.openapi.model.EstadosModelOpenApi;
 import com.algaworks.algafood.api.openapi.model.FormasPagamentoModelOpenApi;
 import com.algaworks.algafood.api.openapi.model.GruposModelOpenApi;
 import com.algaworks.algafood.api.openapi.model.LinksModelOpenApi;
-import com.algaworks.algafood.api.openapi.model.PageModelOpenApi;
 import com.algaworks.algafood.api.openapi.model.PageableModelOpenApi;
+import com.algaworks.algafood.api.openapi.model.PedidosResumoModelOpenApi;
 import com.algaworks.algafood.api.openapi.model.PermissoesModelOpenApi;
 import com.fasterxml.classmate.TypeResolver;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -95,8 +94,9 @@ public class SpringFoxConfig  implements WebMvcConfigurer  {
 				
 				.alternateTypeRules(AlternateTypeRules.newRule(typeResolver.resolve(PagedModel.class, CozinhaDTO.class),
 					CozinhasModelOpenApi.class)) //formata paginação da cozinhan a resposta
-				.alternateTypeRules(AlternateTypeRules.newRule(typeResolver.resolve(Page.class, PedidoResumoModel.class),
-						typeResolver.resolve(PageModelOpenApi.class, PedidoResumoModel.class)))
+				.alternateTypeRules(AlternateTypeRules.newRule(
+					    typeResolver.resolve(PagedModel.class, PedidoResumoModel.class),
+					    PedidosResumoModelOpenApi.class))
 				.alternateTypeRules(AlternateTypeRules.newRule(typeResolver.resolve(CollectionModel.class, CidadeDTO.class),
 						CidadesModelOpenApi.class))
 				.alternateTypeRules(AlternateTypeRules.newRule(typeResolver.resolve(CollectionModel.class, EstadoDTO.class),
