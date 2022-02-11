@@ -10,10 +10,8 @@ import lombok.Setter;
 @ApiModel(value = "PageModel")
 @Getter
 @Setter
-public class PageModelOpenApi<T> {
+public class PageModelOpenApi<T>  {
 
-	@ApiModelProperty(value = "Total de elementos")
-	private List<T> content;
 
 	@ApiModelProperty(example = "1", value = "Quantidade de registros por página")
 	private int size;

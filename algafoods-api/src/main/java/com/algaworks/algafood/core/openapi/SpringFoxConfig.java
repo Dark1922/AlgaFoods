@@ -15,6 +15,9 @@ import org.springframework.context.annotation.Import;
 import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.hateoas.CollectionModel;
+import org.springframework.hateoas.Links;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -22,8 +25,12 @@ import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import com.algaworks.algafood.api.model.CidadeDTO;
 import com.algaworks.algafood.api.model.CozinhaDTO;
 import com.algaworks.algafood.api.model.PedidoResumoModel;
+import com.algaworks.algafood.api.openapi.model.CidadeModelOpenApi;
+import com.algaworks.algafood.api.openapi.model.CozinhasModelOpenApi;
+import com.algaworks.algafood.api.openapi.model.LinksModelOpenApi;
 import com.algaworks.algafood.api.openapi.model.PageModelOpenApi;
 import com.algaworks.algafood.api.openapi.model.PageableModelOpenApi;
 import com.fasterxml.classmate.TypeResolver;
@@ -55,7 +62,7 @@ public class SpringFoxConfig  implements WebMvcConfigurer  {
 		
 		var typeResolver = new TypeResolver();
 		
-		return  new Docket(DocumentationType.SWAGGER_2)
+		return  new Docket(DocumentationType.SWAGGER_2) 
 				.select()
 				.apis(RequestHandlerSelectors.basePackage("com.algaworks.algafood.api")) //tudo que tiver no projeto pode colocar , os endpoint que quer documentar
 				.paths(PathSelectors.any()) //já fica por padrão
@@ -72,10 +79,13 @@ public class SpringFoxConfig  implements WebMvcConfigurer  {
 				 URLStreamHandler.class, Resource.class, File.class, InputStream.class) //ignora esse pacote pra forma-pagamentos ficar limpo
 				.additionalModels(typeResolver.resolve(com.algaworks.algafood.api.exceptionhandler.Problem.class))
 				.directModelSubstitute(Pageable.class, PageableModelOpenApi.class)
-				.alternateTypeRules(AlternateTypeRules.newRule(typeResolver.resolve(Page.class, CozinhaDTO.class),
-						typeResolver.resolve(PageModelOpenApi.class, CozinhaDTO.class))) //formata paginação da cozinhan a resposta
+				.directModelSubstitute(Links.class, LinksModelOpenApi.class)
+				.alternateTypeRules(AlternateTypeRules.newRule(typeResolver.resolve(PagedModel.class, CozinhaDTO.class),
+					CozinhasModelOpenApi.class)) //formata paginação da cozinhan a resposta
 				.alternateTypeRules(AlternateTypeRules.newRule(typeResolver.resolve(Page.class, PedidoResumoModel.class),
 						typeResolver.resolve(PageModelOpenApi.class, PedidoResumoModel.class)))
+				.alternateTypeRules(AlternateTypeRules.newRule(typeResolver.resolve(CollectionModel.class, CidadeDTO.class),
+						CidadeModelOpenApi.class))
 				.tags(new Tag("Cidades","Gerencia as Cidades"),
 						new Tag("Grupos", "Gerencia os grupos de Usuários"),
 						  new Tag("Cozinhas", "Gerencia as Cozinhas"),
