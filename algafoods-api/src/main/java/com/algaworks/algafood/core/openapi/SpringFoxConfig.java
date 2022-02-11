@@ -27,9 +27,11 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import com.algaworks.algafood.api.model.CidadeDTO;
 import com.algaworks.algafood.api.model.CozinhaDTO;
+import com.algaworks.algafood.api.model.EstadoDTO;
 import com.algaworks.algafood.api.model.PedidoResumoModel;
 import com.algaworks.algafood.api.openapi.model.CidadeModelOpenApi;
 import com.algaworks.algafood.api.openapi.model.CozinhasModelOpenApi;
+import com.algaworks.algafood.api.openapi.model.EstadoModelOpenApi;
 import com.algaworks.algafood.api.openapi.model.LinksModelOpenApi;
 import com.algaworks.algafood.api.openapi.model.PageModelOpenApi;
 import com.algaworks.algafood.api.openapi.model.PageableModelOpenApi;
@@ -86,6 +88,8 @@ public class SpringFoxConfig  implements WebMvcConfigurer  {
 						typeResolver.resolve(PageModelOpenApi.class, PedidoResumoModel.class)))
 				.alternateTypeRules(AlternateTypeRules.newRule(typeResolver.resolve(CollectionModel.class, CidadeDTO.class),
 						CidadeModelOpenApi.class))
+				.alternateTypeRules(AlternateTypeRules.newRule(typeResolver.resolve(CollectionModel.class, EstadoDTO.class),
+						EstadoModelOpenApi.class))
 				.tags(new Tag("Cidades","Gerencia as Cidades"),
 						new Tag("Grupos", "Gerencia os grupos de Usuários"),
 						  new Tag("Cozinhas", "Gerencia as Cozinhas"),
