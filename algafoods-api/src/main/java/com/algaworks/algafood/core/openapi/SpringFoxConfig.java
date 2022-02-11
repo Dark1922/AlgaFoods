@@ -29,14 +29,18 @@ import com.algaworks.algafood.api.model.CidadeDTO;
 import com.algaworks.algafood.api.model.CozinhaDTO;
 import com.algaworks.algafood.api.model.EstadoDTO;
 import com.algaworks.algafood.api.model.FormaPagamentoDTO;
+import com.algaworks.algafood.api.model.GrupoDTO;
 import com.algaworks.algafood.api.model.PedidoResumoModel;
+import com.algaworks.algafood.api.model.PermissaoDTO;
 import com.algaworks.algafood.api.openapi.model.CidadesModelOpenApi;
 import com.algaworks.algafood.api.openapi.model.CozinhasModelOpenApi;
 import com.algaworks.algafood.api.openapi.model.EstadosModelOpenApi;
 import com.algaworks.algafood.api.openapi.model.FormasPagamentoModelOpenApi;
+import com.algaworks.algafood.api.openapi.model.GruposModelOpenApi;
 import com.algaworks.algafood.api.openapi.model.LinksModelOpenApi;
 import com.algaworks.algafood.api.openapi.model.PageModelOpenApi;
 import com.algaworks.algafood.api.openapi.model.PageableModelOpenApi;
+import com.algaworks.algafood.api.openapi.model.PermissoesModelOpenApi;
 import com.fasterxml.classmate.TypeResolver;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
@@ -70,20 +74,25 @@ public class SpringFoxConfig  implements WebMvcConfigurer  {
 				.select()
 				.apis(RequestHandlerSelectors.basePackage("com.algaworks.algafood.api")) //tudo que tiver no projeto pode colocar , os endpoint que quer documentar
 				.paths(PathSelectors.any()) //já fica por padrão
-				//.paths(PathSelectors.ant("/restaurantes/*"))
-				.build()
+				.build()//.paths(PathSelectors.ant("/restaurantes/*"))
 				.useDefaultResponseMessages(false)//deixa como false as mensagem de erro que o swagger preve pra nós
+				
 				.globalResponses(HttpMethod.GET, globalGetResponseMessages()) //descrever os métodos globais de erro do get
 				.globalResponses(HttpMethod.POST, globalPostResponseMessages()) 
 				.globalResponses(HttpMethod.PUT, globalPutResponseMessages()) 
 				.globalResponses(HttpMethod.DELETE, globalDeleteResponseMessages()) 
 				.globalResponses(HttpMethod.PATCH, globalPostResponseMessages()) 
+				
 				.apiInfo(apiInfo())
+				
 				.ignoredParameterTypes(ServletWebRequest.class,URL.class, URI.class,
 				 URLStreamHandler.class, Resource.class, File.class, InputStream.class) //ignora esse pacote pra forma-pagamentos ficar limpo
+				
 				.additionalModels(typeResolver.resolve(com.algaworks.algafood.api.exceptionhandler.Problem.class))
+				
 				.directModelSubstitute(Pageable.class, PageableModelOpenApi.class)
 				.directModelSubstitute(Links.class, LinksModelOpenApi.class)
+				
 				.alternateTypeRules(AlternateTypeRules.newRule(typeResolver.resolve(PagedModel.class, CozinhaDTO.class),
 					CozinhasModelOpenApi.class)) //formata paginação da cozinhan a resposta
 				.alternateTypeRules(AlternateTypeRules.newRule(typeResolver.resolve(Page.class, PedidoResumoModel.class),
@@ -94,6 +103,11 @@ public class SpringFoxConfig  implements WebMvcConfigurer  {
 						EstadosModelOpenApi.class))
 				.alternateTypeRules(AlternateTypeRules.newRule(
 					    typeResolver.resolve(CollectionModel.class, FormaPagamentoDTO.class),FormasPagamentoModelOpenApi.class))
+				.alternateTypeRules(AlternateTypeRules.newRule(
+					    typeResolver.resolve(CollectionModel.class, GrupoDTO.class),GruposModelOpenApi.class))
+					.alternateTypeRules(AlternateTypeRules.newRule(
+					        typeResolver.resolve(CollectionModel.class, PermissaoDTO.class),PermissoesModelOpenApi.class))
+					        
 					    
 				.tags(new Tag("Cidades","Gerencia as Cidades"),
 						new Tag("Grupos", "Gerencia os grupos de Usuários"),

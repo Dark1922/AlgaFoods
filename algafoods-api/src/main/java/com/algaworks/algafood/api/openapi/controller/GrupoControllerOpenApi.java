@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import com.algaworks.algafood.api.exceptionhandler.Problem;
 import com.algaworks.algafood.api.model.GrupoDTO;
 import com.algaworks.algafood.api.model.input.GrupoInput;
+import com.algaworks.algafood.api.openapi.model.GruposModelOpenApi;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -19,6 +20,9 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 public interface GrupoControllerOpenApi {
 
     @ApiOperation("Lista os grupos")
+    @io.swagger.annotations.ApiResponses(value = {
+    		@io.swagger.annotations.ApiResponse(code = 200, message = "OK", response = GruposModelOpenApi.class)
+    		})
     ResponseEntity<CollectionModel<GrupoDTO>> listar();
     
     @ApiOperation("Busca um grupo por ID")
