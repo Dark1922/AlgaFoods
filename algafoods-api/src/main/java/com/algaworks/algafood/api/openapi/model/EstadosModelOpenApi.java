@@ -11,14 +11,14 @@ import lombok.Data;
 
 @ApiModel("EstadosModel")
 @Data
-public class EstadoModelOpenApi {//classe para modelagem de documentação
+public class EstadosModelOpenApi {//classe para modelagem de documentação
 
-	private EstadoEmbeddedModelOpenApi _embedded;
+	private EstadosEmbeddedModelOpenApi _embedded;
 	private Links _links;
 	
 	@ApiModel("EstadosEmbeddedModel")
 	@Data
-	public class EstadoEmbeddedModelOpenApi {
+	public class EstadosEmbeddedModelOpenApi {
 		private List<EstadoDTO> estados;
 	}
 }
