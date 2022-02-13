@@ -119,9 +119,6 @@ public class SpringFoxConfig  implements WebMvcConfigurer  {
 					  typeResolver.resolve(CollectionModel.class, RestauranteBasicoModel.class), RestaurantesBasicoModelOpenApi.class))
 						.alternateTypeRules(AlternateTypeRules.newRule(
 						        typeResolver.resolve(CollectionModel.class, UsuarioDTO.class),  UsuariosModelOpenApi.class))
-						        		
-						      
-					        
 					    
 				.tags(new Tag("Cidades","Gerencia as Cidades"),
 						new Tag("Grupos", "Gerencia os grupos de Usuários"),
@@ -133,7 +130,8 @@ public class SpringFoxConfig  implements WebMvcConfigurer  {
 						  new Tag("Produtos", "Gerencia os Produtos de Restaurante"),
 						  new Tag("Usuários", "Gerencia os Usuários"),
 						  new Tag("Estatísticas", "Estatísticas da AlgaFood"),
-						  new Tag("Permissões", "Gerencia as permissões"));
+						  new Tag("Permissões", "Gerencia as permissões"),
+						  new Tag("Grupos Permissões", "Gerencia permissões dos grupos"));
 	   
 	}
 	

@@ -17,7 +17,7 @@ public class PermissoesModelOpenApi {
     private Links _links;
     
     @ApiModel("PermissoesEmbeddedModel")
-    @Data
+    @Data 
     public class PermissoesEmbeddedModelOpenApi {
         
         private List<PermissaoDTO> permissoes;
