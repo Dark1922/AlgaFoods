@@ -29,7 +29,7 @@ import com.algaworks.algafood.domain.model.Cozinha;
 import com.algaworks.algafood.domain.repository.CozinhaRepository;
 import com.algaworks.algafood.domain.service.CadastroCozinhaService;
 
-@RequestMapping(path = "/cozinhas", produces =  MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(path = "/v1/cozinhas", produces =  MediaType.APPLICATION_JSON_VALUE)
 @RestController // tem o responseBody dentro dela
 public class CozinhaController implements CozinhaControllerOpenApi {
 

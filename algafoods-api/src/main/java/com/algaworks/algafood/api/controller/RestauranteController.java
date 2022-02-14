@@ -53,7 +53,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.ApiOperation;
 
 @RestController
-@RequestMapping(path = "/restaurantes", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(path = "/v1/restaurantes", produces = MediaType.APPLICATION_JSON_VALUE)
 public class RestauranteController implements RestauranteControllerOpenApi{
 
 	@Autowired
