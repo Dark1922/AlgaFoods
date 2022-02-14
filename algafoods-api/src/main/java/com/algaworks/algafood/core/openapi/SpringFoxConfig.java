@@ -76,6 +76,7 @@ public class SpringFoxConfig  implements WebMvcConfigurer  {
 		var typeResolver = new TypeResolver();
 		
 		return  new Docket(DocumentationType.SWAGGER_2) 
+				.groupName("V1")
 				.select()
 				.apis(RequestHandlerSelectors.basePackage("com.algaworks.algafood.api")) //tudo que tiver no projeto pode colocar , os endpoint que quer documentar
 				.paths(PathSelectors.any()) //já fica por padrão

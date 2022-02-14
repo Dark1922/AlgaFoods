@@ -20,8 +20,8 @@
 		     <guava.version>31.0.1-jre</guava.version> 
 	</properties>
 	<dependencies>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>  
+		<dependency> 
+			<groupId>org.springframework.boot</groupId>   
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
 
