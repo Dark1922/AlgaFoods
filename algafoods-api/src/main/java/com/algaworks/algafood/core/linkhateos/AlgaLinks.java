@@ -11,23 +11,23 @@ import org.springframework.hateoas.TemplateVariables;
 import org.springframework.hateoas.UriTemplate;
 import org.springframework.stereotype.Component;
 
-import com.algaworks.algafood.api.controller.CidadeController;
-import com.algaworks.algafood.api.controller.CozinhaController;
-import com.algaworks.algafood.api.controller.EstadoController;
-import com.algaworks.algafood.api.controller.EstatisticasController;
-import com.algaworks.algafood.api.controller.FluxoPedidoController;
-import com.algaworks.algafood.api.controller.FormaPagamentoController;
-import com.algaworks.algafood.api.controller.GrupoController;
-import com.algaworks.algafood.api.controller.GrupoPermissaoController;
-import com.algaworks.algafood.api.controller.PedidoController;
-import com.algaworks.algafood.api.controller.PermissaoController;
-import com.algaworks.algafood.api.controller.RestauranteController;
-import com.algaworks.algafood.api.controller.RestauranteFormaPagamentoController;
-import com.algaworks.algafood.api.controller.RestauranteProdutoController;
-import com.algaworks.algafood.api.controller.RestauranteProdutoFotoController;
-import com.algaworks.algafood.api.controller.RestauranteUsuarioResponsavelController;
-import com.algaworks.algafood.api.controller.UsuarioController;
-import com.algaworks.algafood.api.controller.UsuarioGrupoController;
+import com.algaworks.algafood.api.v1.controller.CidadeController;
+import com.algaworks.algafood.api.v1.controller.CozinhaController;
+import com.algaworks.algafood.api.v1.controller.EstadoController;
+import com.algaworks.algafood.api.v1.controller.EstatisticasController;
+import com.algaworks.algafood.api.v1.controller.FluxoPedidoController;
+import com.algaworks.algafood.api.v1.controller.FormaPagamentoController;
+import com.algaworks.algafood.api.v1.controller.GrupoController;
+import com.algaworks.algafood.api.v1.controller.GrupoPermissaoController;
+import com.algaworks.algafood.api.v1.controller.PedidoController;
+import com.algaworks.algafood.api.v1.controller.PermissaoController;
+import com.algaworks.algafood.api.v1.controller.RestauranteController;
+import com.algaworks.algafood.api.v1.controller.RestauranteFormaPagamentoController;
+import com.algaworks.algafood.api.v1.controller.RestauranteProdutoController;
+import com.algaworks.algafood.api.v1.controller.RestauranteProdutoFotoController;
+import com.algaworks.algafood.api.v1.controller.RestauranteUsuarioResponsavelController;
+import com.algaworks.algafood.api.v1.controller.UsuarioController;
+import com.algaworks.algafood.api.v1.controller.UsuarioGrupoController;
 
 @Component
 public class AlgaLinks {
