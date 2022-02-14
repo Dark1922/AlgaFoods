@@ -2,8 +2,6 @@ package com.algaworks.algafood.api.v1.controller;
 
 import javax.validation.Valid;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -22,7 +20,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import com.algaworks.algafood.api.v1.assembler.CozinhaInputDisassembler;
 import com.algaworks.algafood.api.v1.assembler.CozinhaModelAssembler;
@@ -58,7 +55,9 @@ public class CozinhaController implements CozinhaControllerOpenApi {
 
 	@GetMapping
 	public ResponseEntity<PagedModel<CozinhaDTO>>  listar(@PageableDefault(size = 10, sort = "nome") Pageable pageable) {
-		log.info("Consultando cozinhas com páginas de {} registros...", pageable.getPageSize());
+		if (true) {
+			throw new RuntimeException("Teste de exception");
+		}
 		
 		Page<Cozinha> cozinhasPage = cozinhaRepository.findAll(pageable);
 		//pagedResourcesAssembler vai usar o cozinhaModelAssembler para converter o cozinhasPage para cozinhaModelAssembler
