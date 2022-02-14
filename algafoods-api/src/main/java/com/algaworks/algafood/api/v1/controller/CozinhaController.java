@@ -30,9 +30,6 @@ import com.algaworks.algafood.domain.model.Cozinha;
 import com.algaworks.algafood.domain.repository.CozinhaRepository;
 import com.algaworks.algafood.domain.service.CadastroCozinhaService;
 
-import lombok.extern.slf4j.Slf4j;
-
-@Slf4j
 @RequestMapping(path = "/v1/cozinhas", produces =  MediaType.APPLICATION_JSON_VALUE)
 @RestController // tem o responseBody dentro dela
 public class CozinhaController implements CozinhaControllerOpenApi {
@@ -55,9 +52,6 @@ public class CozinhaController implements CozinhaControllerOpenApi {
 
 	@GetMapping
 	public ResponseEntity<PagedModel<CozinhaDTO>>  listar(@PageableDefault(size = 10, sort = "nome") Pageable pageable) {
-		if (true) {
-			throw new RuntimeException("Teste de exception");
-		}
 		
 		Page<Cozinha> cozinhasPage = cozinhaRepository.findAll(pageable);
 		//pagedResourcesAssembler vai usar o cozinhaModelAssembler para converter o cozinhasPage para cozinhaModelAssembler
