@@ -2,6 +2,8 @@ package com.algaworks.algafood.api.v1.controller;
 
 import javax.validation.Valid;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -10,6 +12,7 @@ import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import com.algaworks.algafood.api.v1.assembler.CozinhaInputDisassembler;
 import com.algaworks.algafood.api.v1.assembler.CozinhaModelAssembler;
@@ -29,6 +33,9 @@ import com.algaworks.algafood.domain.model.Cozinha;
 import com.algaworks.algafood.domain.repository.CozinhaRepository;
 import com.algaworks.algafood.domain.service.CadastroCozinhaService;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @RequestMapping(path = "/v1/cozinhas", produces =  MediaType.APPLICATION_JSON_VALUE)
 @RestController // tem o responseBody dentro dela
 public class CozinhaController implements CozinhaControllerOpenApi {
@@ -47,15 +54,17 @@ public class CozinhaController implements CozinhaControllerOpenApi {
 	
 	@Autowired
 	private PagedResourcesAssembler<Cozinha> pagedResourcesAssembler;
+	
 
 	@GetMapping
-	public PagedModel<CozinhaDTO> listar(@PageableDefault(size = 10, sort = "nome") Pageable pageable) {
+	public ResponseEntity<PagedModel<CozinhaDTO>>  listar(@PageableDefault(size = 10, sort = "nome") Pageable pageable) {
+		log.info("Consultando cozinhas com páginas de {} registros...", pageable.getPageSize());
+		
 		Page<Cozinha> cozinhasPage = cozinhaRepository.findAll(pageable);
-
 		//pagedResourcesAssembler vai usar o cozinhaModelAssembler para converter o cozinhasPage para cozinhaModelAssembler
 		//como de cozinha para cozinhamodel
 	    PagedModel<CozinhaDTO> cozinhasPagedModel = pagedResourcesAssembler.toModel(cozinhasPage, cozinhaModelAssembler);
-	    return cozinhasPagedModel;
+	    return ResponseEntity.ok().body(cozinhasPagedModel);
 	}	
 
 	@GetMapping("/{cozinhaId}")
