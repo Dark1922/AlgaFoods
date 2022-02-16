@@ -17,7 +17,7 @@
 	<properties>
 		<java.version>11</java.version>
 		<jasperreports.version>6.17.0</jasperreports.version>
-		<springfox.version>3.0.0</springfox.version>
+		<springfox.version>3.0.0</springfox.version> 
 		<guava.version>31.0.1-jre</guava.version>
 		<logback-ext-loggly.version>0.1.5</logback-ext-loggly.version>
 	</properties>
