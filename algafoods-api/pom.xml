@@ -17,11 +17,11 @@
 	<properties>
 		<java.version>11</java.version>
 		<jasperreports.version>6.17.0</jasperreports.version>
-		<springfox.version>3.0.0</springfox.version> 
+		<springfox.version>3.0.0</springfox.version>
 		<guava.version>31.0.1-jre</guava.version>
 		<logback-ext-loggly.version>0.1.5</logback-ext-loggly.version>
 	</properties>
- 
+
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -164,7 +164,6 @@
 			<artifactId>logback-ext-loggly</artifactId>
 			<version>${logback-ext-loggly.version}</version>
 		</dependency>
-
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-security</artifactId>
@@ -173,6 +172,14 @@
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-test</artifactId>
 			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-oauth2-resource-server</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.nimbusds</groupId>
+			<artifactId>oauth2-oidc-sdk</artifactId>
 		</dependency>
 	</dependencies>
 	<build>
