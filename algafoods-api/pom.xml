@@ -20,7 +20,7 @@
 		<springfox.version>3.0.0</springfox.version>
 		<guava.version>31.0.1-jre</guava.version>
 		<logback-ext-loggly.version>0.1.5</logback-ext-loggly.version>
-	</properties>
+	</properties> 
  
 	<dependencies>
 		<dependency>
