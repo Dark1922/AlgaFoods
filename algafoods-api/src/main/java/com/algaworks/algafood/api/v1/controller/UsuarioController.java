@@ -70,7 +70,7 @@ public class UsuarioController implements UsuarioControllerOpenApi{
         usuarioInputDisassembler.copyToDomainObject(usuarioInput, usuarioAtual);
         usuarioAtual = cadastroUsuario.salvar(usuarioAtual);
         
-        return usuarioModelAssembler.toModel(usuarioAtual);
+        return usuarioModelAssembler.toModel(usuarioAtual); 
     }
     
     @PutMapping("/{usuarioId}/senha")
