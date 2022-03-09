@@ -11,6 +11,7 @@ import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -50,6 +51,8 @@ public class CozinhaController implements CozinhaControllerOpenApi {
 	private PagedResourcesAssembler<Cozinha> pagedResourcesAssembler;
 	
 
+	@PreAuthorize("isAuthenticated()")
+	@Override
 	@GetMapping
 	public ResponseEntity<PagedModel<CozinhaDTO>>  listar(@PageableDefault(size = 10, sort = "nome") Pageable pageable) {
 		
@@ -60,6 +63,8 @@ public class CozinhaController implements CozinhaControllerOpenApi {
 	    return ResponseEntity.ok().body(cozinhasPagedModel);
 	}	
 
+	@PreAuthorize("isAuthenticated()")
+	@Override
 	@GetMapping("/{cozinhaId}")
 	public CozinhaDTO buscar(@PathVariable Long cozinhaId) {
 	    Cozinha cozinha = cadastroCozinhaService.buscarOuFalhar(cozinhaId);
@@ -67,6 +72,8 @@ public class CozinhaController implements CozinhaControllerOpenApi {
 	    return cozinhaModelAssembler.toModel(cozinha);
 	}
 
+	@PreAuthorize("hasAuthority('EDITAR_COZINHAS')")
+	@Override
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public CozinhaDTO adicionar(@RequestBody @Valid CozinhaInput cozinhaInput) {
@@ -76,6 +83,7 @@ public class CozinhaController implements CozinhaControllerOpenApi {
 	    return cozinhaModelAssembler.toModel(cozinha);
 	}
 
+	@PreAuthorize("hasAuthority('EDITAR_COZINHAS')")
 	@PutMapping("/{cozinhaId}")
 	public CozinhaDTO atualizar(@PathVariable Long cozinhaId,
 	        @RequestBody @Valid CozinhaInput cozinhaInput) {
@@ -103,6 +111,7 @@ public class CozinhaController implements CozinhaControllerOpenApi {
 	}
 */
 	
+	@PreAuthorize("hasAuthority('EDITAR_COZINHAS')")
 	@DeleteMapping("/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT) //se der certo n vai retornana nada
 	public void remover(@PathVariable Long id) {
