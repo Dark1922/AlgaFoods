@@ -1,5 +1,6 @@
 package com.algaworks.algafood.core.security;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.stream.Collectors;
 
@@ -8,8 +9,10 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
+import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter;
 
 @Configuration
 @EnableWebSecurity
@@ -30,12 +33,21 @@ public class ResourceServerConfig extends WebSecurityConfigurerAdapter {
 		
 		jwtAuthenticationConverter.setJwtGrantedAuthoritiesConverter(jwt -> {
 		    var authorities = jwt.getClaimAsStringList("authorities"); //lista de string de authorities
+		   
 		    if(authorities == null) {
 		    	authorities = Collections.emptyList();
 		    }
-		    return authorities.stream() //convertendo para uma lista de SimpleGrantedAuthority com uma string dentro dela
+		    
+		  //coleção de grantedAuthorities de somente dos scopos, carrega suas autoridades
+		    var scopesAuthoritiesConverter = new JwtGrantedAuthoritiesConverter();
+		    Collection<GrantedAuthority>  grantedAuthorities = scopesAuthoritiesConverter.convert(jwt);
+		    
+		    ////convertendo para uma lista de SimpleGrantedAuthority com uma string dentro dela
+		    grantedAuthorities.addAll(authorities.stream() 
 		    		.map(SimpleGrantedAuthority::new)
-		    		.collect(Collectors.toList());
+		    		.collect(Collectors.toList()));
+		    
+		    return grantedAuthorities;
 		});
 		return jwtAuthenticationConverter;
 	}
