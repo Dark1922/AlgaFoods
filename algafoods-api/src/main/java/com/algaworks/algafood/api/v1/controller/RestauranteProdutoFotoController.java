@@ -27,6 +27,7 @@ import com.algaworks.algafood.api.v1.assembler.FotoProdutoModelAssembler;
 import com.algaworks.algafood.api.v1.model.FotoProdutoModel;
 import com.algaworks.algafood.api.v1.model.input.FotoProdutoInput;
 import com.algaworks.algafood.api.v1.openapi.controller.RestauranteProdutoFotoControllerOpenApi;
+import com.algaworks.algafood.core.security.CheckSecurity;
 import com.algaworks.algafood.domain.exception.EntidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.model.FotoProduto;
 import com.algaworks.algafood.domain.model.Produto;
@@ -51,6 +52,7 @@ public class RestauranteProdutoFotoController implements RestauranteProdutoFotoC
 	@Autowired
 	private FotoStorageService fotoStorageService;
 	
+	@CheckSecurity.Restaurantes.PodeEditar
 	@PutMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
 	public FotoProdutoModel atualizarFoto(@PathVariable Long restauranteId, @PathVariable Long produtoId,
 		@Valid FotoProdutoInput fotoPordutoInput, 
@@ -70,6 +72,8 @@ public class RestauranteProdutoFotoController implements RestauranteProdutoFotoC
 		return fotoProdutoModelAssembler.toModel(fotoSalva);
 		
 	}
+	
+	@CheckSecurity.Restaurantes.PodeConsultar
 	@GetMapping
 	public FotoProdutoModel buscar(@PathVariable Long restauranteId, 
 	        @PathVariable Long produtoId)  {
@@ -77,6 +81,7 @@ public class RestauranteProdutoFotoController implements RestauranteProdutoFotoC
 	    
 	    return fotoProdutoModelAssembler.toModel(fotoProduto);
 	}
+	
 	@GetMapping(produces = MediaType.ALL_VALUE) //InputStreamResource representa um recurso
 	public ResponseEntity<?> servirFoto(@PathVariable Long restauranteId, 
 	        @PathVariable Long produtoId, @RequestHeader(name = "accept") String acceptHeader) throws HttpMediaTypeNotAcceptableException {
@@ -105,6 +110,7 @@ public class RestauranteProdutoFotoController implements RestauranteProdutoFotoC
 			return ResponseEntity.notFound().build(); 
 		}	
 	}
+	
 	private void verificarCompatibilidadeMediaType(MediaType mediaTypeFoto,
 			List<MediaType> mediaTypesAceita) throws HttpMediaTypeNotAcceptableException {
 		boolean compativel = mediaTypesAceita.stream()
@@ -114,6 +120,8 @@ public class RestauranteProdutoFotoController implements RestauranteProdutoFotoC
 			throw new HttpMediaTypeNotAcceptableException(mediaTypesAceita);
 		}
 	}
+	
+	@CheckSecurity.Restaurantes.PodeEditar
 	@DeleteMapping
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void excluir(@PathVariable Long restauranteId, 

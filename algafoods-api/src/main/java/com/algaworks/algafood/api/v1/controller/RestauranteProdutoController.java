@@ -24,11 +24,12 @@ import com.algaworks.algafood.api.v1.model.ProdutoDTO;
 import com.algaworks.algafood.api.v1.model.input.ProdutoInput;
 import com.algaworks.algafood.api.v1.openapi.controller.RestauranteProdutoControllerOpenApi;
 import com.algaworks.algafood.core.linkhateos.AlgaLinks;
+import com.algaworks.algafood.core.security.CheckSecurity;
 import com.algaworks.algafood.domain.model.Produto;
 import com.algaworks.algafood.domain.model.Restaurante;
 import com.algaworks.algafood.domain.repository.ProdutoRepository;
-import com.algaworks.algafood.domain.service.CadastroRestauranteService;
 import com.algaworks.algafood.domain.service.CadastroProdutoService;
+import com.algaworks.algafood.domain.service.CadastroRestauranteService;
 
 @RestController
 @RequestMapping(path = "/v1/restaurantes/{restauranteId}/produtos", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -52,6 +53,7 @@ public class RestauranteProdutoController implements RestauranteProdutoControlle
     @Autowired
     private AlgaLinks algaLinks;
     
+    @CheckSecurity.Restaurantes.PodeConsultar
     @GetMapping
     public CollectionModel<ProdutoDTO> listar(@PathVariable Long restauranteId,
             @RequestParam(required = false, defaultValue = "false") Boolean incluirInativos) {
@@ -71,12 +73,14 @@ public class RestauranteProdutoController implements RestauranteProdutoControlle
                 .add(algaLinks.linkToProdutos(restauranteId));
     }
     
+    @CheckSecurity.Restaurantes.PodeConsultar
     @GetMapping("/{produtoId}")
     public ProdutoDTO buscar(@PathVariable Long restauranteId, @PathVariable Long produtoId) {
         Produto produto = cadastroProduto.buscarOuFalhar(restauranteId, produtoId);
         return produtoModelAssembler.toModel(produto);
     }
     
+    @CheckSecurity.Restaurantes.PodeEditar
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public ProdutoDTO adicionar(@PathVariable Long restauranteId,
@@ -91,6 +95,7 @@ public class RestauranteProdutoController implements RestauranteProdutoControlle
         return produtoModelAssembler.toModel(produto);
     }
     
+    @CheckSecurity.Restaurantes.PodeEditar
     @PutMapping("/{produtoId}")
     public ProdutoDTO atualizar(@PathVariable Long restauranteId, @PathVariable Long produtoId,
             @RequestBody @Valid ProdutoInput produtoInput) {
