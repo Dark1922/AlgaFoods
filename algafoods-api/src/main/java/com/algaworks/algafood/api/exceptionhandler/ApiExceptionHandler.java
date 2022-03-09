@@ -32,6 +32,7 @@ import com.algaworks.algafood.domain.exception.NegocioException;
 import com.fasterxml.jackson.databind.JsonMappingException.Reference;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import com.fasterxml.jackson.databind.exc.PropertyBindingException;
+import org.springframework.security.access.AccessDeniedException;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -332,5 +333,21 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 	protected ResponseEntity<Object> handleHttpMediaTypeNotAcceptable(HttpMediaTypeNotAcceptableException ex,
 			HttpHeaders headers, HttpStatus status, WebRequest request) {
 		return ResponseEntity.status(status).headers(headers).build();
+	}
+	
+	/*Tratando erro de usuário negado ou não autenticado*/
+	@ExceptionHandler(AccessDeniedException.class)
+	public ResponseEntity<?> handleEntidadeNaoEncontrada(AccessDeniedException ex, WebRequest request) {
+
+	    HttpStatus status = HttpStatus.FORBIDDEN;
+	    ProblemType problemType = ProblemType.ACESSO_NEGADO;
+	    String detail = ex.getMessage();
+
+	    Problem problem = createProblemBuilder(status, problemType, detail)
+	            .userMessage(detail)
+	            .userMessage("Você não possui permissão para executar essa operação.")
+	            .build();
+
+	    return handleExceptionInternal(ex, problem, new HttpHeaders(), status, request);
 	}
 }
