@@ -23,17 +23,26 @@ public @interface CheckSecurity {
 		public @interface PodeEditar {}
 	}
 	
-	public @interface Restaurantes {
+	public @interface Restaurantes { //meta anotação
 
 	    @PreAuthorize("hasAuthority('SCOPE_WRITE') and hasAuthority('EDITAR_RESTAURANTES')")
 	    @Retention(RUNTIME)
 	    @Target(METHOD)
-	    public @interface PodeEditar { }
+	    public @interface PodeGerenciarCadastro { }
 
 	    @PreAuthorize("hasAuthority('SCOPE_READ') and isAuthenticated()")
 	    @Retention(RUNTIME)
 	    @Target(METHOD)
 	    public @interface PodeConsultar { }
+	    
+	    /*bean algaSecurity vem por padrão letra minuscula e seu metodo de renciar com o id do usuário autenticado
+	     * e seu restaurante se faz parte dele aquele restaurante ele vai poder gerenciar*/
+	    @PreAuthorize("hasAuthority('SCOPE_WRITE') and "
+				+ " (hasAuthority('EDITAR_RESTAURANTES') or "
+				+ " @algaSecurity.gerenciaRestaurante(#restauranteId)) ")
+		@Retention(RUNTIME)
+		@Target(METHOD)
+		public @interface PodeGerenciarFuncionamento { }
 	    
 	}
 }

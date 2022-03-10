@@ -53,7 +53,7 @@ public class RestauranteFormaPagamentoController implements RestauranteFormaPaga
 	return formasPagamentoDTO;
 	} 
 	
-	@CheckSecurity.Restaurantes.PodeEditar
+	@CheckSecurity.Restaurantes.PodeGerenciarFuncionamento
 	@Override
 	@DeleteMapping("/{formaPagamentoId}")
 	public ResponseEntity<Void> desassociar(@PathVariable Long restauranteId, @PathVariable Long formaPagamentoId) {
@@ -61,7 +61,7 @@ public class RestauranteFormaPagamentoController implements RestauranteFormaPaga
       return ResponseEntity.noContent().build();
 	}
 	
-	@CheckSecurity.Restaurantes.PodeEditar
+	@CheckSecurity.Restaurantes.PodeGerenciarFuncionamento
 	@Override
 	@PutMapping("/{formaPagamentoId}")
 	public ResponseEntity<Void> associar(@PathVariable Long restauranteId, @PathVariable Long formaPagamentoId) {

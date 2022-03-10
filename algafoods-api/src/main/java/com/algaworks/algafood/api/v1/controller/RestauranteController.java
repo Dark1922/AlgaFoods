@@ -102,7 +102,7 @@ public class RestauranteController implements RestauranteControllerOpenApi{
 	}
 
 
-	@CheckSecurity.Restaurantes.PodeEditar
+	@CheckSecurity.Restaurantes.PodeGerenciarCadastro
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public RestauranteDTO adicionar(@RequestBody @Valid RestauranteInput restauranteInput) {
@@ -118,17 +118,15 @@ public class RestauranteController implements RestauranteControllerOpenApi{
 		}
 	}
 
-	@CheckSecurity.Restaurantes.PodeEditar
+	@CheckSecurity.Restaurantes.PodeGerenciarCadastro
 	@PutMapping("/{restauranteId}")
 	public RestauranteDTO atualizar(@PathVariable Long restauranteId, @RequestBody @Valid RestauranteInput restauranteInput) {
 		
 		try {
-			//Restaurante restaurante = restauranteInputDisassembler.toDomainObject(restauranteInput); 
 			Restaurante restauranteAtual = cadastroRestauranteService.buscarOuFalhar(restauranteId);
 
         	restauranteInputDisassembler.copyToDomainObject(restauranteInput, restauranteAtual);
-//			BeanUtils.copyProperties(restaurante, restauranteAtual, "id", "formasPagamento", "endereco", "dataCadastro",
-//					"produtos");
+        	
 			return restauranteModelAssembler.toModel(cadastroRestauranteService.salvar(restauranteAtual));
 		} catch (CozinhaNaoEncontradaException|CidadeNaoEncontradaException e) {
 			throw new NegocioException(e.getMessage(), e);
@@ -136,7 +134,7 @@ public class RestauranteController implements RestauranteControllerOpenApi{
 	}
 	
 
-	@CheckSecurity.Restaurantes.PodeEditar
+	@CheckSecurity.Restaurantes.PodeGerenciarCadastro
 	@ApiOperation(value = "Configuração do Path", hidden = true)
 	@PutMapping("/restaurantePath")
 	public RestauranteDTO atttPatch(@PathVariable Long restauranteId, @RequestBody @Valid Restaurante restaurante) {
@@ -153,7 +151,7 @@ public class RestauranteController implements RestauranteControllerOpenApi{
 		}
 	}
 
-	@CheckSecurity.Restaurantes.PodeEditar
+	@CheckSecurity.Restaurantes.PodeGerenciarCadastro
 	@PatchMapping("/{restauranteId}")
 	public RestauranteDTO atualizarParcial( @PathVariable Long restauranteId, @RequestBody @Valid Map<String, Object> campos,
 			HttpServletRequest request) {
@@ -204,7 +202,7 @@ public class RestauranteController implements RestauranteControllerOpenApi{
 		}
 	}
 	
-	@CheckSecurity.Restaurantes.PodeEditar
+	@CheckSecurity.Restaurantes.PodeGerenciarCadastro
 	@Override
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	@PutMapping("/{restauranteId}/ativar")
@@ -213,7 +211,7 @@ public class RestauranteController implements RestauranteControllerOpenApi{
 		return ResponseEntity.noContent().build();
      }
 	
-	@CheckSecurity.Restaurantes.PodeEditar
+	@CheckSecurity.Restaurantes.PodeGerenciarCadastro
 	@Override
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	@DeleteMapping("/{restauranteId}/inativar")
@@ -222,7 +220,7 @@ public class RestauranteController implements RestauranteControllerOpenApi{
 		 return ResponseEntity.noContent().build();
      }
 	
-	@CheckSecurity.Restaurantes.PodeEditar
+	@CheckSecurity.Restaurantes.PodeGerenciarFuncionamento
 	@Override
 	@PutMapping("/{restauranteId}/abertura")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
@@ -231,7 +229,7 @@ public class RestauranteController implements RestauranteControllerOpenApi{
 	    return ResponseEntity.noContent().build();
 	}
 
-	@CheckSecurity.Restaurantes.PodeEditar
+	@CheckSecurity.Restaurantes.PodeGerenciarFuncionamento
 	@Override
 	@PutMapping("/{restauranteId}/fechamento")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
@@ -240,7 +238,7 @@ public class RestauranteController implements RestauranteControllerOpenApi{
 	    return ResponseEntity.noContent().build();
 	} 
 	
-	@CheckSecurity.Restaurantes.PodeEditar
+	@CheckSecurity.Restaurantes.PodeGerenciarCadastro
 	@PutMapping("/ativacoes")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public ResponseEntity<Void> ativarMultiplosRestaurantes(@RequestBody List<Long> restauranteIds) {
@@ -252,7 +250,7 @@ public class RestauranteController implements RestauranteControllerOpenApi{
 		}
 	}
 	
-	@CheckSecurity.Restaurantes.PodeEditar
+	@CheckSecurity.Restaurantes.PodeGerenciarCadastro
 	@DeleteMapping("/inativacoes")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public ResponseEntity<Void> inativarMultiplosRestaurantes(@RequestBody List<Long> restauranteIds) {
