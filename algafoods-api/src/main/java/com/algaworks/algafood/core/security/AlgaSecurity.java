@@ -10,22 +10,26 @@ import com.algaworks.algafood.domain.repository.RestauranteRepository;
 
 @Component
 public class AlgaSecurity {
-	
+
 	@Autowired
 	private RestauranteRepository restauranteRepository;
-	
-	 //pega um objeto authentication que está representando o token da autenticação atual
+
+	// pega um objeto authentication que está representando o token da autenticação
+	// atual
 	public Authentication getAuthentication() {
 		return SecurityContextHolder.getContext().getAuthentication();
 	}
-	
 
 	public Long getUsuarioId() {
 		Jwt jwt = (Jwt) getAuthentication().getPrincipal();
-		return jwt.getClaim("usuario_id"); //igual ao q tem no payload jwt q configuramos
+		return jwt.getClaim("usuario_id"); // igual ao q tem no payload jwt q configuramos
 	}
-	
+
 	public boolean gerenciaRestaurante(Long restauranteId) {
-		return restauranteRepository.existsResponsavel( restauranteId, getUsuarioId());
+		if (restauranteId == null) {
+			return false;
+		}
+		return restauranteRepository.existsResponsavel(restauranteId, getUsuarioId());
 	}
+
 }
