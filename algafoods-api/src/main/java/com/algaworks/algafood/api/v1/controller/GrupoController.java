@@ -24,6 +24,7 @@ import com.algaworks.algafood.api.v1.assembler.GrupoModelAssembler;
 import com.algaworks.algafood.api.v1.model.GrupoDTO;
 import com.algaworks.algafood.api.v1.model.input.GrupoInput;
 import com.algaworks.algafood.api.v1.openapi.controller.GrupoControllerOpenApi;
+import com.algaworks.algafood.core.security.CheckSecurity;
 import com.algaworks.algafood.domain.model.Grupo;
 import com.algaworks.algafood.domain.repository.GrupoRepository;
 import com.algaworks.algafood.domain.service.CadastroGrupoService;
@@ -44,6 +45,7 @@ public class GrupoController implements GrupoControllerOpenApi{
     @Autowired
     private GrupoInputDisassembler grupoInputDisassembler;
     
+    @CheckSecurity.UsuariosGruposPermissoes.PodeConsultar
     @GetMapping
     public ResponseEntity<CollectionModel<GrupoDTO>>  listar() {
         List<Grupo> todosGrupos = grupoRepository.findAll();
@@ -51,6 +53,7 @@ public class GrupoController implements GrupoControllerOpenApi{
         return ResponseEntity.ok().body(grupoModelAssembler.toCollectionModel(todosGrupos));
     }
     
+    @CheckSecurity.UsuariosGruposPermissoes.PodeConsultar
     @GetMapping("/{grupoId}")
     public GrupoDTO buscar(@PathVariable Long grupoId) {
         Grupo grupo = cadastroGrupo.buscarOuFalhar(grupoId);
@@ -58,6 +61,7 @@ public class GrupoController implements GrupoControllerOpenApi{
         return grupoModelAssembler.toModel(grupo);
     }
     
+    @CheckSecurity.UsuariosGruposPermissoes.PodeEditar
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public GrupoDTO adicionar(@RequestBody @Valid GrupoInput grupoInput) {
@@ -68,6 +72,7 @@ public class GrupoController implements GrupoControllerOpenApi{
         return grupoModelAssembler.toModel(grupo);
     }
     
+    @CheckSecurity.UsuariosGruposPermissoes.PodeEditar
     @PutMapping("/{grupoId}")
     public GrupoDTO atualizar(@PathVariable Long grupoId,
             @RequestBody @Valid GrupoInput grupoInput) {
@@ -80,6 +85,7 @@ public class GrupoController implements GrupoControllerOpenApi{
         return grupoModelAssembler.toModel(grupoAtual);
     }
     
+    @CheckSecurity.UsuariosGruposPermissoes.PodeEditar
     @DeleteMapping(value = "/{grupoId}", produces =  MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void remover(@PathVariable Long grupoId) {
