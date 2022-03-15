@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 import com.algaworks.algafood.api.v1.controller.PedidoController;
 import com.algaworks.algafood.api.v1.model.PedidoResumoModel;
 import com.algaworks.algafood.core.linkhateos.AlgaLinks;
+import com.algaworks.algafood.core.security.AlgaSecurity;
 import com.algaworks.algafood.domain.model.Pedido;
 
 @Component
@@ -19,6 +20,9 @@ public class PedidoResumoModelAssembler
     
     @Autowired
     private AlgaLinks algaLinks;
+    
+    @Autowired
+    private AlgaSecurity algaSecurity; 
 
     public PedidoResumoModelAssembler() {
         super(PedidoController.class, PedidoResumoModel.class);
@@ -29,14 +33,18 @@ public class PedidoResumoModelAssembler
         PedidoResumoModel pedidoModel = createModelWithId(pedido.getCodigo(), pedido);
         modelMapper.map(pedido, pedidoModel);
         
+       if (algaSecurity.podePesquisarPedidos()) {
         pedidoModel.add(algaLinks.linkToPedidos("pedidos"));//url de lista de pedidos
-        
+       }
+      if (algaSecurity.podeConsultarRestaurantes()) {
         //url com id do restaurante
         pedidoModel.getRestaurante().add(algaLinks.linkToRestaurante(pedido.getRestaurante().getId()));
+      }
          
+      if (algaSecurity.podeConsultarUsuariosGruposPermissoes()) {
         //url com id do usuario/cliente
         pedidoModel.getCliente().add(algaLinks.linkToUsuario(pedido.getCliente().getId()));
-        
+      }
         return pedidoModel;
     }
 }
