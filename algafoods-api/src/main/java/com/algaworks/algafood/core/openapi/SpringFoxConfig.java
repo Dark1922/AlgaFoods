@@ -51,16 +51,23 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import springfox.bean.validators.configuration.BeanValidatorPluginsConfiguration;
 import springfox.documentation.builders.ApiInfoBuilder;
+import springfox.documentation.builders.OAuthBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RepresentationBuilder;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.builders.ResponseBuilder;
 import springfox.documentation.schema.AlternateTypeRules;
 import springfox.documentation.service.ApiInfo;
+import springfox.documentation.service.AuthorizationScope;
 import springfox.documentation.service.Contact;
+import springfox.documentation.service.GrantType;
+import springfox.documentation.service.ResourceOwnerPasswordCredentialsGrant;
 import springfox.documentation.service.Response;
+import springfox.documentation.service.SecurityReference;
+import springfox.documentation.service.SecurityScheme;
 import springfox.documentation.service.Tag;
 import springfox.documentation.spi.DocumentationType;
+import springfox.documentation.spi.service.contexts.SecurityContext;
 import springfox.documentation.spring.web.json.JacksonModuleRegistrar;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
@@ -88,6 +95,9 @@ public class SpringFoxConfig  implements WebMvcConfigurer  {
 				.globalResponses(HttpMethod.PUT, globalPutResponseMessages()) 
 				.globalResponses(HttpMethod.DELETE, globalDeleteResponseMessages()) 
 				.globalResponses(HttpMethod.PATCH, globalPostResponseMessages()) 
+				
+				.securitySchemes(Arrays.asList(securityScheme())) //descrever técnica de segurança pra proteger a api
+				.securityContexts(Arrays.asList(securityContext()))
 				
 				.apiInfo(apiInfo())
 				
@@ -254,6 +264,59 @@ public class SpringFoxConfig  implements WebMvcConfigurer  {
 				.contact(new Contact("Algaworks", "https://www.algaworks.com", "contato@algaworks.com"))
 				.build();
 	}
+	
+	
+	/* Ajustando a documentação da API para suporte a OAuth2*/
+	
+	private SecurityScheme securityScheme() { //nossa esquema de seguraça
+		return new OAuthBuilder()
+				.name("AlgafoodOauth2")  //pode ser qualquer nome
+				.grantTypes(grantTypes()) //lista de coleçao com password flow
+				.scopes(scopes())
+				.build();
+	}
+	
+	private List<AuthorizationScope> scopes() {
+		return Arrays.asList(new AuthorizationScope("READ", "Acesso de leitura"),
+				 new AuthorizationScope("WRITE", "Acesso de leitura"));
+	}
+	
+	private List<GrantType> grantTypes() {
+		//tipo de credencial que queremos validar na documentação password flow
+		//poderia ser outro
+		return Arrays.asList(new ResourceOwnerPasswordCredentialsGrant("/oauth/token"));
+	}
+	
+	@SuppressWarnings("deprecation")
+	private SecurityContext securityContext() {
+		var securityReference = SecurityReference.builder()
+				.reference("AlgafoodOauth2")
+				.scopes(scopes().toArray(new AuthorizationScope[0]))
+				.build();
+		
+		return SecurityContext.builder()
+				.securityReferences(Arrays.asList(securityReference))
+				.forPaths(PathSelectors.any())
+				.build();
+	}
+	
+	//versão spring fox 3
+//	private SecurityContext securityContext() {
+//		  return SecurityContext.builder()
+//		        .securityReferences(securityReference()).build();
+//		}
+//
+//		private List<SecurityReference> securityReference() {
+//		  AuthorizationScope authorizationScope = new AuthorizationScope("global", "accessEverything");
+//		  AuthorizationScope[] authorizationScopes = new AuthorizationScope[1];
+//		  authorizationScopes[0] = authorizationScope;
+//		  return List.of(new SecurityReference("Authorization", authorizationScopes));
+//		}
+//
+//		private HttpAuthenticationScheme authenticationScheme() {
+//		  return HttpAuthenticationScheme.JWT_BEARER_BUILDER.name("Authorization").build();
+//		}
+	
 	/*para fazer com que o SpringFox carregue o módulo de conversão de datas:*/
 	@Bean 
 	public JacksonModuleRegistrar springFoxJacksonConfig() {
