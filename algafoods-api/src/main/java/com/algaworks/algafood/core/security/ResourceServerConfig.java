@@ -24,7 +24,7 @@ public class ResourceServerConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http
-		.formLogin()  //liberando authorization code
+		.formLogin().loginPage("/login")  //liberando authorization code
 		 .and()
 		.authorizeRequests()
 		   .antMatchers("/oauth/**").authenticated() //liberando authorization code
