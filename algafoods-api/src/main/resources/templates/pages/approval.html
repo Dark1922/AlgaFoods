@@ -1,5 +1,6 @@
 <!doctype html>
-<html lang="pt" xmlns="http://www.w3.org/1999/xhtml">
+<html lang="pt" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -37,31 +38,27 @@
 </head>
 
 <body class="text-center">
-  <form class="form-approval">
+  <form class="form-approval" th:action="@{/oauth/authorize}" method="post">
     <h1 class="h3 mb-3 font-weight-normal">
       Autorização de acesso
     </h1>
     
     <h2 class="h5 mb-3 font-weight-normal">
-      A aplicação <strong>nomedaaplicacao</strong> gostaria de acessar a sua conta.
+      A aplicação <strong th:text="${authorizationRequest.clientId}">nomedaaplicacao</strong> gostaria de acessar a sua conta.
     </h2>
     
     <table class="table">
       <tbody>
-        <tr>
-          <td>Descrição do escopo</td>
-          <td><input type="radio" /> Aprova</td>
-          <td><input type="radio" /> Rejeita</td>
-        </tr>
-        <tr>
-          <td>Descrição do escopo</td>
-          <td><input type="radio" /> Aprova</td>
-          <td><input type="radio" /> Rejeita</td>
+        <tr th:each="scope : ${scopes}">
+          <td th:text="#{${scope.key}}">Descrição do escopo</td>
+          <td><input type="radio" th:name="${scope.key}" th:checked="${scope.value}" value="true" /> Aprova</td>
+          <td><input type="radio" th:name="${scope.key}" th:checked="${!scope.value}" value="false" /> Rejeita</td>
         </tr>
       </tbody>
     </table>
 
     <button class="btn btn-lg btn-primary" type="submit">Autorizar</button>
+    <input name="user_oauth_approval" value="false" type="hidden" />
 
     <p class="mt-5 mb-3 text-muted">&copy; AlgaWorks</p>
   </form>
