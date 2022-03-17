@@ -117,19 +117,23 @@ public interface RestauranteControllerOpenApi {
 	            List<Long> restauranteIds);
 
 	    @ApiOperation("Abre um restaurante por ID")
-	    @ApiResponses({
-	        @ApiResponse(code = 204, message = "Restaurante aberto com sucesso"),
-	        @ApiResponse(code = 404, message = "Restaurante não encontrado", response = Problem.class)
-	    })
+	    @io.swagger.v3.oas.annotations.responses.ApiResponses({
+	  		@io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "204", description = "Restaurante aberto com sucesso", 
+	  				content = @Content(mediaType = "application/json")),
+	  		@io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "Restaurante não encontrado", 
+	  		content = @Content(mediaType = "application/json",  schema = @Schema(implementation = Problem.class)))
+	  	})
 	    ResponseEntity<Void> abrir(
 	            @ApiParam(value = "ID de um restaurante", example = "1", required = true)
 	            Long restauranteId);
 	    
 	    @ApiOperation("Fecha um restaurante por ID")
-	    @ApiResponses({
-	        @ApiResponse(code = 204, message = "Restaurante fechado com sucesso"),
-	        @ApiResponse(code = 404, message = "Restaurante não encontrado", response = Problem.class)
-	    })
+	    @io.swagger.v3.oas.annotations.responses.ApiResponses({
+	  		@io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "204", description = "Restaurante fechado com sucesso", 
+	  				content = @Content(mediaType = "application/json")),
+	  		@io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "Restaurante não encontrado", 
+	  		content = @Content(mediaType = "application/json",  schema = @Schema(implementation = Problem.class)))
+	  	})
 	    ResponseEntity<Void> fechar(
 	            @ApiParam(value = "ID de um restaurante", example = "1", required = true)
 	            Long restauranteId);

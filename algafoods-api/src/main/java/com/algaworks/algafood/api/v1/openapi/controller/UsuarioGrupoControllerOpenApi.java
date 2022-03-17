@@ -11,24 +11,32 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 @Api(tags = "Usuários")
 public interface UsuarioGrupoControllerOpenApi {
 
-    @ApiOperation("Lista os grupos associados a um usuário")
+    @ApiOperation("Lista os grupos associados a um usuário")//
     @ApiResponses({
         @ApiResponse(code = 404, message = "Usuário não encontrado", response = Problem.class)
     })
+    
+    @io.swagger.v3.oas.annotations.responses.ApiResponses({
+  		@io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "Usuário não encontrado", 
+  		content = @Content(mediaType = "application/json",  schema = @Schema(implementation = Problem.class)))
+  	})
     ResponseEntity<CollectionModel<GrupoDTO>> listar(
             @ApiParam(value = "ID do usuário", example = "1", required = true)
             Long usuarioId);
 
     @ApiOperation("Desassociação de grupo com usuário")
-    @ApiResponses({
-        @ApiResponse(code = 204, message = "Desassociação realizada com sucesso"),
-        @ApiResponse(code = 404, message = "Usuário ou grupo não encontrado", 
-            response = Problem.class)
-    })
+    @io.swagger.v3.oas.annotations.responses.ApiResponses({
+  		@io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "204", description = "Desassociação realizada com sucesso", 
+  				content = @Content(mediaType = "application/json")),
+  		@io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "Usuário ou grupo não encontrado", 
+  		content = @Content(mediaType = "application/json",  schema = @Schema(implementation = Problem.class)))
+  	})
     ResponseEntity<Void> desassociar(
             @ApiParam(value = "ID do usuário", example = "1", required = true)
             Long usuarioId,
@@ -37,11 +45,12 @@ public interface UsuarioGrupoControllerOpenApi {
             Long grupoId);
 
     @ApiOperation("Associação de grupo com usuário")
-    @ApiResponses({
-        @ApiResponse(code = 204, message = "Associação realizada com sucesso"),
-        @ApiResponse(code = 404, message = "Usuário ou grupo não encontrado", 
-            response = Problem.class)
-    })
+    @io.swagger.v3.oas.annotations.responses.ApiResponses({
+  		@io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "204", description = "Associação realizada com sucesso", 
+  				content = @Content(mediaType = "application/json")),
+  		@io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "Usuário ou grupo não encontrado", 
+  		content = @Content(mediaType = "application/json",  schema = @Schema(implementation = Problem.class)))
+  	})
     ResponseEntity<Void> associar(
             @ApiParam(value = "ID do usuário", example = "1", required = true)
             Long usuarioId,

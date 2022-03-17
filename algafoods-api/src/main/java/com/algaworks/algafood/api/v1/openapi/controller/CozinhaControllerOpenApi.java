@@ -17,7 +17,7 @@ import io.swagger.annotations.ApiResponses;
 @Api(tags = "Cozinhas")
 public interface CozinhaControllerOpenApi {
 
-    @ApiOperation("Lista as cozinhas com paginação")
+    @ApiOperation("Lista as cozinhas com paginação") //
      ResponseEntity<PagedModel<CozinhaDTO>> listar(Pageable pageable);
     
     @ApiOperation("Busca uma cozinha por ID")
