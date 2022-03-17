@@ -24,6 +24,8 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import springfox.documentation.annotations.ApiIgnore;
 
 @Api(tags = "Restaurantes")
@@ -59,10 +61,13 @@ public interface RestauranteControllerOpenApi {
 	            RestauranteInput restauranteInput);
 	    
 	    @ApiOperation("Atualiza um restaurante por ID")
-	    @ApiResponses({
-	        @ApiResponse(code = 200, message = "Restaurante atualizado"),
-	        @ApiResponse(code = 404, message = "Restaurante não encontrado", response = Problem.class)
-	    })
+	    @io.swagger.v3.oas.annotations.responses.ApiResponses({
+			@io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Restaurante atualizado", 
+					content = @Content(mediaType = "application/json")),
+			@io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "Restaurante não encontrado", 
+			content = @Content(mediaType = "application/json",  schema = @Schema(implementation = Problem.class)))
+		})
+	    
 	     RestauranteDTO atualizar(
 	            @ApiParam(value = "ID de um restaurante", example = "1", required = true)
 	            Long restauranteId,
@@ -72,34 +77,40 @@ public interface RestauranteControllerOpenApi {
 	            RestauranteInput restauranteInput);
 	    
 	    @ApiOperation("Ativa um restaurante por ID")
-	    @ApiResponses({
-	        @ApiResponse(code = 204, message = "Restaurante ativado com sucesso"),
-	        @ApiResponse(code = 404, message = "Restaurante não encontrado", response = Problem.class)
-	    })
+	    @io.swagger.v3.oas.annotations.responses.ApiResponses({
+			@io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "Restaurante ativado com sucesso", 
+					content = @Content(mediaType = "application/json")),
+			@io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "Restaurante não encontrado", 
+			content = @Content(mediaType = "application/json",  schema = @Schema(implementation = Problem.class)))
+		})
 	     ResponseEntity<Void> ativar(
 	            @ApiParam(value = "ID de um restaurante", example = "1", required = true)
 	            Long restauranteId);
 	    
 	    @ApiOperation("Inativa um restaurante por ID")
-	    @ApiResponses({
-	        @ApiResponse(code = 204, message = "Restaurante inativado com sucesso"),
-	        @ApiResponse(code = 404, message = "Restaurante não encontrado", response = Problem.class)
-	    })
+		@io.swagger.v3.oas.annotations.responses.ApiResponses({
+			@io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "204", description = "Restaurante inativado com sucesso", 
+					content = @Content(mediaType = "application/json")),
+			@io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "Restaurante não encontrado", 
+			content = @Content(mediaType = "application/json",  schema = @Schema(implementation = Problem.class)))
+		})
 	    ResponseEntity<Void> inativar(
 	            @ApiParam(value = "ID de um restaurante", example = "1", required = true)
 	            Long restauranteId);
 	    
 	    @ApiOperation("Ativa múltiplos restaurantes")
-	    @ApiResponses({
-	        @ApiResponse(code = 204, message = "Restaurantes ativados com sucesso")
+	    @io.swagger.v3.oas.annotations.responses.ApiResponses({
+			@io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "204", description = "Restaurantes ativados com sucesso", 
+					content = @Content(mediaType = "application/json"))
 	    })
 	    ResponseEntity<Void> ativarMultiplosRestaurantes(
 	            @ApiParam(name = "corpo", value = "IDs de restaurantes", required = true)
 	            List<Long> restauranteIds);
 	    
 	    @ApiOperation("Inativa múltiplos restaurantes")
-	    @ApiResponses({
-	        @ApiResponse(code = 204, message = "Restaurantes ativados com sucesso")
+	    @io.swagger.v3.oas.annotations.responses.ApiResponses({
+			@io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "204", description = "Restaurantes inativados com sucesso", 
+					content = @Content(mediaType = "application/json"))
 	    })
 	    ResponseEntity<Void> inativarMultiplosRestaurantes(
 	            @ApiParam(name = "corpo", value = "IDs de restaurantes", required = true)
