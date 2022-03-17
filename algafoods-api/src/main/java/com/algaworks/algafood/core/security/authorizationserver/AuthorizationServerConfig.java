@@ -1,6 +1,8 @@
 package com.algaworks.algafood.core.security.authorizationserver;
 
 
+import java.security.KeyPair;
+import java.security.interfaces.RSAPublicKey;
 import java.util.Arrays;
 
 import javax.sql.DataSource;
@@ -23,6 +25,11 @@ import org.springframework.security.oauth2.provider.token.TokenEnhancerChain;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.store.KeyStoreKeyFactory;
+
+import com.nimbusds.jose.JWSAlgorithm;
+import com.nimbusds.jose.jwk.JWKSet;
+import com.nimbusds.jose.jwk.KeyUse;
+import com.nimbusds.jose.jwk.RSAKey;
 
 
 @Configuration
@@ -71,6 +78,28 @@ public class AuthorizationServerConfig  extends AuthorizationServerConfigurerAda
 		approvalStore.setTokenStore(tokenStore);
 		return approvalStore;
 	}
+	
+	@Bean
+	public JWKSet jwkSet() {
+		//builder de chave , pegamos nossa chave publica dentro do nosso par de cahves keyPair
+		RSAKey.Builder builder =  new RSAKey.Builder((RSAPublicKey) keyPair().getPublic())
+				.keyUse(KeyUse.SIGNATURE) //chave de assinatura pq estamos usando token
+				.algorithm(JWSAlgorithm.RS256) //algoritimo que estamos usando pra gerar esse token
+				.keyID("algafood-key-id"); //identificação do jwk 1 chave pode ter varias
+		
+		return new JWKSet(builder.build()); //instancia o método jwks
+	}
+	
+	private KeyPair keyPair() {
+		//chave assimetrica
+	    var keyStorePass = jwtKeyStoreProperties.getPassword();
+	    var keyPairAlias = jwtKeyStoreProperties.getKeypairAlias();
+	    
+	    var keyStoreKeyFactory = new KeyStoreKeyFactory(jwtKeyStoreProperties.getJksLocation(),
+	    		keyStorePass.toCharArray());
+	    
+	   return keyStoreKeyFactory.getKeyPair(keyPairAlias);
+	}
 
 	@Bean
 	public JwtAccessTokenConverter jwtAccessTokenConverter() {
@@ -78,17 +107,8 @@ public class AuthorizationServerConfig  extends AuthorizationServerConfigurerAda
 		
 		//chave simetrica
 		//jwtAccessTokenConverter.setSigningKey("DB4AEF4719809709E560ED8DE2F9C77B886B963B28BA20E9A8A621BBD4ABA400");
-		
-		//chave assimetrica
-		    var keyStorePass = jwtKeyStoreProperties.getPassword();
-		    var keyPairAlias = jwtKeyStoreProperties.getKeypairAlias();
 		    
-		    var keyStoreKeyFactory = new KeyStoreKeyFactory(jwtKeyStoreProperties.getJksLocation(),
-		    		keyStorePass.toCharArray());
-		    
-		    var keyPair = keyStoreKeyFactory.getKeyPair(keyPairAlias);
-		    
-		    jwtAccessTokenConverter.setKeyPair(keyPair);
+		    jwtAccessTokenConverter.setKeyPair(keyPair());
 		    
 		    return jwtAccessTokenConverter;
 	}
