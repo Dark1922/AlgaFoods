@@ -7,6 +7,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.algaworks.algafood.core.security.StrongPassword;
 import com.algaworks.algafood.domain.exception.NegocioException;
 import com.algaworks.algafood.domain.exception.UsuarioNaoEncontradoException;
 import com.algaworks.algafood.domain.model.Grupo;
@@ -25,7 +26,6 @@ public class CadastroUsuarioService {
     @Autowired
     private PasswordEncoder passwordEncoder;
     
-    
     @Transactional
     public Usuario salvar(Usuario usuario) {
     	usuarioRepository.detach(usuario); //para de gerenciar o usuário ai o atualizar usuário vai funcionar sem erro 500    	
@@ -37,8 +37,9 @@ public class CadastroUsuarioService {
     	if(usuarioExistente.isPresent() && !usuarioExistente.get().equals(usuario)) { 
     		throw new NegocioException(String.format("Já existe um usuário cadastrado com o e-mail %s", usuario.getEmail()));
     	}
-    	
+        
     	if (usuario.isNovo()) {
+    		StrongPassword.validatePassword(usuario.getSenha());
     		usuario.setSenha(passwordEncoder.encode(usuario.getSenha()));
     	}
     	
