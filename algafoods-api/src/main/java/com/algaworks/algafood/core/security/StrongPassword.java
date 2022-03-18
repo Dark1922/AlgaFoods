@@ -8,6 +8,8 @@ public class StrongPassword {
 
 		int charactersValidated = 0;
 
+	//digito 0-9 (?=.*\\d) , sem espaço em branco (?=\\S+$), caractere especial [@#$%!&?*], {6,20} digitos q pode ter	
+		
 		if (!password.matches("((?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%!&?*])(?=\\S+$).{6,20})")) {
 			charactersValidated++;
 		}
