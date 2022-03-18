@@ -38,7 +38,7 @@ public class RestauranteUsuarioResponsavelController implements RestauranteUsuar
     private AlgaSecurity algaSecurity;  
     
     @GetMapping
-    public ResponseEntity<CollectionModel<UsuarioDTO>>  listar(@PathVariable Long restauranteId) {
+    public CollectionModel<UsuarioDTO>  listar(@PathVariable Long restauranteId) {
         Restaurante restaurante = cadastroRestaurante.buscarOuFalhar(restauranteId);
         
         CollectionModel<UsuarioDTO> usuariosDTO = usuarioModelAssembler.toCollectionModel(restaurante.getResponsaveis())
@@ -54,7 +54,7 @@ public class RestauranteUsuarioResponsavelController implements RestauranteUsuar
         });
         		 }
         
-        return ResponseEntity.ok().body(usuariosDTO);
+        return usuariosDTO;
     }
     
     @DeleteMapping("/{usuarioId}")

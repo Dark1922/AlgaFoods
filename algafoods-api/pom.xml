@@ -22,6 +22,7 @@
 		<logback-ext-loggly.version>0.1.5</logback-ext-loggly.version>
 		<spring-security-oauth2.version>2.2.2.RELEASE</spring-security-oauth2.version>
 		<spring-security-jwt.version>1.0.11.RELEASE</spring-security-jwt.version>
+		<dockerfile-maven-version>1.4.13</dockerfile-maven-version>
 	</properties>
 
 	<dependencies>
@@ -30,9 +31,9 @@
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
 		<dependency>
-		<groupId>org.springframework.security</groupId>
-		<artifactId>spring-security-jwt</artifactId>
-		<version>${spring-security-jwt.version}</version>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-jwt</artifactId>
+			<version>${spring-security-jwt.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.security.oauth</groupId>
@@ -217,5 +218,36 @@
 			</plugin>
 		</plugins>
 	</build>
+
+	  <profiles>
+  	<profile>
+  		<id>docker</id>
+  		
+  		<build>
+  			<plugins>
+				<plugin>
+					<groupId>com.spotify</groupId>
+					<artifactId>dockerfile-maven-plugin</artifactId>
+					<version>${dockerfile-maven-version}</version>
+					<executions>
+						<execution>
+							<id>default</id>
+							<goals>
+								<goal>build</goal>
+								<goal>push</goal>
+							</goals>
+						</execution>
+					</executions>
+					<configuration>
+						<repository>algafood-api</repository>
+						<buildArgs>
+							<JAR_FILE>${project.build.finalName}.jar</JAR_FILE>
+						</buildArgs>
+					</configuration>
+				</plugin>
+  			</plugins>
+  		</build>
+  	</profile>
+  </profiles>
 
 </project>

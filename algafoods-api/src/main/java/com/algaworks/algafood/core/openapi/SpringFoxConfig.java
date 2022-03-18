@@ -111,23 +111,32 @@ public class SpringFoxConfig  implements WebMvcConfigurer  {
 				
 				.alternateTypeRules(AlternateTypeRules.newRule(typeResolver.resolve(PagedModel.class, CozinhaDTO.class),
 					CozinhasModelOpenApi.class)) //formata paginação da cozinhan a resposta
+				
 				.alternateTypeRules(AlternateTypeRules.newRule(
 					    typeResolver.resolve(PagedModel.class, PedidoResumoModel.class),
 					    PedidosResumoModelOpenApi.class))
+				
 				.alternateTypeRules(AlternateTypeRules.newRule(typeResolver.resolve(CollectionModel.class, CidadeDTO.class),
 						CidadesModelOpenApi.class))
+				
 				.alternateTypeRules(AlternateTypeRules.newRule(typeResolver.resolve(CollectionModel.class, EstadoDTO.class),
 						EstadosModelOpenApi.class))
+				
 				.alternateTypeRules(AlternateTypeRules.newRule(
 					    typeResolver.resolve(CollectionModel.class, FormaPagamentoDTO.class),FormasPagamentoModelOpenApi.class))
+				
 				.alternateTypeRules(AlternateTypeRules.newRule(
 					    typeResolver.resolve(CollectionModel.class, GrupoDTO.class),GruposModelOpenApi.class))
+				
 					.alternateTypeRules(AlternateTypeRules.newRule(
 					        typeResolver.resolve(CollectionModel.class, PermissaoDTO.class),PermissoesModelOpenApi.class))
+					
 					.alternateTypeRules(AlternateTypeRules.newRule(
 					        typeResolver.resolve(CollectionModel.class, ProdutoDTO.class),ProdutosModelOpenApi.class))
+					
 					.alternateTypeRules(AlternateTypeRules.newRule(
 					  typeResolver.resolve(CollectionModel.class, RestauranteBasicoModel.class), RestaurantesBasicoModelOpenApi.class))
+					
 						.alternateTypeRules(AlternateTypeRules.newRule(
 						        typeResolver.resolve(CollectionModel.class, UsuarioDTO.class),  UsuariosModelOpenApi.class))
 					    

@@ -26,7 +26,7 @@ public interface UsuarioGrupoControllerOpenApi {
   		@io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "Usuário não encontrado", 
   		content = @Content(mediaType = "application/json",  schema = @Schema(implementation = Problem.class)))
   	})
-    ResponseEntity<CollectionModel<GrupoDTO>> listar(
+    CollectionModel<GrupoDTO> listar(
             @ApiParam(value = "ID do usuário", example = "1", required = true)
             Long usuarioId);
 

@@ -38,7 +38,7 @@ public class UsuarioGrupoController implements UsuarioGrupoControllerOpenApi{
     
     @CheckSecurity.UsuariosGruposPermissoes.PodeConsultar
     @GetMapping
-    public ResponseEntity<CollectionModel<GrupoDTO>> listar(@PathVariable Long usuarioId) {
+    public CollectionModel<GrupoDTO> listar(@PathVariable Long usuarioId) {
         Usuario usuario = cadastroUsuario.buscarOuFalhar(usuarioId);
         
         CollectionModel<GrupoDTO> listaGruposDTO = grupoModelAssembler.toCollectionModel(usuario.getGrupos())
@@ -53,7 +53,7 @@ public class UsuarioGrupoController implements UsuarioGrupoControllerOpenApi{
         		    });
         		}
         
-       return ResponseEntity.ok().body(listaGruposDTO);
+       return listaGruposDTO;
     }
     
     @CheckSecurity.UsuariosGruposPermissoes.PodeEditar

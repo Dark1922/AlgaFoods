@@ -10,7 +10,6 @@ import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -54,13 +53,14 @@ public class CozinhaController implements CozinhaControllerOpenApi {
 	@CheckSecurity.Cozinhas.PodeConsultar
 	@Override
 	@GetMapping
-	public ResponseEntity<PagedModel<CozinhaDTO>>  listar(@PageableDefault(size = 10, sort = "nome") Pageable pageable) {
+	public PagedModel<CozinhaDTO>  listar(@PageableDefault(size = 10, sort = "nome") Pageable pageable) {
 		
 		Page<Cozinha> cozinhasPage = cozinhaRepository.findAll(pageable);
 		//pagedResourcesAssembler vai usar o cozinhaModelAssembler para converter o cozinhasPage para cozinhaModelAssembler
 		//como de cozinha para cozinhamodel
 	    PagedModel<CozinhaDTO> cozinhasPagedModel = pagedResourcesAssembler.toModel(cozinhasPage, cozinhaModelAssembler);
-	    return ResponseEntity.ok().body(cozinhasPagedModel);
+	   
+	    return cozinhasPagedModel;
 	}	
 
 	@CheckSecurity.Cozinhas.PodeConsultar
