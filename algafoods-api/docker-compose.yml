@@ -10,16 +10,15 @@ services:
     environment:
       MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
     ports:
-      - "3307:3306"
+      - "3306:3306"
     networks:
       - algafood-network
 
   algafood-api:
     image: algafood-api
-    command: ["/wait-for-it.sh", "algafood-mysql:3307", "-t", "30", "--", "java", "-jar", "api.jar"]
+    command: ["/wait-for-it.sh", "algafood-mysql:3306", "-t", "30", "--", "java", "-jar", "api.jar"]
     environment:
       DB_HOST: algafood-mysql
-  
     networks:
       - algafood-network
     depends_on:
