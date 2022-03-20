@@ -21,6 +21,7 @@ import org.springframework.security.oauth2.provider.CompositeTokenGranter;
 import org.springframework.security.oauth2.provider.TokenGranter;
 import org.springframework.security.oauth2.provider.approval.ApprovalStore;
 import org.springframework.security.oauth2.provider.approval.TokenApprovalStore;
+import org.springframework.security.oauth2.provider.code.JdbcAuthorizationCodeServices;
 import org.springframework.security.oauth2.provider.token.TokenEnhancerChain;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
@@ -60,11 +61,13 @@ public class AuthorizationServerConfig  extends AuthorizationServerConfigurerAda
 		var enchancerChain =  new TokenEnhancerChain(); // cadeia de enchancer q incrementa o token
 		enchancerChain.setTokenEnhancers(Arrays.asList(
 				new JwtCustomClaimsTokenEnhancer(),jwtAccessTokenConverter()));
+		
 		endpoints
 		.authenticationManager(authenticationManager)//endpoint de gerar o token
 		.userDetailsService(userDetailsService)//tava nulo ent colcoamos o userDetailsService
+        .authorizationCodeServices(new JdbcAuthorizationCodeServices(this.dataSource))
 		.reuseRefreshTokens(false)
-				.tokenEnhancer(enchancerChain)
+		.tokenEnhancer(enchancerChain)
 		.accessTokenConverter(jwtAccessTokenConverter()) //conversos de access token jwt
 		.approvalStore(approvalStore(endpoints.getTokenStore())) //armazenamento de aprovações
 		.tokenGranter(tokenGranter(endpoints));

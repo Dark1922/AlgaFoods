@@ -20,7 +20,7 @@
 		<springfox.version>3.0.0</springfox.version>
 		<guava.version>31.0.1-jre</guava.version>
 		<logback-ext-loggly.version>0.1.5</logback-ext-loggly.version>
-		<spring-security-oauth2.version>2.2.2.RELEASE</spring-security-oauth2.version>
+		<spring-security-oauth2.version>2.3.8.RELEASE</spring-security-oauth2.version>
 		<spring-security-jwt.version>1.0.11.RELEASE</spring-security-jwt.version>
 		<dockerfile-maven-version>1.4.13</dockerfile-maven-version>
 	</properties>

@@ -24,6 +24,8 @@ services:
     command: ["/wait-for-it.sh", "algafood-mysql:3306", "-t", "30", "--", "java", "-jar", "api.jar"]
     environment:
       DB_HOST: algafood-mysql
+      SPRING_SESSION_SOTRE_TYPE: redis
+      SPRING_REDIS_HOST: algafood-redis
     networks:
       - algafood-network
     depends_on:
