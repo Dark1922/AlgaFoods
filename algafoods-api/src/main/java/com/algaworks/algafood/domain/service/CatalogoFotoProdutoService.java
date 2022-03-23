@@ -33,8 +33,9 @@ public class CatalogoFotoProdutoService {
 			 nomeArquivoExistente = fotoExistente.get().getNomeArquivo(); //.get extrair o objeto dentro do optional pq é um optional
 			 produtoRepository.delete(fotoExistente.get());
 		 }
+
 		 foto = produtoRepository.save(foto); //caso o banco de rolback a foto na vai armazenar tem que ficar antes do armazenamento de foto
-		produtoRepository.flush();//descarrega tudo que está na fila insert etc que deia alguma problema antes de armazena a foto
+		 produtoRepository.flush();//descarrega tudo que está na fila insert etc que deia alguma problema antes de armazena a foto
 		
 		 NovaFoto novaFoto = NovaFoto.builder()
 				 .nomeArquivo(foto.getNomeArquivo())
