@@ -61,6 +61,6 @@ public interface RestauranteProdutoFotoControllerOpenApi {
             Long produtoId);
 
     @ApiOperation(value = "Busca a foto do produto de um restaurante", hidden = true)//hidden tru ocultada na documentação esse endpoint
-    ResponseEntity<?> servirFoto(Long restauranteId, Long produtoId, String acceptHeader) 
+    ResponseEntity<?> servirFoto() 
             throws HttpMediaTypeNotAcceptableException;
 }
