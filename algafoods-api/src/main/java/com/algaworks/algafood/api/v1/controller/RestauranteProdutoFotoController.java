@@ -128,4 +128,5 @@ public class RestauranteProdutoFotoController implements RestauranteProdutoFotoC
 	        @PathVariable Long produtoId) {
 	    catalogoFotoProduto.excluir(restauranteId, produtoId);
 	}
+
 }
